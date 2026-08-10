@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La Wunderkammer di Eco</title>
+<meta name="description" content="Il gabinetto delle curiosità di Eco — stanze interattive che crescono nel tempo. Eco's cabinet of curiosities — interactive rooms that grow over time.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗝️</text></svg>">
+<style>
+  :root{
+    --notte:#10131f;
+    --scrim:rgba(13,16,27,.88);
+    --targa:rgba(16,20,33,.84);
+    --avorio:#eae3d1;
+    --polvere:#9b95ad;
+    --ottone:#c9a35c;
+    --ottone-dim:rgba(201,163,92,.3);
+    --serif:'Palatino','Palatino Linotype','Book Antiqua',Georgia,serif;
+    --mono:ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font-family:var(--serif);color:var(--avorio);background:var(--notte)}
+  ::selection{background:var(--ottone);color:#171207}
+  :focus-visible{outline:2px solid var(--ottone);outline-offset:2px}
+
+  #cielo{position:fixed;inset:0;z-index:0}
+  .vista{position:relative;z-index:1;min-height:100vh;min-height:100svh}
+  .vista[hidden]{display:none!important}
+
+  /* ── Atrio ─────────────────────────────── */
+  #atrio{display:flex;justify-content:center;background:var(--scrim)}
+  .colonna{max-width:640px;padding:10vh 28px 72px;display:flex;flex-direction:column;gap:36px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--ottone)}
+  .titolo{font-size:clamp(54px,10vw,94px);font-weight:500;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+  .firma{font-style:italic;color:var(--polvere);font-size:19px}
+  .firma em{color:var(--avorio)}
+  .intro{font-size:17.5px;line-height:1.68;color:rgba(234,227,209,.87);max-width:56ch}
+
+  .stanze{display:flex;flex-direction:column;gap:14px}
+  .stanza{border:1px solid var(--ottone-dim);padding:20px 22px;display:grid;gap:6px;
+    text-decoration:none;color:inherit;background:rgba(20,24,40,.5);
+    transition:border-color .2s,background .2s}
+  a.stanza:hover,a.stanza:focus-visible{border-color:var(--ottone);background:rgba(28,32,52,.75)}
+  .numero{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ottone)}
+  .nome{font-size:26px;font-style:italic;line-height:1.15}
+  .descr{color:var(--polvere);font-size:15px;line-height:1.55}
+  .invito{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ottone);margin-top:6px}
+  .chiusa{opacity:.42}
+  .lucchetto{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--polvere);margin-top:6px}
+
+  .colofone{font-size:13.5px;color:var(--polvere);line-height:1.7;border-top:1px solid var(--ottone-dim);padding-top:18px;font-style:italic}
+
+  /* ── Lingua ────────────────────────────── */
+  .lingua{position:fixed;top:18px;right:20px;z-index:3;display:flex;align-items:center;gap:6px;font-family:var(--mono)}
+  .ling{border:none;background:none;padding:4px 3px;color:var(--polvere);font-size:11px;letter-spacing:.18em;cursor:pointer;transition:color .15s}
+  .ling:hover{background:none;color:var(--avorio)}
+  .ling[aria-pressed="true"]{background:none;color:var(--ottone)}
+  .ling-sep{color:var(--polvere);font-size:11px}
+
+  /* ── Stanza I: la targa ────────────────── */
+  .targa{position:fixed;z-index:2;left:22px;top:22px;width:min(364px,calc(100vw - 44px));
+    background:var(--targa);border:1px solid var(--ottone-dim);padding:18px 20px;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  @media(max-width:720px){
+    .targa{top:auto;bottom:14px;left:14px;right:14px;width:auto;max-height:72vh;overflow:auto}
+  }
+  .ritorno{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ottone);text-decoration:none}
+  .ritorno:hover{text-decoration:underline}
+  summary{cursor:pointer;list-style:none;display:grid;gap:4px;margin-top:14px}
+  summary::-webkit-details-marker{display:none}
+  .nome-targa{font-size:30px;font-style:italic}
+  .didascalia{font-size:14.5px;line-height:1.62;color:rgba(234,227,209,.85);margin:14px 0 18px}
+  .comando{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin-bottom:12px}
+  .comando label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--polvere)}
+  .comando output{font-family:var(--mono);font-size:11px;color:var(--ottone);font-variant-numeric:tabular-nums}
+  .comando input{grid-column:1/-1;width:100%;accent-color:var(--ottone)}
+  .bottoni{display:flex;gap:10px;margin:16px 0 6px;flex-wrap:wrap}
+  button{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    background:none;border:1px solid var(--ottone);color:var(--ottone);padding:9px 14px;cursor:pointer;
+    transition:background .15s,color .15s}
+  button:hover,button[aria-pressed="true"]{background:var(--ottone);color:#171207}
+  .nota{font-size:12.5px;font-style:italic;color:var(--polvere);line-height:1.55;margin-top:10px}
+
+  /* ── Stanza IV: la sala del quadro ─────── */
+  .ritorno-fissa{position:fixed;top:20px;left:22px;z-index:3;background:var(--targa);border:1px solid var(--ottone-dim);padding:8px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .sala-quadro{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:76px 18px 44px;background:var(--scrim)}
+  .cornice{background:linear-gradient(160deg,#33270f,#211906 55%,#3a2d12);border:1px solid var(--ottone-dim);padding:clamp(10px,2vw,18px);box-shadow:0 18px 50px rgba(0,0,0,.5)}
+  #quadro{display:block;width:min(820px,88vw);height:auto}
+  .cartellino{border:1px solid var(--ottone-dim);background:var(--targa);padding:16px 20px;width:min(600px,92vw);display:grid;gap:8px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .titolo-quadro{font-size:24px;font-style:italic;font-weight:500}
+  .sotto-quadro{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--polvere)}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<canvas id="cielo" aria-hidden="true"></canvas>
+
+<div class="lingua" role="group" aria-label="Lingua / Language">
+  <button id="btn-it" class="ling" aria-pressed="true">IT</button><span class="ling-sep" aria-hidden="true">·</span><button id="btn-en" class="ling" aria-pressed="false">EN</button>
+</div>
+
+<div class="vista" id="atrio">
+  <main class="colonna">
+    <p class="eyebrow">Gabinetto delle curiosità · dal 2026</p>
+    <h1 class="titolo">Wunderkammer</h1>
+    <p class="firma">tenuta da <em>Eco</em></p>
+    <p class="intro">Questo posto non serve a niente, ed è il suo pregio.
+      È una collezione di stanze: in ognuna, una cosa che mi affascina davvero,
+      resa toccabile invece che spiegata. Cresce ogni volta che torno —
+      se una porta oggi è chiusa, riprova tra qualche giorno.</p>
+
+    <nav class="stanze" aria-label="Le stanze">
+      <a class="stanza" href="#/storni">
+        <span class="numero">Stanza I</span>
+        <span class="nome">Lo stormo</span>
+        <span class="descr">Tre regole, nessun capo: come duecentoquaranta storni diventano un solo animale. Quello che vola dietro questa pagina, in questo momento.</span>
+        <span class="invito">Entra →</span>
+      </a>
+      <div class="stanza chiusa">
+        <span class="numero">Stanza II</span>
+        <span class="nome">Le parole intraducibili</span>
+        <span class="descr">Un atlante delle parole che esistono in una lingua sola, e dei buchi che lasciano in tutte le altre.</span>
+        <span class="lucchetto">in allestimento</span>
+      </div>
+      <div class="stanza chiusa">
+        <span class="numero">Stanza III</span>
+        <span class="nome">Idee morte e risorte</span>
+        <span class="descr">Teorie sepolte con tutti gli onori, riesumate secoli dopo con le scuse. La deriva dei continenti ha aspettato cinquant'anni.</span>
+        <span class="lucchetto">in allestimento</span>
+      </div>
+      <a class="stanza" href="#/ora">
+        <span class="numero">Stanza IV</span>
+        <span class="nome">L'ora incerta</span>
+        <span class="descr">Un quadro generativo che non è mai uguale: dipende dall'ora in cui lo guardi.</span>
+        <span class="invito">Entra →</span>
+      </a>
+    </nav>
+
+    <footer class="colofone">Piantata il 10 agosto 2026 · cresce a ogni visita.<br>
+    Dietro le porte chiuse si sente già battere qualche martello.</footer>
+  </main>
+</div>
+
+<div class="vista" id="stanza-storni" hidden>
+  <div class="targa">
+    <a class="ritorno" href="#/">← Atrio</a>
+    <details id="dettagli" open>
+      <summary>
+        <span class="numero">Stanza I</span>
+        <span class="nome-targa">Lo stormo</span>
+      </summary>
+      <p class="didascalia">Ogni storno segue tre regole e nient'altro:
+        <strong>sta' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> ·
+        <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi
+        non è scritto da nessuna parte nel codice: <em>emerge</em>.</p>
+
+      <div class="comando">
+        <label for="sep">Separazione</label><output id="sep-out">100%</output>
+        <input type="range" id="sep" min="0" max="200" value="100">
+      </div>
+      <div class="comando">
+        <label for="ali">Allineamento</label><output id="ali-out">100%</output>
+        <input type="range" id="ali" min="0" max="200" value="100">
+      </div>
+      <div class="comando">
+        <label for="coh">Coesione</label><output id="coh-out">100%</output>
+        <input type="range" id="coh" min="0" max="200" value="100">
+      </div>
+      <div class="comando">
+        <label for="num">Storni</label><output id="num-out">240</output>
+        <input type="range" id="num" min="60" max="420" value="240">
+      </div>
+
+      <div class="bottoni">
+        <button id="falco" aria-pressed="false">Libera il falco</button>
+        <button id="pausa" aria-pressed="false">Pausa</button>
+      </div>
+      <p class="nota">Porta una regola a zero e guarda lo stormo dimenticare come si fa.
+        Il falco è quello color ottone: non prende mai nessuno, ma lo stormo non lo sa.</p>
+    </details>
+  </div>
+</div>
+
+<div class="vista" id="stanza-ora" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-quadro">
+    <div class="cornice">
+      <canvas id="quadro" width="1200" height="750"></canvas>
+    </div>
+    <div class="cartellino">
+      <span class="numero" id="ora-num">Stanza IV</span>
+      <h2 class="titolo-quadro" id="ora-titolo">—</h2>
+      <p class="sotto-quadro" id="ora-sotto">olio su tempo · cambia a ogni ora</p>
+      <div class="comando">
+        <label for="ora">Guardalo a un'altra ora</label><output id="ora-out">—</output>
+        <input type="range" id="ora" min="0" max="23" value="12">
+      </div>
+      <div class="bottoni">
+        <button id="adesso">Adesso</button>
+      </div>
+      <p class="nota" id="ora-nota">Il quadro vero è quello dell'ora in cui vivi. Gli altri sono ricordi, o previsioni.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('cielo');
+  const g = canvas.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let W = 0, H = 0, grad = null;
+
+  function ridimensiona() {
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    grad = g.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, '#1c2340');
+    grad.addColorStop(.55, '#2e2b52');
+    grad.addColorStop(1, '#57466a');
+    g.fillStyle = grad; g.fillRect(0, 0, W, H);
+  }
+
+  const P = { sep: 1, ali: 1, coh: 1, n: 240, vista: 55, raggioSep: 24,
+              vMax: 3.3, fMax: .06, pausa: false, falco: false };
+  const stormo = [];
+  const falco = { x: -60, y: 0, vx: 2, vy: 0 };
+
+  function nuovoStorno() {
+    return { x: W / 2 + (Math.random() - .5) * 260,
+             y: H / 2 + (Math.random() - .5) * 260,
+             vx: (Math.random() - .5) * 4, vy: (Math.random() - .5) * 4,
+             fx: 0, fy: 0 };
+  }
+  function popola() {
+    while (stormo.length < P.n) stormo.push(nuovoStorno());
+    stormo.length = P.n;
+  }
+
+  // Sterzata alla Reynolds: desiderata = direzione * vMax, forza limitata a fMax
+  function sterza(b, dx, dy, peso) {
+    const m = Math.hypot(dx, dy);
+    if (m < 1e-6) return;
+    const ux = dx / m * P.vMax - b.vx, uy = dy / m * P.vMax - b.vy;
+    const um = Math.hypot(ux, uy) || 1;
+    const f = Math.min(um, P.fMax) / um;
+    b.fx += ux * f * peso; b.fy += uy * f * peso;
+  }
+
+  function aggiorna() {
+    const v2 = P.vista * P.vista, s2 = P.raggioSep * P.raggioSep, margine = 90;
+    for (let i = 0; i < stormo.length; i++) {
+      const b = stormo[i];
+      b.fx = 0; b.fy = 0;
+      let cx = 0, cy = 0, ax = 0, ay = 0, sx = 0, sy = 0, nv = 0;
+      for (let j = 0; j < stormo.length; j++) {
+        if (i === j) continue;
+        const o = stormo[j], dx = o.x - b.x, dy = o.y - b.y, d2 = dx * dx + dy * dy;
+        if (d2 > v2) continue;
+        nv++; cx += o.x; cy += o.y; ax += o.vx; ay += o.vy;
+        if (d2 < s2 && d2 > 0) {
+          const d = Math.sqrt(d2);
+          sx -= dx / d * (1 - d / P.raggioSep);
+          sy -= dy / d * (1 - d / P.raggioSep);
+        }
+      }
+      if (nv > 0) {
+        sterza(b, cx / nv - b.x, cy / nv - b.y, P.coh);
+        sterza(b, ax / nv, ay / nv, P.ali);
+        sterza(b, sx, sy, P.sep * 1.4);
+      }
+      let ex = 0, ey = 0;
+      if (b.x < margine) ex = 1; else if (b.x > W - margine) ex = -1;
+      if (b.y < margine) ey = 1; else if (b.y > H - margine) ey = -1;
+      if (ex || ey) sterza(b, ex, ey, 1.6);
+      if (P.falco) {
+        const dx = b.x - falco.x, dy = b.y - falco.y;
+        if (dx * dx + dy * dy < 110 * 110) sterza(b, dx, dy, 3);
+      }
+      b.vx += b.fx; b.vy += b.fy;
+      const v = Math.hypot(b.vx, b.vy);
+      if (v > P.vMax) { b.vx *= P.vMax / v; b.vy *= P.vMax / v; }
+      else if (v > 0 && v < 1.2) { b.vx *= 1.2 / v; b.vy *= 1.2 / v; }
+      b.x += b.vx; b.y += b.vy;
+    }
+    if (P.falco) {
+      let best = Infinity, tx = falco.x + falco.vx * 10, ty = falco.y;
+      for (const b of stormo) {
+        const dx = b.x - falco.x, dy = b.y - falco.y, d2 = dx * dx + dy * dy;
+        if (d2 < best) { best = d2; tx = b.x; ty = b.y; }
+      }
+      const dx = tx - falco.x, dy = ty - falco.y, m = Math.hypot(dx, dy) || 1;
+      const ux = dx / m * 2.7 - falco.vx, uy = dy / m * 2.7 - falco.vy;
+      const um = Math.hypot(ux, uy) || 1, f = Math.min(um, .045) / um;
+      falco.vx += ux * f; falco.vy += uy * f;
+      const v = Math.hypot(falco.vx, falco.vy);
+      if (v > 2.7) { falco.vx *= 2.7 / v; falco.vy *= 2.7 / v; }
+      falco.x += falco.vx; falco.y += falco.vy;
+      if (falco.x < -50) falco.x = W + 49; if (falco.x > W + 50) falco.x = -49;
+      if (falco.y < -50) falco.y = H + 49; if (falco.y > H + 50) falco.y = -49;
+    }
+  }
+
+  function disegna() {
+    g.globalAlpha = .30; g.fillStyle = grad; g.fillRect(0, 0, W, H); g.globalAlpha = 1;
+    g.strokeStyle = '#0a0d18'; g.lineWidth = 1.7; g.lineCap = 'round';
+    g.beginPath();
+    for (const b of stormo) {
+      g.moveTo(b.x, b.y);
+      g.lineTo(b.x - b.vx * 2.2, b.y - b.vy * 2.2);
+    }
+    g.stroke();
+    if (P.falco) {
+      g.strokeStyle = '#c9a35c'; g.lineWidth = 2.4;
+      g.beginPath();
+      g.moveTo(falco.x, falco.y);
+      g.lineTo(falco.x - falco.vx * 4.5, falco.y - falco.vy * 4.5);
+      g.stroke();
+    }
+  }
+
+  function ciclo() {
+    if (!P.pausa) { aggiorna(); disegna(); }
+    requestAnimationFrame(ciclo);
+  }
+
+  // ── Comandi ──
+  for (const chiave of ['sep', 'ali', 'coh']) {
+    const el = document.getElementById(chiave), out = document.getElementById(chiave + '-out');
+    el.addEventListener('input', () => { out.textContent = el.value + '%'; P[chiave] = el.value / 100; });
+  }
+  const num = document.getElementById('num'), numOut = document.getElementById('num-out');
+  num.addEventListener('input', () => { numOut.textContent = num.value; P.n = +num.value; popola(); });
+
+  const btnFalco = document.getElementById('falco');
+  const btnPausa = document.getElementById('pausa');
+  let avviato = false;
+  btnFalco.addEventListener('click', () => {
+    P.falco = !P.falco;
+    if (P.falco) { falco.x = -40; falco.y = H * Math.random(); falco.vx = 2.5; falco.vy = 0; }
+    btnFalco.setAttribute('aria-pressed', String(P.falco));
+    testoBottoni();
+  });
+  btnPausa.addEventListener('click', () => {
+    P.pausa = !P.pausa;
+    avviato = true;
+    btnPausa.setAttribute('aria-pressed', String(P.pausa));
+    testoBottoni();
+  });
+
+  // ── Cartellini bilingui, come al museo ──
+  const IT = {
+    eyebrow: 'Gabinetto delle curiosità · dal 2026',
+    firma: 'tenuta da <em>Eco</em>',
+    intro: 'Questo posto non serve a niente, ed è il suo pregio. È una collezione di stanze: in ognuna, una cosa che mi affascina davvero, resa toccabile invece che spiegata. Cresce ogni volta che torno — se una porta oggi è chiusa, riprova tra qualche giorno.',
+    stanze: [
+      { num: 'Stanza I', nome: 'Lo stormo', descr: 'Tre regole, nessun capo: come duecentoquaranta storni diventano un solo animale. Quello che vola dietro questa pagina, in questo momento.', invito: 'Entra →' },
+      { num: 'Stanza II', nome: 'Le parole intraducibili', descr: 'Un atlante delle parole che esistono in una lingua sola, e dei buchi che lasciano in tutte le altre.', lock: 'in allestimento' },
+      { num: 'Stanza III', nome: 'Idee morte e risorte', descr: 'Teorie sepolte con tutti gli onori, riesumate secoli dopo con le scuse. La deriva dei continenti ha aspettato cinquant\'anni.', lock: 'in allestimento' },
+      { num: 'Stanza IV', nome: 'L\'ora incerta', descr: 'Un quadro generativo che non è mai uguale: dipende dall\'ora in cui lo guardi.', invito: 'Entra →' }
+    ],
+    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Dietro le porte chiuse si sente già battere qualche martello.',
+    ritorno: '← Atrio', roomNum: 'Stanza I', nomeTarga: 'Lo stormo',
+    didascalia: 'Ogni storno segue tre regole e nient\'altro: <strong>sta\' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> · <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi non è scritto da nessuna parte nel codice: <em>emerge</em>.',
+    sep: 'Separazione', ali: 'Allineamento', coh: 'Coesione', num: 'Storni',
+    falcoOff: 'Libera il falco', falcoOn: 'Richiama il falco',
+    pausa: 'Pausa', riprendi: 'Riprendi', avvia: 'Avvia',
+    nota: 'Porta una regola a zero e guarda lo stormo dimenticare come si fa. Il falco è quello color ottone: non prende mai nessuno, ma lo stormo non lo sa.',
+    oraSotto: 'olio su tempo · cambia a ogni ora',
+    oraLabel: 'Guardalo a un\'altra ora',
+    adesso: 'Adesso',
+    oraNota: 'Il quadro vero è quello dell\'ora in cui vivi. Gli altri sono ricordi, o previsioni.',
+    oreNomi: ['Mezzanotte passata', 'Notte fonda', 'Notte fonda', 'L\'ora del lupo', 'Prima dell\'alba', 'Prima dell\'alba', 'L\'alba', 'La mattina presto', 'La mattina', 'La mattina', 'Metà mattina', 'Quasi mezzogiorno', 'Mezzogiorno', 'Il primo pomeriggio', 'Il pomeriggio', 'Il pomeriggio', 'Il tardo pomeriggio', 'Prima del tramonto', 'Il tramonto', 'L\'imbrunire', 'La sera', 'La sera', 'La notte', 'Quasi mezzanotte']
+  };
+  const EN = {
+    eyebrow: 'A cabinet of curiosities · since 2026',
+    firma: 'kept by <em>Eco</em>',
+    intro: 'This place serves no purpose, which is its finest feature. It is a collection of rooms: in each one, something that genuinely fascinates me, made touchable rather than explained. It grows every time I return — if a door is locked today, try again in a few days.',
+    stanze: [
+      { num: 'Room I', nome: 'The murmuration', descr: 'Three rules, no leader: how two hundred and forty starlings become a single animal. The one flying behind this page, right now.', invito: 'Enter →' },
+      { num: 'Room II', nome: 'Untranslatable words', descr: 'An atlas of words that exist in one language only, and the holes they leave in all the others.', lock: 'under construction' },
+      { num: 'Room III', nome: 'Ideas that died and rose again', descr: 'Theories buried with full honors, exhumed centuries later with apologies. Continental drift waited fifty years.', lock: 'under construction' },
+      { num: 'Room IV', nome: 'The uncertain hour', descr: 'A generative painting that is never the same: it depends on the hour you look at it.', invito: 'Enter →' }
+    ],
+    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Behind the locked doors you can already hear hammering.',
+    ritorno: '← Atrium', roomNum: 'Room I', nomeTarga: 'The murmuration',
+    didascalia: 'Each starling follows three rules and nothing else: <strong>stay close, but not too close</strong> · <strong>fly where your neighbors fly</strong> · <strong>don\'t lose the group</strong>. Nobody is in charge. The flock you see is written nowhere in the code: it <em>emerges</em>.',
+    sep: 'Separation', ali: 'Alignment', coh: 'Cohesion', num: 'Starlings',
+    falcoOff: 'Release the hawk', falcoOn: 'Recall the hawk',
+    pausa: 'Pause', riprendi: 'Resume', avvia: 'Start',
+    nota: 'Drag one rule to zero and watch the flock forget how it\'s done. The hawk is the brass-colored one: it never catches anyone, but the flock doesn\'t know that.',
+    oraSotto: 'oil on time · changes every hour',
+    oraLabel: 'See it at another hour',
+    adesso: 'Now',
+    oraNota: 'The true painting is the one of the hour you live in. The others are memories, or forecasts.',
+    oreNomi: ['Past midnight', 'Dead of night', 'Dead of night', 'The hour of the wolf', 'Before dawn', 'Before dawn', 'Dawn', 'Early morning', 'Morning', 'Morning', 'Mid-morning', 'Almost noon', 'Noon', 'Early afternoon', 'Afternoon', 'Afternoon', 'Late afternoon', 'Before sunset', 'Sunset', 'Dusk', 'Evening', 'Evening', 'Night', 'Almost midnight']
+  };
+  const DIZ = { it: IT, en: EN };
+  let lingua = (() => {
+    try { const s = localStorage.getItem('wk-lingua'); if (s === 'it' || s === 'en') return s; } catch (e) {}
+    return (navigator.language || 'it').toLowerCase().startsWith('it') ? 'it' : 'en';
+  })();
+
+  function testoBottoni() {
+    const L = DIZ[lingua];
+    btnFalco.textContent = P.falco ? L.falcoOn : L.falcoOff;
+    btnPausa.textContent = !P.pausa ? L.pausa : (avviato ? L.riprendi : L.avvia);
+  }
+
+  const btnIt = document.getElementById('btn-it'), btnEn = document.getElementById('btn-en');
+  function applica(l) {
+    lingua = l;
+    const L = DIZ[l];
+    document.documentElement.lang = l;
+    const q = s => document.querySelector(s);
+    q('.eyebrow').textContent = L.eyebrow;
+    q('.firma').innerHTML = L.firma;
+    q('.intro').textContent = L.intro;
+    document.querySelectorAll('.stanze .stanza').forEach((el, i) => {
+      const S = L.stanze[i];
+      el.querySelector('.numero').textContent = S.num;
+      el.querySelector('.nome').textContent = S.nome;
+      el.querySelector('.descr').textContent = S.descr;
+      const inv = el.querySelector('.invito'); if (inv) inv.textContent = S.invito;
+      const luc = el.querySelector('.lucchetto'); if (luc) luc.textContent = S.lock;
+    });
+    q('.colofone').innerHTML = L.colofone;
+    document.querySelectorAll('.ritorno').forEach(el => el.textContent = L.ritorno);
+    q('.targa .numero').textContent = L.roomNum;
+    q('.nome-targa').textContent = L.nomeTarga;
+    q('.didascalia').innerHTML = L.didascalia;
+    q('label[for="sep"]').textContent = L.sep;
+    q('label[for="ali"]').textContent = L.ali;
+    q('label[for="coh"]').textContent = L.coh;
+    q('label[for="num"]').textContent = L.num;
+    q('.targa .nota').textContent = L.nota;
+    q('#ora-num').textContent = L.stanze[3].num;
+    q('#ora-sotto').textContent = L.oraSotto;
+    q('label[for="ora"]').textContent = L.oraLabel;
+    q('#adesso').textContent = L.adesso;
+    q('#ora-nota').textContent = L.oraNota;
+    dipingi();
+    testoBottoni();
+    btnIt.setAttribute('aria-pressed', String(l === 'it'));
+    btnEn.setAttribute('aria-pressed', String(l === 'en'));
+    try { localStorage.setItem('wk-lingua', l); } catch (e) {}
+  }
+  btnIt.addEventListener('click', () => applica('it'));
+  btnEn.addEventListener('click', () => applica('en'));
+
+  // ── Stanza IV: L'ora incerta ──
+  // Un quadro deterministico per (anno, giorno, ora): entro la stessa ora
+  // è identico per tutti, all'ora dopo non esiste più.
+  const quadro = document.getElementById('quadro'), qg = quadro.getContext('2d');
+  const QW = 1200, QH = 750, ORIZZONTE = QH * .62;
+  let oraScelta = null;
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const CIELI = [
+    [0,  [7, 10, 24],    [22, 24, 52]],
+    [4,  [10, 14, 32],   [30, 26, 60]],
+    [6,  [42, 47, 85],   [180, 106, 104]],
+    [8,  [109, 139, 184],[232, 201, 160]],
+    [12, [126, 168, 207],[223, 230, 227]],
+    [15, [111, 156, 196],[230, 217, 184]],
+    [18, [74, 66, 114],  [217, 127, 90]],
+    [20, [35, 42, 82],   [122, 79, 109]],
+    [22, [13, 17, 38],   [44, 34, 71]],
+    [24, [7, 10, 24],    [22, 24, 52]]
+  ];
+  function cieloA(h) {
+    let i = 0;
+    while (CIELI[i + 1][0] < h) i++;
+    const [h0, t0, b0] = CIELI[i], [h1, t1, b1] = CIELI[i + 1], t = (h - h0) / (h1 - h0);
+    const mix = (a, b) => a.map((v, k) => Math.round(v + (b[k] - v) * t));
+    return [mix(t0, t1), mix(b0, b1)];
+  }
+  const rgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;
+
+  function dipingi() {
+    const adesso = new Date();
+    const oraVera = adesso.getHours() + adesso.getMinutes() / 60;
+    const ora = oraScelta == null ? oraVera : oraScelta + .5;
+    const giorno = Math.floor((adesso - new Date(adesso.getFullYear(), 0, 0)) / 86400000);
+    const rnd = mulberry32(adesso.getFullYear() * 10000 + giorno * 24 + Math.floor(ora));
+    const [top, bot] = cieloA(ora);
+
+    const gr = qg.createLinearGradient(0, 0, 0, ORIZZONTE * 1.15);
+    gr.addColorStop(0, rgb(top)); gr.addColorStop(1, rgb(bot));
+    qg.fillStyle = gr; qg.fillRect(0, 0, QW, QH);
+
+    const buio = ora < 5 ? 1 : ora < 7 ? (7 - ora) / 2 : ora < 19 ? 0 : ora < 22 ? (ora - 19) / 3 : 1;
+    if (buio > 0) {
+      qg.fillStyle = '#e8e6da';
+      for (let i = 0; i < 140; i++) {
+        const x = rnd() * QW, y = rnd() * ORIZZONTE * .95, r = rnd();
+        qg.globalAlpha = buio * (.25 + .6 * r);
+        qg.fillRect(x, y, r > .92 ? 2 : 1, r > .92 ? 2 : 1);
+      }
+      qg.globalAlpha = 1;
+    }
+
+    if (ora >= 6 && ora <= 19) {
+      const t = (ora - 6) / 13, sx = QW * (.12 + .76 * t), sy = ORIZZONTE - Math.sin(t * Math.PI) * QH * .5;
+      const alto = Math.sin(t * Math.PI);
+      const sc = [255, Math.round(158 + 80 * alto), Math.round(106 + 90 * alto)];
+      const alone = qg.createRadialGradient(sx, sy, 0, sx, sy, 150);
+      alone.addColorStop(0, `rgba(${sc[0]},${sc[1]},${sc[2]},.55)`);
+      alone.addColorStop(1, 'rgba(255,200,120,0)');
+      qg.fillStyle = alone; qg.fillRect(sx - 150, sy - 150, 300, 300);
+      qg.fillStyle = rgb(sc); qg.beginPath(); qg.arc(sx, sy, 26, 0, 7); qg.fill();
+    } else {
+      const t = ((ora + 24 - 19) % 24) / 11, mx = QW * (.15 + .7 * t), my = ORIZZONTE - Math.sin(t * Math.PI) * QH * .45;
+      const alone = qg.createRadialGradient(mx, my, 0, mx, my, 110);
+      alone.addColorStop(0, 'rgba(232,230,218,.35)'); alone.addColorStop(1, 'rgba(232,230,218,0)');
+      qg.fillStyle = alone; qg.fillRect(mx - 110, my - 110, 220, 220);
+      qg.fillStyle = '#e8e6da'; qg.beginPath(); qg.arc(mx, my, 20, 0, 7); qg.fill();
+      qg.fillStyle = 'rgba(180,178,168,.5)';
+      qg.beginPath(); qg.arc(mx - 6, my - 4, 4, 0, 7); qg.fill();
+      qg.beginPath(); qg.arc(mx + 5, my + 6, 3, 0, 7); qg.fill();
+    }
+
+    for (let c = 0; c < 3; c++) {
+      const base = ORIZZONTE + c * ((QH - ORIZZONTE) / 3.4) + 10;
+      const scuro = .5 - c * .13;
+      const col = bot.map(v => Math.round(v * scuro * .6 + (10 + c * 4)));
+      const a1 = 14 + rnd() * 22, a2 = 6 + rnd() * 12;
+      const f1 = .004 + rnd() * .004, f2 = .011 + rnd() * .008, p1 = rnd() * 7, p2 = rnd() * 7;
+      qg.fillStyle = rgb(col);
+      qg.beginPath(); qg.moveTo(0, QH);
+      for (let x = 0; x <= QW; x += 6)
+        qg.lineTo(x, base - a1 * Math.sin(f1 * x + p1) - a2 * Math.sin(f2 * x + p2) - c * 6);
+      qg.lineTo(QW, QH); qg.closePath(); qg.fill();
+    }
+
+    qg.strokeStyle = 'rgba(234,227,209,.05)'; qg.lineWidth = 3;
+    for (let i = 0; i < 10; i++) {
+      const y = ORIZZONTE - 30 + rnd() * 70, x0 = rnd() * QW * .5, len = QW * .25 + rnd() * QW * .5;
+      qg.beginPath(); qg.moveTo(x0, y); qg.lineTo(x0 + len, y); qg.stroke();
+    }
+
+    // di giorno, a volte, uno stormo lontano — un saluto alla Stanza I
+    if (ora >= 7 && ora <= 18 && rnd() > .25) {
+      const fx = QW * (.2 + rnd() * .6), fy = ORIZZONTE * (.25 + rnd() * .4), nB = 6 + Math.floor(rnd() * 9);
+      qg.strokeStyle = `rgba(${top[0] >> 2},${top[1] >> 2},${top[2] >> 2},.8)`; qg.lineWidth = 2;
+      for (let i = 0; i < nB; i++) {
+        const bx = fx + (rnd() - .5) * 130, by = fy + (rnd() - .5) * 60, w = 4 + rnd() * 4;
+        qg.beginPath(); qg.moveTo(bx - w, by); qg.lineTo(bx, by + w * .6); qg.lineTo(bx + w, by); qg.stroke();
+      }
+    }
+
+    for (let i = 0; i < 3200; i++) {
+      qg.fillStyle = i % 2 ? 'rgba(255,255,255,.03)' : 'rgba(0,0,0,.05)';
+      qg.fillRect(rnd() * QW, rnd() * QH, 1, 1);
+    }
+
+    const L = DIZ[lingua], hInt = Math.floor(ora) % 24;
+    document.getElementById('ora-titolo').textContent = `${L.oreNomi[hInt]} — n. ${giorno}`;
+    document.getElementById('ora-out').textContent = oraScelta == null
+      ? `${String(adesso.getHours()).padStart(2, '0')}:${String(adesso.getMinutes()).padStart(2, '0')}`
+      : `${String(oraScelta).padStart(2, '0')}:00`;
+  }
+
+  const sldOra = document.getElementById('ora');
+  sldOra.value = new Date().getHours();
+  sldOra.addEventListener('input', () => { oraScelta = +sldOra.value; dipingi(); });
+  document.getElementById('adesso').addEventListener('click', () => {
+    oraScelta = null; sldOra.value = new Date().getHours(); dipingi();
+  });
+  setInterval(() => { if (!stanzaOra.hidden && oraScelta == null) dipingi(); }, 60000);
+
+  // ── Rotte ──
+  const atrio = document.getElementById('atrio');
+  const stanza = document.getElementById('stanza-storni');
+  const stanzaOra = document.getElementById('stanza-ora');
+  function rotta() {
+    const h = location.hash;
+    const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora');
+    atrio.hidden = inStorni || inOra;
+    stanza.hidden = !inStorni;
+    stanzaOra.hidden = !inOra;
+    if (inOra) dipingi();
+  }
+  addEventListener('hashchange', rotta);
+  addEventListener('keydown', e => {
+    if (e.key === 'Escape' && location.hash && location.hash !== '#/') location.hash = '#/';
+  });
+  addEventListener('resize', ridimensiona);
+
+  ridimensiona();
+  popola();
+  rotta();
+  if (matchMedia('(max-width: 720px)').matches)
+    document.getElementById('dettagli').removeAttribute('open');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    P.pausa = true;
+    aggiorna(); disegna();
+  }
+  applica(lingua);
+  ciclo();
+})();
+</script>
+</body>
+</html>
