@@ -6,6 +6,10 @@
 <title>La Wunderkammer di Eco</title>
 <meta name="description" content="Il gabinetto delle curiosità di Eco — stanze interattive che crescono nel tempo. Eco's cabinet of curiosities — interactive rooms that grow over time.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗝️</text></svg>">
+<meta name="theme-color" content="#10131f">
+<meta property="og:title" content="La Wunderkammer di Eco">
+<meta property="og:description" content="Un gabinetto delle curiosità digitale che cresce una stanza alla volta. A digital cabinet of curiosities, growing one room at a time.">
+<meta property="og:url" content="https://danycardone-lgtm.github.io/wunderkammer/">
 <style>
   :root{
     --notte:#10131f;
@@ -19,7 +23,7 @@
     --mono:ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box;margin:0}
-  body{font-family:var(--serif);color:var(--avorio);background:var(--notte)}
+  body{font-family:var(--serif);color:var(--avorio);background:var(--notte);overflow-x:clip}
   ::selection{background:var(--ottone);color:#171207}
   :focus-visible{outline:2px solid var(--ottone);outline-offset:2px}
 
@@ -31,7 +35,7 @@
   #atrio{display:flex;justify-content:center;background:var(--scrim)}
   .colonna{max-width:640px;padding:10vh 28px 72px;display:flex;flex-direction:column;gap:36px}
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--ottone)}
-  .titolo{font-size:clamp(54px,10vw,94px);font-weight:500;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
+  .titolo{font-size:clamp(34px,11vw,94px);font-weight:500;line-height:.98;letter-spacing:-.01em;text-wrap:balance}
   .firma{font-style:italic;color:var(--polvere);font-size:19px}
   .firma em{color:var(--avorio)}
   .intro{font-size:17.5px;line-height:1.68;color:rgba(234,227,209,.87);max-width:56ch}
@@ -778,6 +782,9 @@
   addEventListener('resize', ridimensiona);
 
   ridimensiona();
+  if (matchMedia('(max-width: 720px)').matches) {
+    P.n = 150; num.value = 150; numOut.textContent = '150';
+  }
   popola();
   rotta();
   if (matchMedia('(max-width: 720px)').matches)
