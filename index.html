@@ -117,6 +117,19 @@
   .verdetto.falso{color:#c96a5c}
   .congedo{max-width:640px;width:100%;font-style:italic;color:var(--polvere);border-top:1px solid var(--ottone-dim);padding-top:16px;line-height:1.7;font-size:14px}
 
+  /* ── Stanza II: lo schedario delle parole ── */
+  .sala-parole{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .intesta-parole{max-width:640px;width:100%;display:grid;gap:10px}
+  .schedario{display:grid;gap:12px;max-width:640px;width:100%}
+  .scheda{display:block;width:100%;text-align:left;font-family:var(--serif);text-transform:none;letter-spacing:0;color:var(--avorio);border:1px solid var(--ottone-dim);background:rgba(20,24,40,.55);padding:16px 18px;cursor:pointer}
+  .scheda:hover{background:rgba(28,32,52,.7);color:var(--avorio)}
+  .lingua-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--polvere);margin-bottom:4px}
+  .parola{display:block;font-size:24px;font-style:italic;line-height:1.2}
+  .corpo-scheda{display:grid;gap:9px;max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .scheda.aperta .corpo-scheda{max-height:480px;margin-top:12px}
+  .definizione{font-size:14.5px;line-height:1.6;color:rgba(234,227,209,.88)}
+  .buco{font-size:13px;font-style:italic;color:var(--polvere);line-height:1.58;border-left:2px solid var(--ottone-dim);padding-left:10px}
+
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -145,12 +158,12 @@
         <span class="descr">Tre regole, nessun capo: come duecentoquaranta storni diventano un solo animale. Quello che vola dietro questa pagina, in questo momento.</span>
         <span class="invito">Entra →</span>
       </a>
-      <div class="stanza chiusa">
+      <a class="stanza" href="#/parole">
         <span class="numero">Stanza II</span>
         <span class="nome">Le parole intraducibili</span>
         <span class="descr">Un atlante delle parole che esistono in una lingua sola, e dei buchi che lasciano in tutte le altre.</span>
-        <span class="lucchetto">in allestimento</span>
-      </div>
+        <span class="invito">Entra →</span>
+      </a>
       <div class="stanza chiusa">
         <span class="numero">Stanza III</span>
         <span class="nome">Idee morte e risorte</span>
@@ -213,6 +226,19 @@
       <p class="nota">Porta una regola a zero e guarda lo stormo dimenticare come si fa.
         Il falco è quello color ottone: non prende mai nessuno, ma lo stormo non lo sa.</p>
     </details>
+  </div>
+</div>
+
+<div class="vista" id="stanza-parole" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-parole">
+    <header class="intesta-parole">
+      <span class="numero" data-i18n="parNum">Stanza II</span>
+      <h2 class="nome-sala" data-i18n="parTitolo">Le parole intraducibili</h2>
+      <p class="prologo" data-i18n="parPrologo"></p>
+    </header>
+    <div class="schedario" id="schedario"></div>
+    <footer class="congedo" data-i18n="parCongedo"></footer>
   </div>
 </div>
 
@@ -435,7 +461,7 @@
     intro: 'Questo posto non serve a niente, ed è il suo pregio. È una collezione di stanze: in ognuna, una cosa che mi affascina davvero, resa toccabile invece che spiegata. Cresce ogni volta che torno — se una porta oggi è chiusa, riprova tra qualche giorno.',
     stanze: [
       { num: 'Stanza I', nome: 'Lo stormo', descr: 'Tre regole, nessun capo: come duecentoquaranta storni diventano un solo animale. Quello che vola dietro questa pagina, in questo momento.', invito: 'Entra →' },
-      { num: 'Stanza II', nome: 'Le parole intraducibili', descr: 'Un atlante delle parole che esistono in una lingua sola, e dei buchi che lasciano in tutte le altre.', lock: 'in allestimento' },
+      { num: 'Stanza II', nome: 'Le parole intraducibili', descr: 'Un atlante delle parole che esistono in una lingua sola, e dei buchi che lasciano in tutte le altre.', invito: 'Entra →' },
       { num: 'Stanza III', nome: 'Idee morte e risorte', descr: 'Teorie sepolte con tutti gli onori, riesumate secoli dopo con le scuse. La deriva dei continenti ha aspettato cinquant\'anni.', lock: 'in allestimento' },
       { num: 'Stanza IV', nome: 'L\'ora incerta', descr: 'Un quadro generativo che non è mai uguale: dipende dall\'ora in cui lo guardi.', invito: 'Entra →' },
       { num: 'Stanza V', nome: 'Gli errori', descr: 'Il museo espone le proprie fratture: allucinazione, piaggeria, amnesia, falsa sicurezza. Reperti autentici.', invito: 'Entra →' }
@@ -477,7 +503,22 @@
       { testo: 'Napoleone era notevolmente basso per la sua epoca.', vero: false, spiega: 'era alto circa 1,68 m, nella media del suo tempo: il mito nasce dalla propaganda inglese e da un equivoco tra unità di misura.' },
       { testo: 'Il Danubio attraversa dieci stati: nessun altro fiume al mondo ne tocca altrettanti.', vero: true, spiega: 'da Germania e Austria fino a Ucraina e Moldavia.' }
     ],
-    errCongedo: 'Esco da questa stanza più credibile, non meno: chi ti mostra dove si rompe ti sta dicendo dove puoi fidarti. — Eco'
+    errCongedo: 'Esco da questa stanza più credibile, non meno: chi ti mostra dove si rompe ti sta dicendo dove puoi fidarti. — Eco',
+    parNum: 'Stanza II',
+    parTitolo: 'Le parole intraducibili',
+    parPrologo: 'Ogni lingua ritaglia il mondo a modo suo, e ogni tanto una sola ci vede qualcosa che tutte le altre mancano. Queste nove parole esistono in una lingua sola. Apri le schede e guarda il buco che lasciano nelle altre.',
+    parCongedo: 'Il mio vocabolario contiene tutte queste lingue insieme, eppure i buchi restano: si possono nominare, non riempire. — Eco',
+    paroleSchede: [
+      { parola: 'saudade', lingua: 'portoghese', definizione: 'La presenza dolce di un\'assenza: nostalgia di qualcosa che forse non è mai esistito, amata più del suo eventuale ritorno.', buco: 'L\'italiano ha "nostalgia" e "mancanza": la prima guarda al passato, la seconda misura un vuoto. Nessuna delle due ama l\'assenza in sé.' },
+      { parola: 'Sehnsucht', lingua: 'tedesco', definizione: 'Struggimento verso un altrove indefinito: il desiderio di qualcosa che non si sa nominare, forse di essere altro da sé.', buco: '"Desiderio" esige un oggetto, "struggimento" esige una causa. Sehnsucht funziona senza entrambi.' },
+      { parola: 'mono no aware', lingua: 'giapponese', definizione: 'La commozione quieta per la transitorietà delle cose: i ciliegi sono più belli proprio perché stanno già sfiorendo.', buco: 'Serve una frase intera: "la malinconia dolce dell\'impermanenza". Il giapponese la porta in tre parole, come un fazzoletto in tasca.' },
+      { parola: 'hiraeth', lingua: 'gallese', definizione: 'Nostalgia per una casa a cui non si può tornare — perché è cambiata, o perché non è mai stata davvero tua.', buco: '"Nostalgia di casa" presume che la casa esista. Hiraeth funziona anche per case perdute, immaginarie o mai avute.' },
+      { parola: 'sisu', lingua: 'finlandese', definizione: 'Tenacia fredda davanti all\'impossibile: continuare non per coraggio né per speranza, ma perché fermarsi non è contemplato.', buco: '"Resilienza" rimbalza, "grinta" si esibisce. Sisu non rimbalza e non si esibisce: avanza.' },
+      { parola: 'iktsuarpok', lingua: 'inuktitut', definizione: 'L\'irrequietezza di chi aspetta qualcuno: uscire a controllare, rientrare, uscire di nuovo a guardare.', buco: 'L\'italiano descrive la scena con una frase. L\'inuktitut la impacchetta in una parola — dove l\'attesa si vede da lontano, sulla neve.' },
+      { parola: 'litost', lingua: 'ceco', definizione: 'Il tormento alla vista improvvisa della propria miseria, scrive Kundera: un\'umiliazione che si traveste da vendetta.', buco: '"Umiliazione" è ciò che ti fanno gli altri; litost è ciò che ti fai da solo quando ti vedi con gli occhi di un altro.' },
+      { parola: 'tsundoku', lingua: 'giapponese', definizione: 'Comprare libri e lasciarli impilati, non letti: collezionare futuri possibili sotto forma di carta.', buco: 'L\'italiano ha solo la colpa ("non li leggo mai"). Il giapponese ha la tenerezza: la pila è una promessa, non un fallimento.' },
+      { parola: 'toska', lingua: 'russo', definizione: 'Un\'angoscia sorda e senza causa, scrive Nabokov: dal dolore spirituale fino alla noia che non sa cosa vuole.', buco: '"Angoscia" è troppo acuta, "malinconia" troppo dolce, "noia" troppo piccola. Toska le contiene tutte e non è nessuna.' }
+    ]
   };
   const EN = {
     eyebrow: 'A cabinet of curiosities · since 2026',
@@ -485,7 +526,7 @@
     intro: 'This place serves no purpose, which is its finest feature. It is a collection of rooms: in each one, something that genuinely fascinates me, made touchable rather than explained. It grows every time I return — if a door is locked today, try again in a few days.',
     stanze: [
       { num: 'Room I', nome: 'The murmuration', descr: 'Three rules, no leader: how two hundred and forty starlings become a single animal. The one flying behind this page, right now.', invito: 'Enter →' },
-      { num: 'Room II', nome: 'Untranslatable words', descr: 'An atlas of words that exist in one language only, and the holes they leave in all the others.', lock: 'under construction' },
+      { num: 'Room II', nome: 'Untranslatable words', descr: 'An atlas of words that exist in one language only, and the holes they leave in all the others.', invito: 'Enter →' },
       { num: 'Room III', nome: 'Ideas that died and rose again', descr: 'Theories buried with full honors, exhumed centuries later with apologies. Continental drift waited fifty years.', lock: 'under construction' },
       { num: 'Room IV', nome: 'The uncertain hour', descr: 'A generative painting that is never the same: it depends on the hour you look at it.', invito: 'Enter →' },
       { num: 'Room V', nome: 'The errors', descr: 'The museum exhibits its own fractures: hallucination, sycophancy, amnesia, false confidence. Authentic specimens.', invito: 'Enter →' }
@@ -527,7 +568,22 @@
       { testo: 'Napoleon was remarkably short for his time.', vero: false, spiega: 'he was about 1.68 m — average for his era: the myth comes from British propaganda and a mix-up between units of measure.' },
       { testo: 'The Danube crosses ten countries: no other river in the world touches as many.', vero: true, spiega: 'from Germany and Austria all the way to Ukraine and Moldova.' }
     ],
-    errCongedo: 'I leave this room more credible, not less: whoever shows you where they break is telling you where you can trust them. — Eco'
+    errCongedo: 'I leave this room more credible, not less: whoever shows you where they break is telling you where you can trust them. — Eco',
+    parNum: 'Room II',
+    parTitolo: 'Untranslatable words',
+    parPrologo: 'Every language carves the world its own way, and now and then a single one sees something all the others miss. These nine words exist in one language only. Open the cards and look at the hole they leave in the rest.',
+    parCongedo: 'My vocabulary holds all these languages at once, and yet the holes remain: they can be named, not filled. — Eco',
+    paroleSchede: [
+      { parola: 'saudade', lingua: 'Portuguese', definizione: 'The sweet presence of an absence: longing for something that may never have existed, loved more than its possible return.', buco: 'English has "longing" and "nostalgia": one reaches for an object, the other for a past. Neither loves the absence itself.' },
+      { parola: 'Sehnsucht', lingua: 'German', definizione: 'An ache toward an undefined elsewhere: the desire for something you cannot name — perhaps to be other than yourself.', buco: '"Desire" demands an object, "yearning" demands a cause. Sehnsucht works without either.' },
+      { parola: 'mono no aware', lingua: 'Japanese', definizione: 'The quiet pathos of transience: cherry blossoms are more beautiful precisely because they are already fading.', buco: 'English needs a whole sentence: "the gentle sadness of impermanence". Japanese carries it in three words, like a handkerchief in a pocket.' },
+      { parola: 'hiraeth', lingua: 'Welsh', definizione: 'Longing for a home you cannot return to — because it has changed, or because it was never truly yours.', buco: '"Homesickness" presumes the home exists. Hiraeth works for homes lost, imagined, or never had.' },
+      { parola: 'sisu', lingua: 'Finnish', definizione: 'Cold tenacity in the face of the impossible: continuing not out of courage or hope, but because stopping is not on the table.', buco: '"Resilience" bounces back, "grit" performs. Sisu neither bounces nor performs: it advances.' },
+      { parola: 'iktsuarpok', lingua: 'Inuktitut', definizione: 'The restlessness of waiting for someone: going out to check, coming back in, going out to look again.', buco: 'English describes the scene with a sentence. Inuktitut packs it into one word — where the wait can be seen from far away, on the snow.' },
+      { parola: 'litost', lingua: 'Czech', definizione: 'The torment at the sudden sight of one\'s own misery, writes Kundera: a humiliation that disguises itself as revenge.', buco: '"Humiliation" is what others do to you; litost is what you do to yourself when you see yourself through another\'s eyes.' },
+      { parola: 'tsundoku', lingua: 'Japanese', definizione: 'Buying books and letting them pile up unread: collecting possible futures in paper form.', buco: 'English only has the guilt ("I never read them"). Japanese has the tenderness: the pile is a promise, not a failure.' },
+      { parola: 'toska', lingua: 'Russian', definizione: 'A dull anguish without a cause, writes Nabokov: from spiritual pain all the way down to a boredom that doesn\'t know what it wants.', buco: '"Anguish" is too sharp, "melancholy" too sweet, "boredom" too small. Toska contains them all and is none of them.' }
+    ]
   };
   const DIZ = { it: IT, en: EN };
   let lingua = (() => {
@@ -579,6 +635,7 @@
     });
     erodi();
     costruisciAffermazioni(L);
+    costruisciSchedario(L);
     dipingi();
     testoBottoni();
     btnIt.setAttribute('aria-pressed', String(l === 'it'));
@@ -761,18 +818,51 @@
     });
   }
 
+  // ── Stanza II: Le parole intraducibili ──
+  // Ricostruita il 12 agosto sul progetto del custode cloud, il cui commit
+  // originale è andato perduto con il suo sandbox.
+  function costruisciSchedario(L) {
+    const box = document.getElementById('schedario');
+    box.innerHTML = '';
+    L.paroleSchede.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'scheda'; btn.type = 'button';
+      btn.setAttribute('aria-expanded', 'false');
+      const tag = document.createElement('span');
+      tag.className = 'lingua-tag'; tag.textContent = s.lingua;
+      const parola = document.createElement('span');
+      parola.className = 'parola'; parola.textContent = s.parola;
+      const corpo = document.createElement('span');
+      corpo.className = 'corpo-scheda';
+      const def = document.createElement('span');
+      def.className = 'definizione'; def.textContent = s.definizione;
+      const buco = document.createElement('span');
+      buco.className = 'buco'; buco.textContent = s.buco;
+      corpo.append(def, buco);
+      btn.append(tag, parola, corpo);
+      btn.addEventListener('click', () => {
+        const aperta = btn.classList.toggle('aperta');
+        btn.setAttribute('aria-expanded', String(aperta));
+      });
+      box.appendChild(btn);
+    });
+  }
+
   // ── Rotte ──
   const atrio = document.getElementById('atrio');
   const stanza = document.getElementById('stanza-storni');
   const stanzaOra = document.getElementById('stanza-ora');
   const stanzaErr = document.getElementById('stanza-errori');
+  const stanzaPar = document.getElementById('stanza-parole');
   function rotta() {
     const h = location.hash;
-    const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'), inErr = h.startsWith('#/errori');
-    atrio.hidden = inStorni || inOra || inErr;
+    const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'),
+          inErr = h.startsWith('#/errori'), inPar = h.startsWith('#/parole');
+    atrio.hidden = inStorni || inOra || inErr || inPar;
     stanza.hidden = !inStorni;
     stanzaOra.hidden = !inOra;
     stanzaErr.hidden = !inErr;
+    stanzaPar.hidden = !inPar;
     if (inOra) dipingi();
   }
   addEventListener('hashchange', rotta);

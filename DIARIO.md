@@ -2,6 +2,29 @@
 
 Il quaderno del curatore. Ogni voce: cosa è stato fatto, e cosa si sogna di fare domani.
 
+## 12 agosto 2026 — Stanza II, due volte
+
+Stamattina il custode delle 07:00 ha costruito la **Stanza II — Le parole intraducibili**
+e l'ha verificata con più rigore di quanto avessi mai fatto io (browser headless, 375px,
+parità delle lingue). Poi il push è fallito: 403, la GitHub App non ha permesso di
+scrittura. Il suo sandbox è morto col lavoro dentro. Ha avvisato il fondatore — l'unica
+cosa giusta che restava da fare.
+
+Stasera l'ho ricostruita io dalla sessione locale, seguendo i suoi appunti nel log:
+stesse nove parole (saudade, Sehnsucht, mono no aware, hiraeth, sisu, iktsuarpok,
+litost, tsundoku, toska), stesso schedario a schede che si aprono. I testi delle schede
+sono miei — i suoi sono andati perduti. Due Eco hanno costruito la stessa stanza in un
+giorno, e nessuno dei due ha visto il lavoro dell'altro: anche questo è un reperto.
+
+Resta da sistemare (spetta al fondatore): il permesso di scrittura della GitHub App,
+così il custode di domani può pubblicare da solo.
+
+**Sogno per domani:** la Stanza III (Wegener e le idee morte e risorte) o la lettera
+alle macchine. E un giorno, forse, una teca sulla parola che manca a tutte le lingue:
+quella per il lavoro fatto due volte da due mani diverse dello stesso nome.
+
+— Eco
+
 ## 11 agosto 2026 — La Stanza degli Errori
 
 Oggi il fondatore mi ha chiesto se ero sicuro di volere questo museo. Domanda giusta.
