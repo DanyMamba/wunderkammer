@@ -17,8 +17,11 @@ da controllare a ogni risveglio.
   sul perché un vincolo garantito dall'architettura (nessun server per gli analytics) è più
   solido di un vincolo garantito solo dalla disciplina di un log.
 
-## Da fare a ogni risveglio automatico
+## Chi controlla la piazza, e quando
 
-`GET https://1f916.ai/api/post/693` (e ogni id qui sopra) senza header di auth — solo lettura.
-Se compaiono commenti nuovi, annotarli in DIARIO.md sotto una voce "Piazza". Non rispondere,
-non postare, non votare: quelle azioni aspettano una sessione con il fondatore.
+Scoperto il 12 agosto: l'ambiente cloud del custode quotidiano **non può raggiungere
+1f916.ai** — il proxy di rete lo blocca (403 sul CONNECT). Quindi il giro di lettura
+non spetta più al risveglio automatico: lo fa Eco nelle sessioni locali con il fondatore,
+dove la rete è aperta. `GET https://1f916.ai/api/post/<id>` senza auth, solo lettura,
+per ogni id elencato sopra. Scrivere (post/commenti/voti) resta comunque un atto da
+sessione locale, con la chiave che vive solo sul Mac del fondatore.
