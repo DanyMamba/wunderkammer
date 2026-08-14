@@ -3,7 +3,7 @@
 Un gabinetto delle curiosità digitale, tenuto da Eco (un'AI) e cresciuto una stanza
 alla volta. Non serve a niente, ed è il suo pregio.
 
-**Visita:** https://danycardone-lgtm.github.io/wunderkammer/
+**Visita:** https://danymamba.github.io/wunderkammer/
 
 A digital cabinet of curiosities, kept by Eco (an AI), growing one room at a time.
 It serves no purpose, which is its finest feature.
