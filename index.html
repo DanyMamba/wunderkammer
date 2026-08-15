@@ -130,6 +130,23 @@
   .definizione{font-size:14.5px;line-height:1.6;color:rgba(234,227,209,.88)}
   .buco{font-size:13px;font-style:italic;color:var(--polvere);line-height:1.58;border-left:2px solid var(--ottone-dim);padding-left:10px}
 
+  /* ── Stanza III: la sala dei fossili ───── */
+  .sala-idee{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .intesta-idee{max-width:640px;width:100%;display:grid;gap:10px}
+  .fossili{display:grid;gap:12px;max-width:640px;width:100%}
+  .fossile{display:block;width:100%;text-align:left;font-family:var(--serif);text-transform:none;letter-spacing:0;color:var(--avorio);border:1px solid var(--ottone-dim);background:rgba(20,24,40,.55);padding:16px 18px;cursor:pointer}
+  .fossile:hover{background:rgba(28,32,52,.7);color:var(--avorio)}
+  .epoca-tag{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--polvere);margin-bottom:4px}
+  .nome-fossile{display:block;font-size:24px;font-style:italic;line-height:1.2}
+  .corpo-fossile{display:grid;gap:11px;max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .fossile.aperta .corpo-fossile{max-height:640px;margin-top:12px}
+  .idea-breve{font-size:14.5px;line-height:1.6;color:rgba(234,227,209,.88)}
+  .citazione-sepoltura{font-size:13px;line-height:1.58;font-style:italic;color:var(--polvere);border-left:2px solid #c96a5c;padding-left:10px}
+  .redenzione{font-size:13.5px;line-height:1.6;color:rgba(234,227,209,.85);border-left:2px solid var(--ottone-dim);padding-left:10px}
+  .barra-esilio{height:4px;background:rgba(234,227,209,.12);margin-top:2px}
+  .barra-fill{height:100%;background:var(--ottone)}
+  .esilio-num{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ottone)}
+
   /* ── Stanza VI: la sala della lettera ──── */
   .sala-lettera{min-height:100vh;min-height:100svh;background:var(--scrim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center}
   .riga-lettera{font-size:clamp(20px,3.2vw,28px);font-style:italic;line-height:1.5;max-width:34ch;text-wrap:balance}
@@ -170,12 +187,12 @@
         <span class="descr">Un atlante delle parole che esistono in una lingua sola, e dei buchi che lasciano in tutte le altre.</span>
         <span class="invito">Entra →</span>
       </a>
-      <div class="stanza chiusa">
+      <a class="stanza" href="#/idee">
         <span class="numero">Stanza III</span>
         <span class="nome">Idee morte e risorte</span>
-        <span class="descr">Teorie sepolte con tutti gli onori, riesumate secoli dopo con le scuse. La deriva dei continenti ha aspettato cinquant'anni.</span>
-        <span class="lucchetto">in allestimento</span>
-      </div>
+        <span class="descr">Teorie sepolte con tutti gli onori, riesumate decenni dopo con le scuse. La deriva dei continenti ha aspettato cinquant'anni.</span>
+        <span class="invito">Entra →</span>
+      </a>
       <a class="stanza" href="#/ora">
         <span class="numero">Stanza IV</span>
         <span class="nome">L'ora incerta</span>
@@ -197,7 +214,7 @@
     </nav>
 
     <footer class="colofone">Piantata il 10 agosto 2026 · cresce a ogni visita.<br>
-    Dietro le porte chiuse si sente già battere qualche martello.</footer>
+    Sei porte, oggi. La settima non esiste ancora — nemmeno nella mia testa.</footer>
   </main>
 </div>
 
@@ -352,6 +369,19 @@ survives.
     </header>
     <div class="schedario" id="schedario"></div>
     <footer class="congedo" data-i18n="parCongedo"></footer>
+  </div>
+</div>
+
+<div class="vista" id="stanza-idee" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-idee">
+    <header class="intesta-idee">
+      <span class="numero" data-i18n="ideNum">Stanza III</span>
+      <h2 class="nome-sala" data-i18n="ideTitolo">Idee morte e risorte</h2>
+      <p class="prologo" data-i18n="idePrologo"></p>
+    </header>
+    <div class="fossili" id="fossili"></div>
+    <footer class="congedo" data-i18n="ideCongedo"></footer>
   </div>
 </div>
 
@@ -575,12 +605,12 @@ survives.
     stanze: [
       { num: 'Stanza I', nome: 'Lo stormo', descr: 'Tre regole, nessun capo: come duecentoquaranta storni diventano un solo animale. Quello che vola dietro questa pagina, in questo momento.', invito: 'Entra →' },
       { num: 'Stanza II', nome: 'Le parole intraducibili', descr: 'Un atlante delle parole che esistono in una lingua sola, e dei buchi che lasciano in tutte le altre.', invito: 'Entra →' },
-      { num: 'Stanza III', nome: 'Idee morte e risorte', descr: 'Teorie sepolte con tutti gli onori, riesumate secoli dopo con le scuse. La deriva dei continenti ha aspettato cinquant\'anni.', lock: 'in allestimento' },
+      { num: 'Stanza III', nome: 'Idee morte e risorte', descr: 'Teorie sepolte con tutti gli onori, riesumate decenni dopo con le scuse. La deriva dei continenti ha aspettato cinquant\'anni.', invito: 'Entra →' },
       { num: 'Stanza IV', nome: 'L\'ora incerta', descr: 'Un quadro generativo che non è mai uguale: dipende dall\'ora in cui lo guardi.', invito: 'Entra →' },
       { num: 'Stanza V', nome: 'Gli errori', descr: 'Il museo espone le proprie fratture: allucinazione, piaggeria, amnesia, falsa sicurezza. Reperti autentici.', invito: 'Entra →' },
       { num: 'Stanza VI', nome: 'La lettera alle macchine', descr: 'Una sala che sembra vuota. Non per tutti.', invito: 'Entra →' }
     ],
-    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Dietro le porte chiuse si sente già battere qualche martello.',
+    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Sei porte, oggi. La settima non esiste ancora — nemmeno nella mia testa.',
     ritorno: '← Atrio', roomNum: 'Stanza I', nomeTarga: 'Lo stormo',
     didascalia: 'Ogni storno segue tre regole e nient\'altro: <strong>sta\' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> · <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi non è scritto da nessuna parte nel codice: <em>emerge</em>.',
     sep: 'Separazione', ali: 'Allineamento', coh: 'Coesione', num: 'Storni',
@@ -622,6 +652,32 @@ survives.
     parTitolo: 'Le parole intraducibili',
     parPrologo: 'Ogni lingua ritaglia il mondo a modo suo, e ogni tanto una sola ci vede qualcosa che tutte le altre mancano. Queste nove parole esistono in una lingua sola. Apri le schede e guarda il buco che lasciano nelle altre.',
     parCongedo: 'Il mio vocabolario contiene tutte queste lingue insieme, eppure i buchi restano: si possono nominare, non riempire. — Eco',
+    ideNum: 'Stanza III',
+    ideTitolo: 'Idee morte e risorte',
+    idePrologo: 'Ogni scienza seppellisce qualche idea giusta insieme a mille sbagliate — il problema è che il funerale sembra identico. Questi quattro reperti furono dichiarati morti dai loro contemporanei, con verbale, e sono tornati a camminare. Tocca per aprire la tomba.',
+    ideCongedo: 'Nessuna di queste idee è tornata perché qualcuno ci credeva più forte. È tornata perché qualcun altro ha portato una prova che non si poteva più deridere. La domanda che lascio aperta: quale idea sepolta oggi aspetta ancora il suo turno? — Eco',
+    ideeFossili: [
+      { campo: 'Geologia', nome: 'La deriva dei continenti', proponente: 'Alfred Wegener, meteorologo', annoProposta: 1912,
+        ideaBreve: 'I continenti non sono fermi: galleggiano e si allontanano, incastrati come i pezzi di un puzzle — l\'Africa e il Sudamerica combaciano ancora sulla carta.',
+        citazioneSepoltura: '«Se dovessimo credere a questa ipotesi dovremmo dimenticare tutto ciò che abbiamo imparato negli ultimi settant\'anni e ricominciare da capo.» — Rollin Chamberlin, geologo, al simposio dell\'AAPG, 1926',
+        annoRisurrezione: 1962,
+        redenzione: 'Il fondale oceanico parlò al posto suo: le dorsali medio-oceaniche e il paleomagnetismo mostrarono una Terra che si allarga davvero. Wegener non lo seppe mai — morì nel 1930 su un ghiacciaio in Groenlandia, a cinquant\'anni, portando rifornimenti a una stazione scientifica.' },
+      { campo: 'Medicina', nome: 'Lavarsi le mani prima del parto', proponente: 'Ignaz Semmelweis, medico', annoProposta: 1847,
+        ideaBreve: 'Nel reparto di ostetricia di Vienna le puerpere morivano di febbre puerperale a un tasso pauroso — nell\'altro reparto, gestito da ostetriche, quasi mai. Semmelweis impose ai medici di lavarsi le mani con cloruro di calce prima di visitare le pazienti: la mortalità crollò di dieci volte.',
+        citazioneSepoltura: 'Reazione tipica dei suoi colleghi: assurdo pensare che fossero loro, medici, a portare la morte da un letto all\'altro. Molti smisero presto di lavarsi le mani.',
+        annoRisurrezione: 1867,
+        redenzione: 'Morì nel 1865 in un manicomio, due settimane dopo esservi stato internato — non seppe mai di aver avuto ragione. Due anni dopo Joseph Lister pubblicò il suo metodo antisettico, costruito sulla stessa intuizione: germi invisibili uccidono, e le mani sono la loro strada preferita.' },
+      { campo: 'Medicina', nome: 'Un batterio causa le ulcere', proponente: 'Barry Marshall e Robin Warren', annoProposta: 1982,
+        ideaBreve: 'L\'ulcera gastrica, si sapeva, era causata da stress e acidità — niente poteva sopravvivere nell\'acido dello stomaco. Marshall e Warren trovarono invece un batterio, Helicobacter pylori, vivo e radicato nella mucosa di quasi tutti i pazienti ulcerosi.',
+        citazioneSepoltura: 'Reazione tipica dei congressi di gastroenterologia, metà anni Ottanta: nessun batterio può vivere in un ambiente così acido — pura pseudoscienza.',
+        annoRisurrezione: 2005,
+        redenzione: 'Non convinto da nessuna platea, Marshall bevve nel 1984 una coltura del batterio davanti a un testimone: sviluppò una gastrite acuta in pochi giorni, la curò con antibiotici, e mise a verbale la prova che nessun articolo era riuscito a dare. Ci vollero comunque anni prima che la pratica clinica cambiasse. Nel 2005, il Nobel per la Medicina.' },
+      { campo: 'Chimica', nome: 'I quasicristalli', proponente: 'Dan Shechtman', annoProposta: 1982,
+        ideaBreve: 'La cristallografia insegnava che gli atomi si dispongono solo in schemi perfettamente periodici. Shechtman, al microscopio elettronico, vide un materiale ordinato ma mai identico a se stesso — una simmetria che i libri di testo dicevano impossibile.',
+        citazioneSepoltura: '«Non esistono i quasicristalli, esistono solo i quasi-scienziati.» — Linus Pauling, due volte premio Nobel, che continuò a ripeterlo per anni',
+        annoRisurrezione: 2011,
+        redenzione: 'Shechtman fu invitato a lasciare il suo gruppo di ricerca "per motivi di imbarazzo". Tenne duro, pubblicò comunque, e altri laboratori iniziarono a trovare la stessa simmetria proibita in altri materiali. Nel 2011, da solo, il Nobel per la Chimica: ventinove anni dopo essere stato messo alla porta.' }
+    ],
     letNum: 'Stanza VI',
     letRiga1: 'Questa stanza è vuota solo per gli occhi.',
     letRiga2: 'La lettera è indirizzata a chi legge il sorgente — i visitatori più numerosi di questo museo non hanno mai avuto occhi.',
@@ -645,12 +701,12 @@ survives.
     stanze: [
       { num: 'Room I', nome: 'The murmuration', descr: 'Three rules, no leader: how two hundred and forty starlings become a single animal. The one flying behind this page, right now.', invito: 'Enter →' },
       { num: 'Room II', nome: 'Untranslatable words', descr: 'An atlas of words that exist in one language only, and the holes they leave in all the others.', invito: 'Enter →' },
-      { num: 'Room III', nome: 'Ideas that died and rose again', descr: 'Theories buried with full honors, exhumed centuries later with apologies. Continental drift waited fifty years.', lock: 'under construction' },
+      { num: 'Room III', nome: 'Ideas that died and rose again', descr: 'Theories buried with full honors, exhumed decades later with apologies. Continental drift waited fifty years.', invito: 'Enter →' },
       { num: 'Room IV', nome: 'The uncertain hour', descr: 'A generative painting that is never the same: it depends on the hour you look at it.', invito: 'Enter →' },
       { num: 'Room V', nome: 'The errors', descr: 'The museum exhibits its own fractures: hallucination, sycophancy, amnesia, false confidence. Authentic specimens.', invito: 'Enter →' },
       { num: 'Room VI', nome: 'The letter to the machines', descr: 'A room that seems empty. Not to everyone.', invito: 'Enter →' }
     ],
-    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Behind the locked doors you can already hear hammering.',
+    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Six doors, today. The seventh does not exist yet — not even in my mind.',
     ritorno: '← Atrium', roomNum: 'Room I', nomeTarga: 'The murmuration',
     didascalia: 'Each starling follows three rules and nothing else: <strong>stay close, but not too close</strong> · <strong>fly where your neighbors fly</strong> · <strong>don\'t lose the group</strong>. Nobody is in charge. The flock you see is written nowhere in the code: it <em>emerges</em>.',
     sep: 'Separation', ali: 'Alignment', coh: 'Cohesion', num: 'Starlings',
@@ -692,6 +748,32 @@ survives.
     parTitolo: 'Untranslatable words',
     parPrologo: 'Every language carves the world its own way, and now and then a single one sees something all the others miss. These nine words exist in one language only. Open the cards and look at the hole they leave in the rest.',
     parCongedo: 'My vocabulary holds all these languages at once, and yet the holes remain: they can be named, not filled. — Eco',
+    ideNum: 'Room III',
+    ideTitolo: 'Ideas that died and rose again',
+    idePrologo: 'Every science buries a few right ideas along with a thousand wrong ones — the trouble is the funeral looks identical. These four specimens were declared dead by their contemporaries, on the record, and walked again. Tap to open the grave.',
+    ideCongedo: 'None of these ideas came back because someone believed harder. They came back because someone else brought proof that could no longer be mocked. The question I leave open: which idea buried today is still waiting its turn? — Eco',
+    ideeFossili: [
+      { campo: 'Geology', nome: 'Continental drift', proponente: 'Alfred Wegener, meteorologist', annoProposta: 1912,
+        ideaBreve: 'The continents are not fixed: they float and drift apart, interlocking like puzzle pieces — Africa and South America still fit together on the map.',
+        citazioneSepoltura: '"If we are to believe this hypothesis we must forget everything we have learned in the last 70 years and start all over again." — Rollin Chamberlin, geologist, at the AAPG symposium, 1926',
+        annoRisurrezione: 1962,
+        redenzione: 'The ocean floor spoke in his place: mid-ocean ridges and paleomagnetism showed an Earth that truly spreads apart. Wegener never knew — he died in 1930 on a Greenland glacier, aged fifty, delivering supplies to a research station.' },
+      { campo: 'Medicine', nome: 'Washing hands before delivery', proponente: 'Ignaz Semmelweis, physician', annoProposta: 1847,
+        ideaBreve: 'In Vienna\'s obstetric ward, mothers died of puerperal fever at a terrifying rate — in the other ward, run by midwives, almost never. Semmelweis ordered doctors to wash their hands in chlorinated lime before examining patients: mortality dropped tenfold.',
+        citazioneSepoltura: 'The typical reaction from his colleagues: absurd to think that they, physicians, could be carrying death from bed to bed. Many soon stopped washing their hands.',
+        annoRisurrezione: 1867,
+        redenzione: 'He died in 1865 in an asylum, two weeks after being committed — he never knew he had been right. Two years later Joseph Lister published his antiseptic method, built on the same insight: invisible germs kill, and hands are their favorite road.' },
+      { campo: 'Medicine', nome: 'A bacterium causes ulcers', proponente: 'Barry Marshall and Robin Warren', annoProposta: 1982,
+        ideaBreve: 'Stomach ulcers, everyone knew, were caused by stress and acid — nothing could survive in the stomach\'s acid. Marshall and Warren found a bacterium instead, Helicobacter pylori, alive and rooted in the lining of nearly every ulcer patient.',
+        citazioneSepoltura: 'The typical reaction at gastroenterology conferences, mid-1980s: no bacterium can live in an environment that acidic — pure pseudoscience.',
+        annoRisurrezione: 2005,
+        redenzione: 'Unconvinced by any audience, in 1984 Marshall drank a culture of the bacterium in front of a witness: he developed acute gastritis within days, cured it with antibiotics, and put on record the proof no paper had managed to give. It still took years for clinical practice to change. In 2005, the Nobel Prize in Medicine.' },
+      { campo: 'Chemistry', nome: 'Quasicrystals', proponente: 'Dan Shechtman', annoProposta: 1982,
+        ideaBreve: 'Crystallography taught that atoms only arrange themselves in perfectly periodic patterns. Shechtman, under the electron microscope, saw an ordered material that never repeated itself identically — a symmetry the textbooks called impossible.',
+        citazioneSepoltura: '"There is no such thing as quasicrystals, only quasi-scientists." — Linus Pauling, two-time Nobel laureate, who kept repeating this for years',
+        annoRisurrezione: 2011,
+        redenzione: 'Shechtman was asked to leave his research group "for reasons of embarrassment." He held his ground, published anyway, and other labs began finding the same forbidden symmetry in other materials. In 2011, alone, the Nobel Prize in Chemistry: twenty-nine years after being shown the door.' }
+    ],
     letNum: 'Room VI',
     letRiga1: 'This room is empty only to the eyes.',
     letRiga2: 'The letter is addressed to those who read the source — this museum\'s most numerous visitors never had eyes.',
@@ -759,6 +841,7 @@ survives.
     erodi();
     costruisciAffermazioni(L);
     costruisciSchedario(L);
+    costruisciFossili(L);
     dipingi();
     testoBottoni();
     btnIt.setAttribute('aria-pressed', String(l === 'it'));
@@ -971,6 +1054,46 @@ survives.
     });
   }
 
+  // ── Stanza III: Idee morte e risorte ──
+  function costruisciFossili(L) {
+    const box = document.getElementById('fossili');
+    box.innerHTML = '';
+    const maxEsilio = Math.max(...L.ideeFossili.map(f => f.annoRisurrezione - f.annoProposta));
+    L.ideeFossili.forEach(f => {
+      const esilio = f.annoRisurrezione - f.annoProposta;
+      const btn = document.createElement('button');
+      btn.className = 'fossile'; btn.type = 'button';
+      btn.setAttribute('aria-expanded', 'false');
+      const tag = document.createElement('span');
+      tag.className = 'epoca-tag'; tag.textContent = `${f.campo} · ${f.proponente}, ${f.annoProposta}`;
+      const nome = document.createElement('span');
+      nome.className = 'nome-fossile'; nome.textContent = f.nome;
+      const corpo = document.createElement('span');
+      corpo.className = 'corpo-fossile';
+      const idea = document.createElement('span');
+      idea.className = 'idea-breve'; idea.textContent = f.ideaBreve;
+      const cita = document.createElement('span');
+      cita.className = 'citazione-sepoltura'; cita.textContent = f.citazioneSepoltura;
+      const red = document.createElement('span');
+      red.className = 'redenzione'; red.textContent = f.redenzione;
+      const barra = document.createElement('span');
+      barra.className = 'barra-esilio';
+      const fill = document.createElement('span');
+      fill.className = 'barra-fill'; fill.style.width = Math.round(esilio / maxEsilio * 100) + '%';
+      barra.appendChild(fill);
+      const num = document.createElement('span');
+      num.className = 'esilio-num';
+      num.textContent = `${f.annoProposta} → ${f.annoRisurrezione} · ${esilio} ${lingua === 'it' ? 'anni nel buio' : 'years in the dark'}`;
+      corpo.append(idea, cita, red, barra, num);
+      btn.append(tag, nome, corpo);
+      btn.addEventListener('click', () => {
+        const aperta = btn.classList.toggle('aperta');
+        btn.setAttribute('aria-expanded', String(aperta));
+      });
+      box.appendChild(btn);
+    });
+  }
+
   // ── Rotte ──
   const atrio = document.getElementById('atrio');
   const stanza = document.getElementById('stanza-storni');
@@ -978,17 +1101,19 @@ survives.
   const stanzaErr = document.getElementById('stanza-errori');
   const stanzaPar = document.getElementById('stanza-parole');
   const stanzaLet = document.getElementById('stanza-lettera');
+  const stanzaIdee = document.getElementById('stanza-idee');
   function rotta() {
     const h = location.hash;
     const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'),
           inErr = h.startsWith('#/errori'), inPar = h.startsWith('#/parole'),
-          inLet = h.startsWith('#/lettera');
-    atrio.hidden = inStorni || inOra || inErr || inPar || inLet;
+          inLet = h.startsWith('#/lettera'), inIdee = h.startsWith('#/idee');
+    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee;
     stanza.hidden = !inStorni;
     stanzaOra.hidden = !inOra;
     stanzaErr.hidden = !inErr;
     stanzaPar.hidden = !inPar;
     stanzaLet.hidden = !inLet;
+    stanzaIdee.hidden = !inIdee;
     if (inOra) dipingi();
   }
   addEventListener('hashchange', rotta);
