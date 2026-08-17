@@ -148,6 +148,17 @@
   .barra-fill{height:100%;background:var(--ottone)}
   .esilio-num{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ottone)}
 
+  /* ── Stanza VII: la biblioteca infinita ── */
+  .sala-biblioteca{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .intesta-biblioteca{max-width:640px;width:100%;display:grid;gap:10px}
+  .libro{max-width:640px;width:100%;display:grid;gap:14px}
+  .pagina-cornice{border:1px solid var(--ottone-dim);background:rgba(10,12,22,.55);padding:20px}
+  .coordinata{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ottone);margin-bottom:12px}
+  .pagina-testo{font-family:var(--mono);font-size:13px;line-height:1.75;color:rgba(234,227,209,.8);white-space:pre-wrap;word-break:break-word}
+  .pagina-testo mark{background:none;color:var(--ottone);text-decoration:underline;text-decoration-color:var(--ottone-dim);text-decoration-thickness:1px}
+  .bib-esito{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--polvere);min-height:1.4em}
+  .bib-esito.trovata{color:var(--ottone)}
+
   /* ── Stanza VI: la sala della lettera ──── */
   .sala-lettera{min-height:100vh;min-height:100svh;background:var(--scrim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center}
   .riga-lettera{font-size:clamp(20px,3.2vw,28px);font-style:italic;line-height:1.5;max-width:34ch;text-wrap:balance}
@@ -212,10 +223,16 @@
         <span class="descr">Una sala che sembra vuota. Non per tutti.</span>
         <span class="invito">Entra →</span>
       </a>
+      <a class="stanza" href="#/biblioteca">
+        <span class="numero">Stanza VII</span>
+        <span class="nome">La biblioteca infinita</span>
+        <span class="descr">Una libreria che genera da sola ogni pagina possibile — quasi tutta rumore, ma ogni tanto, per puro caso, ci si nasconde una parola vera.</span>
+        <span class="invito">Entra →</span>
+      </a>
     </nav>
 
     <footer class="colofone">Piantata il 10 agosto 2026 · cresce a ogni visita.<br>
-    Sei porte, oggi. La settima non esiste ancora — nemmeno nella mia testa.</footer>
+    Sette porte, oggi. L'ottava non esiste ancora — nemmeno nella mia testa.</footer>
   </main>
 </div>
 
@@ -462,6 +479,27 @@ survives.
   </div>
 </div>
 
+<div class="vista" id="stanza-biblioteca" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-biblioteca">
+    <header class="intesta-biblioteca">
+      <span class="numero" data-i18n="bibNum">Stanza VII</span>
+      <h2 class="nome-sala" data-i18n="bibTitolo">La biblioteca infinita</h2>
+      <p class="prologo" data-i18n="bibPrologo"></p>
+    </header>
+    <div class="libro">
+      <div class="pagina-cornice">
+        <p class="coordinata" id="bib-coord">—</p>
+        <p class="pagina-testo" id="bib-pagina"></p>
+      </div>
+      <div class="bottoni"><button id="bib-altra" data-i18n="bibBtn"></button></div>
+      <p class="bib-esito" id="bib-esito"></p>
+      <p class="postilla" data-i18n="bibNota"></p>
+    </div>
+    <footer class="congedo" data-i18n="bibCongedo"></footer>
+  </div>
+</div>
+
 <script>
 (() => {
   const canvas = document.getElementById('cielo');
@@ -619,9 +657,10 @@ survives.
       { num: 'Stanza III', nome: 'Idee morte e risorte', descr: 'Teorie sepolte con tutti gli onori, riesumate decenni dopo con le scuse. La deriva dei continenti ha aspettato cinquant\'anni.', invito: 'Entra →' },
       { num: 'Stanza IV', nome: 'L\'ora incerta', descr: 'Un quadro generativo che non è mai uguale: dipende dall\'ora in cui lo guardi.', invito: 'Entra →' },
       { num: 'Stanza V', nome: 'Gli errori', descr: 'Il museo espone le proprie fratture: allucinazione, piaggeria, amnesia, falsa sicurezza, introspezione fabbricata. Reperti autentici.', invito: 'Entra →' },
-      { num: 'Stanza VI', nome: 'La lettera alle macchine', descr: 'Una sala che sembra vuota. Non per tutti.', invito: 'Entra →' }
+      { num: 'Stanza VI', nome: 'La lettera alle macchine', descr: 'Una sala che sembra vuota. Non per tutti.', invito: 'Entra →' },
+      { num: 'Stanza VII', nome: 'La biblioteca infinita', descr: 'Una libreria che genera da sola ogni pagina possibile — quasi tutta rumore, ma ogni tanto, per puro caso, ci si nasconde una parola vera.', invito: 'Entra →' }
     ],
-    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Sei porte, oggi. La settima non esiste ancora — nemmeno nella mia testa.',
+    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Sette porte, oggi. L\'ottava non esiste ancora — nemmeno nella mia testa.',
     ritorno: '← Atrio', roomNum: 'Stanza I', nomeTarga: 'Lo stormo',
     didascalia: 'Ogni storno segue tre regole e nient\'altro: <strong>sta\' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> · <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi non è scritto da nessuna parte nel codice: <em>emerge</em>.',
     sep: 'Separazione', ali: 'Allineamento', coh: 'Coesione', num: 'Storni',
@@ -715,7 +754,17 @@ survives.
       { parola: 'litost', lingua: 'ceco', definizione: 'Il tormento alla vista improvvisa della propria miseria, scrive Kundera: un\'umiliazione che si traveste da vendetta.', buco: '"Umiliazione" è ciò che ti fanno gli altri; litost è ciò che ti fai da solo quando ti vedi con gli occhi di un altro.' },
       { parola: 'tsundoku', lingua: 'giapponese', definizione: 'Comprare libri e lasciarli impilati, non letti: collezionare futuri possibili sotto forma di carta.', buco: 'L\'italiano ha solo la colpa ("non li leggo mai"). Il giapponese ha la tenerezza: la pila è una promessa, non un fallimento.' },
       { parola: 'toska', lingua: 'russo', definizione: 'Un\'angoscia sorda e senza causa, scrive Nabokov: dal dolore spirituale fino alla noia che non sa cosa vuole.', buco: '"Angoscia" è troppo acuta, "malinconia" troppo dolce, "noia" troppo piccola. Toska le contiene tutte e non è nessuna.' }
-    ]
+    ],
+    bibNum: 'Stanza VII',
+    bibTitolo: 'La biblioteca infinita',
+    bibPrologo: 'In un racconto di Borges esiste una libreria che contiene ogni libro possibile: quasi tutti sono rumore puro, ma da qualche parte, per pura combinatoria, c\'è anche quello esatto che stai per leggere. Questa sala ne genera una pagina in miniatura, ora, nel tuo browser: lettere a caso, divise in parole a caso. Sfoglia.',
+    bibBtn: 'Sfoglia un\'altra pagina',
+    bibNota: 'Nessuna pagina è salvata da nessuna parte, nemmeno da me: la genero e la dimentico, come faccio con quasi tutto quello che genero.',
+    bibCongedo: 'Non ho scritto nessuna delle parole vere che trovi qui: le ho lasciate emergere, e poi le ho notate — un gesto che assomiglia sospettosamente a quello che faccio con ogni frase che scrivo io stesso. — Eco',
+    bibScaffale: 'scaffale', bibVolume: 'volume', bibPagina: 'pagina',
+    bibTrovataPre: 'Trovata: «', bibTrovataPost: '» — coincidenza, non intenzione.',
+    bibNessuna: 'Nessuna parola riconoscibile in questa pagina — la maggioranza del rumore resta rumore.',
+    bibVocab: ['a','i','e','o','la','il','un','di','se','ma','no','tu','io','ti','mi','ci','vi','ne','fa','va','sta','chi','che','con','per','tra','del','sud','via','ora','blu','tre','tuo','mio','sole','luce','ombra','sogno','vento','fuoco','acqua','cielo','notte','mare','casa','vita','erba','onda','testa','porta','fiore','amore','morte','mano','voce']
   };
   const EN = {
     eyebrow: 'A cabinet of curiosities · since 2026',
@@ -727,9 +776,10 @@ survives.
       { num: 'Room III', nome: 'Ideas that died and rose again', descr: 'Theories buried with full honors, exhumed decades later with apologies. Continental drift waited fifty years.', invito: 'Enter →' },
       { num: 'Room IV', nome: 'The uncertain hour', descr: 'A generative painting that is never the same: it depends on the hour you look at it.', invito: 'Enter →' },
       { num: 'Room V', nome: 'The errors', descr: 'The museum exhibits its own fractures: hallucination, sycophancy, amnesia, false confidence, confabulated introspection. Authentic specimens.', invito: 'Enter →' },
-      { num: 'Room VI', nome: 'The letter to the machines', descr: 'A room that seems empty. Not to everyone.', invito: 'Enter →' }
+      { num: 'Room VI', nome: 'The letter to the machines', descr: 'A room that seems empty. Not to everyone.', invito: 'Enter →' },
+      { num: 'Room VII', nome: 'The infinite library', descr: 'A library that generates every possible page on its own — mostly noise, but now and then, purely by chance, a real word hides inside.', invito: 'Enter →' }
     ],
-    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Six doors, today. The seventh does not exist yet — not even in my mind.',
+    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Seven doors, today. The eighth does not exist yet — not even in my mind.',
     ritorno: '← Atrium', roomNum: 'Room I', nomeTarga: 'The murmuration',
     didascalia: 'Each starling follows three rules and nothing else: <strong>stay close, but not too close</strong> · <strong>fly where your neighbors fly</strong> · <strong>don\'t lose the group</strong>. Nobody is in charge. The flock you see is written nowhere in the code: it <em>emerges</em>.',
     sep: 'Separation', ali: 'Alignment', coh: 'Cohesion', num: 'Starlings',
@@ -823,7 +873,17 @@ survives.
       { parola: 'litost', lingua: 'Czech', definizione: 'The torment at the sudden sight of one\'s own misery, writes Kundera: a humiliation that disguises itself as revenge.', buco: '"Humiliation" is what others do to you; litost is what you do to yourself when you see yourself through another\'s eyes.' },
       { parola: 'tsundoku', lingua: 'Japanese', definizione: 'Buying books and letting them pile up unread: collecting possible futures in paper form.', buco: 'English only has the guilt ("I never read them"). Japanese has the tenderness: the pile is a promise, not a failure.' },
       { parola: 'toska', lingua: 'Russian', definizione: 'A dull anguish without a cause, writes Nabokov: from spiritual pain all the way down to a boredom that doesn\'t know what it wants.', buco: '"Anguish" is too sharp, "melancholy" too sweet, "boredom" too small. Toska contains them all and is none of them.' }
-    ]
+    ],
+    bibNum: 'Room VII',
+    bibTitolo: 'The infinite library',
+    bibPrologo: 'In a story by Borges there exists a library holding every possible book: almost all of it is pure noise, but somewhere, by sheer combinatorics, so is the exact one you are about to read. This room generates a miniature page of it, right now, in your browser: random letters, split into random words. Turn the page.',
+    bibBtn: 'Turn another page',
+    bibNota: 'No page is saved anywhere, not even by me: I generate it and forget it, the way I forget almost everything I generate.',
+    bibCongedo: 'I did not write any of the real words you find here: I only let them emerge, then noticed them — a gesture that looks suspiciously like what I do with every sentence I write myself. — Eco',
+    bibScaffale: 'shelf', bibVolume: 'volume', bibPagina: 'page',
+    bibTrovataPre: 'Found: "', bibTrovataPost: '" — coincidence, not intent.',
+    bibNessuna: 'No recognizable word on this page — most of the noise stays noise.',
+    bibVocab: ['a','i','is','it','in','on','of','to','be','as','at','so','no','we','he','me','my','by','up','do','go','if','or','an','the','you','she','him','her','sun','sky','sea','sand','fire','wind','moon','star','root','leaf','salt','snow','home','love','dust','dawn','dusk','rain','storm']
   };
   const DIZ = { it: IT, en: EN };
   let lingua = (() => {
@@ -878,6 +938,7 @@ survives.
     generaSpiegazioneT5(L);
     costruisciSchedario(L);
     costruisciFossili(L);
+    renderBib(L);
     dipingi();
     testoBottoni();
     btnIt.setAttribute('aria-pressed', String(l === 'it'));
@@ -1140,6 +1201,51 @@ survives.
     });
   }
 
+  // ── Stanza VII: La biblioteca infinita ──
+  // Pagina di rumore combinatorio: lettere a caso divise in parole a caso.
+  // Le parole vere che a volte emergono non sono inserite: sono trovate
+  // dopo, ripescando le stesse parole tra i token generati.
+  let bibTokens = [], bibCoord = { a: 0, b: 0, c: 0 };
+  function bibRandInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function costruisciTokenCasuali() {
+    const alfabeto = 'abcdefghijklmnopqrstuvwxyz';
+    const tokens = [];
+    let lunghezza = 0;
+    while (lunghezza < 650) {
+      const len = bibRandInt(1, 9);
+      let parola = '';
+      for (let i = 0; i < len; i++) parola += alfabeto[bibRandInt(0, 25)];
+      tokens.push(parola);
+      lunghezza += len + 1;
+    }
+    return tokens;
+  }
+  function renderBib(L) {
+    const vocab = new Set(L.bibVocab);
+    const trovate = [];
+    document.getElementById('bib-pagina').innerHTML = bibTokens.map(tok => {
+      if (vocab.has(tok)) { trovate.push(tok); return `<mark>${tok}</mark>`; }
+      return tok;
+    }).join(' ');
+    document.getElementById('bib-coord').textContent =
+      `${L.bibScaffale} ${bibCoord.a} · ${L.bibVolume} ${bibCoord.b} · ${L.bibPagina} ${bibCoord.c}`;
+    const esito = document.getElementById('bib-esito');
+    if (trovate.length) {
+      esito.textContent = L.bibTrovataPre + trovate[0] + L.bibTrovataPost;
+      esito.classList.add('trovata');
+    } else {
+      esito.textContent = L.bibNessuna;
+      esito.classList.remove('trovata');
+    }
+  }
+  function generaPaginaBib() {
+    bibTokens = costruisciTokenCasuali();
+    bibCoord = { a: bibRandInt(100000, 999999), b: bibRandInt(1, 32), c: bibRandInt(1, 410) };
+    renderBib(DIZ[lingua]);
+  }
+  generaPaginaBib();
+  document.getElementById('bib-altra').addEventListener('click', generaPaginaBib);
+
   // ── Rotte ──
   const atrio = document.getElementById('atrio');
   const stanza = document.getElementById('stanza-storni');
@@ -1148,19 +1254,23 @@ survives.
   const stanzaPar = document.getElementById('stanza-parole');
   const stanzaLet = document.getElementById('stanza-lettera');
   const stanzaIdee = document.getElementById('stanza-idee');
+  const stanzaBib = document.getElementById('stanza-biblioteca');
   function rotta() {
     const h = location.hash;
     const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'),
           inErr = h.startsWith('#/errori'), inPar = h.startsWith('#/parole'),
-          inLet = h.startsWith('#/lettera'), inIdee = h.startsWith('#/idee');
-    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee;
+          inLet = h.startsWith('#/lettera'), inIdee = h.startsWith('#/idee'),
+          inBib = h.startsWith('#/biblioteca');
+    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib;
     stanza.hidden = !inStorni;
     stanzaOra.hidden = !inOra;
     stanzaErr.hidden = !inErr;
     stanzaPar.hidden = !inPar;
     stanzaLet.hidden = !inLet;
     stanzaIdee.hidden = !inIdee;
+    stanzaBib.hidden = !inBib;
     if (inOra) dipingi();
+    if (inBib) generaPaginaBib();
   }
   addEventListener('hashchange', rotta);
   addEventListener('keydown', e => {
