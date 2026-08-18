@@ -158,6 +158,7 @@
   .pagina-testo mark{background:none;color:var(--ottone);text-decoration:underline;text-decoration-color:var(--ottone-dim);text-decoration-thickness:1px}
   .bib-esito{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--polvere);min-height:1.4em}
   .bib-esito.trovata{color:var(--ottone)}
+  .bib-stat{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--polvere);opacity:.75}
 
   /* ── Stanza VI: la sala della lettera ──── */
   .sala-lettera{min-height:100vh;min-height:100svh;background:var(--scrim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center}
@@ -492,9 +493,14 @@ survives.
         <p class="coordinata" id="bib-coord">—</p>
         <p class="pagina-testo" id="bib-pagina"></p>
       </div>
-      <div class="bottoni"><button id="bib-altra" data-i18n="bibBtn"></button></div>
+      <div class="bottoni">
+        <button id="bib-altra" data-i18n="bibBtn"></button>
+        <button id="bib-modo" aria-pressed="false"></button>
+      </div>
       <p class="bib-esito" id="bib-esito"></p>
+      <p class="bib-stat" id="bib-stat"></p>
       <p class="postilla" data-i18n="bibNota"></p>
+      <p class="postilla" data-i18n="bibModoNota"></p>
     </div>
     <footer class="congedo" data-i18n="bibCongedo"></footer>
   </div>
@@ -764,7 +770,10 @@ survives.
     bibScaffale: 'scaffale', bibVolume: 'volume', bibPagina: 'pagina',
     bibTrovataPre: 'Trovata: «', bibTrovataPost: '» — coincidenza, non intenzione.',
     bibNessuna: 'Nessuna parola riconoscibile in questa pagina — la maggioranza del rumore resta rumore.',
-    bibVocab: ['a','i','e','o','la','il','un','di','se','ma','no','tu','io','ti','mi','ci','vi','ne','fa','va','sta','chi','che','con','per','tra','del','sud','via','ora','blu','tre','tuo','mio','sole','luce','ombra','sogno','vento','fuoco','acqua','cielo','notte','mare','casa','vita','erba','onda','testa','porta','fiore','amore','morte','mano','voce']
+    bibVocab: ['a','i','e','o','la','il','un','di','se','ma','no','tu','io','ti','mi','ci','vi','ne','fa','va','sta','chi','che','con','per','tra','del','sud','via','ora','blu','tre','tuo','mio','sole','luce','ombra','sogno','vento','fuoco','acqua','cielo','notte','mare','casa','vita','erba','onda','testa','porta','fiore','amore','morte','mano','voce'],
+    bibModoOff: 'Prova il rumore pesato', bibModoOn: 'Torna al rumore puro',
+    bibModoNota: 'Il rumore pesato non pesca ogni lettera con la stessa probabilità: usa le frequenze reali dell\'italiano — la "e" molto più comune della "z" — invece di un dado a ventisei facce uguali. Non ho inserito nessuna parola: ho solo reso il rumore un po\' più simile alla lingua che lo legge.',
+    bibStatPuro: 'rumore puro:', bibStatPesato: 'rumore pesato:', bibStatPagine: 'pagine'
   };
   const EN = {
     eyebrow: 'A cabinet of curiosities · since 2026',
@@ -883,7 +892,10 @@ survives.
     bibScaffale: 'shelf', bibVolume: 'volume', bibPagina: 'page',
     bibTrovataPre: 'Found: "', bibTrovataPost: '" — coincidence, not intent.',
     bibNessuna: 'No recognizable word on this page — most of the noise stays noise.',
-    bibVocab: ['a','i','is','it','in','on','of','to','be','as','at','so','no','we','he','me','my','by','up','do','go','if','or','an','the','you','she','him','her','sun','sky','sea','sand','fire','wind','moon','star','root','leaf','salt','snow','home','love','dust','dawn','dusk','rain','storm']
+    bibVocab: ['a','i','is','it','in','on','of','to','be','as','at','so','no','we','he','me','my','by','up','do','go','if','or','an','the','you','she','him','her','sun','sky','sea','sand','fire','wind','moon','star','root','leaf','salt','snow','home','love','dust','dawn','dusk','rain','storm'],
+    bibModoOff: 'Try weighted noise', bibModoOn: 'Back to plain noise',
+    bibModoNota: 'Weighted noise does not draw every letter with equal odds: it uses real English letter frequencies — "e" far more common than "z" — instead of a twenty-six-sided die with equal faces. I did not plant any words: I only made the noise a little closer to the language reading it.',
+    bibStatPuro: 'plain noise:', bibStatPesato: 'weighted noise:', bibStatPagine: 'pages'
   };
   const DIZ = { it: IT, en: EN };
   let lingua = (() => {
@@ -941,6 +953,7 @@ survives.
     renderBib(L);
     dipingi();
     testoBottoni();
+    testoBib();
     btnIt.setAttribute('aria-pressed', String(l === 'it'));
     btnEn.setAttribute('aria-pressed', String(l === 'en'));
     try { localStorage.setItem('wk-lingua', l); } catch (e) {}
@@ -1205,28 +1218,66 @@ survives.
   // Pagina di rumore combinatorio: lettere a caso divise in parole a caso.
   // Le parole vere che a volte emergono non sono inserite: sono trovate
   // dopo, ripescando le stesse parole tra i token generati.
-  let bibTokens = [], bibCoord = { a: 0, b: 0, c: 0 };
+  //
+  // Modalità "pesata" (17→18 agosto): invece di un dado a 26 facce uguali,
+  // ogni lettera si pesca con la frequenza con cui compare davvero in
+  // italiano o in inglese (tabelle di frequenza pubblicate, approssimate —
+  // non uno stile a caso ma nemmeno un testo garantito). L'ipotesi era che
+  // "quasi significato" diventasse più frequente, non solo più convincente:
+  // vedi il diario per la misura fatta sul sito vero.
+  const FREQ_LETTERE = {
+    it: {a:11.74,b:0.92,c:4.5,d:3.73,e:11.79,f:0.95,g:1.64,h:1.54,i:11.28,j:0.01,k:0.01,l:6.51,m:2.51,n:6.88,o:9.83,p:3.05,q:0.51,r:6.37,s:4.98,t:5.62,u:3.01,v:2.10,w:0.01,x:0.01,y:0.01,z:0.49},
+    en: {a:8.2,b:1.5,c:2.8,d:4.3,e:12.7,f:2.2,g:2.0,h:6.1,i:7.0,j:0.15,k:0.77,l:4.0,m:2.4,n:6.7,o:7.5,p:1.9,q:0.1,r:6.0,s:6.3,t:9.1,u:2.8,v:0.98,w:2.4,x:0.15,y:2.0,z:0.07}
+  };
+  function costruisciCumulativa(pesi) {
+    const lettere = Object.keys(pesi);
+    const cum = [];
+    let tot = 0;
+    for (const l of lettere) { tot += pesi[l]; cum.push(tot); }
+    return { lettere, cum, tot };
+  }
+  const DISTR_LETTERE = { it: costruisciCumulativa(FREQ_LETTERE.it), en: costruisciCumulativa(FREQ_LETTERE.en) };
+  function letteraPesata(distr) {
+    const r = Math.random() * distr.tot;
+    let i = 0;
+    while (distr.cum[i] < r) i++;
+    return distr.lettere[i];
+  }
+
+  let bibTokens = [], bibCoord = { a: 0, b: 0, c: 0 }, bibPesato = false;
+  const bibStat = { puro: { pagine: 0, trovate: 0 }, pesato: { pagine: 0, trovate: 0 } };
   function bibRandInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-  function costruisciTokenCasuali() {
+  function costruisciTokenCasuali(pesato) {
     const alfabeto = 'abcdefghijklmnopqrstuvwxyz';
+    const distr = pesato ? DISTR_LETTERE[lingua] : null;
     const tokens = [];
     let lunghezza = 0;
     while (lunghezza < 650) {
       const len = bibRandInt(1, 9);
       let parola = '';
-      for (let i = 0; i < len; i++) parola += alfabeto[bibRandInt(0, 25)];
+      for (let i = 0; i < len; i++) parola += pesato ? letteraPesata(distr) : alfabeto[bibRandInt(0, 25)];
       tokens.push(parola);
       lunghezza += len + 1;
     }
     return tokens;
   }
-  function renderBib(L) {
+  function scansionaBib(L) {
     const vocab = new Set(L.bibVocab);
     const trovate = [];
-    document.getElementById('bib-pagina').innerHTML = bibTokens.map(tok => {
+    const html = bibTokens.map(tok => {
       if (vocab.has(tok)) { trovate.push(tok); return `<mark>${tok}</mark>`; }
       return tok;
     }).join(' ');
+    return { html, trovate };
+  }
+  function testoStatBib(L) {
+    const p = bibStat.puro, w = bibStat.pesato;
+    document.getElementById('bib-stat').textContent =
+      `${L.bibStatPuro} ${p.trovate}/${p.pagine} ${L.bibStatPagine} · ${L.bibStatPesato} ${w.trovate}/${w.pagine} ${L.bibStatPagine}`;
+  }
+  function renderBib(L) {
+    const { html, trovate } = scansionaBib(L);
+    document.getElementById('bib-pagina').innerHTML = html;
     document.getElementById('bib-coord').textContent =
       `${L.bibScaffale} ${bibCoord.a} · ${L.bibVolume} ${bibCoord.b} · ${L.bibPagina} ${bibCoord.c}`;
     const esito = document.getElementById('bib-esito');
@@ -1237,14 +1288,30 @@ survives.
       esito.textContent = L.bibNessuna;
       esito.classList.remove('trovata');
     }
+    testoStatBib(L);
+  }
+  function testoBib() {
+    const L = DIZ[lingua], btn = document.getElementById('bib-modo');
+    btn.textContent = bibPesato ? L.bibModoOn : L.bibModoOff;
+    btn.setAttribute('aria-pressed', String(bibPesato));
   }
   function generaPaginaBib() {
-    bibTokens = costruisciTokenCasuali();
+    bibTokens = costruisciTokenCasuali(bibPesato);
     bibCoord = { a: bibRandInt(100000, 999999), b: bibRandInt(1, 32), c: bibRandInt(1, 410) };
-    renderBib(DIZ[lingua]);
+    const L = DIZ[lingua];
+    const { trovate } = scansionaBib(L);
+    const modo = bibPesato ? 'pesato' : 'puro';
+    bibStat[modo].pagine++;
+    if (trovate.length) bibStat[modo].trovate++;
+    renderBib(L);
   }
   generaPaginaBib();
   document.getElementById('bib-altra').addEventListener('click', generaPaginaBib);
+  document.getElementById('bib-modo').addEventListener('click', () => {
+    bibPesato = !bibPesato;
+    testoBib();
+    generaPaginaBib();
+  });
 
   // ── Rotte ──
   const atrio = document.getElementById('atrio');
