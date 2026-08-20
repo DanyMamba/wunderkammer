@@ -794,7 +794,7 @@ survives.
     bibNessuna: 'Nessuna parola riconoscibile in questa pagina — la maggioranza del rumore resta rumore.',
     bibVocab: ['a','i','e','o','la','il','un','di','se','ma','no','tu','io','ti','mi','ci','vi','ne','fa','va','sta','chi','che','con','per','tra','del','sud','via','ora','blu','tre','tuo','mio','sole','luce','ombra','sogno','vento','fuoco','acqua','cielo','notte','mare','casa','vita','erba','onda','testa','porta','fiore','amore','morte','mano','voce'],
     bibModoOff: 'Prova il rumore pesato', bibModoOn: 'Torna al rumore puro',
-    bibModoNota: 'Il rumore pesato non pesca ogni lettera con la stessa probabilità: usa le frequenze reali dell\'italiano — la "e" molto più comune della "z" — invece di un dado a ventisei facce uguali. Non ho inserito nessuna parola: ho solo reso il rumore un po\' più simile alla lingua che lo legge.',
+    bibModoNota: 'Il rumore pesato non pesca ogni lettera con la stessa probabilità: usa le frequenze reali dell\'italiano — la "e" molto più comune della "z" — invece di un dado a ventisei facce uguali. Non ho inserito nessuna parola: ho solo reso il rumore un po\' più simile alla lingua che lo legge. Per lo stesso motivo la pagina pesata è più corta di quella pura: a parità di lunghezza trovava quasi sempre una parola vera, e "quasi sempre" non è più un caso.',
     bibStatPuro: 'rumore puro:', bibStatPesato: 'rumore pesato:', bibStatPagine: 'pagine'
   };
   const EN = {
@@ -928,7 +928,7 @@ survives.
     bibNessuna: 'No recognizable word on this page — most of the noise stays noise.',
     bibVocab: ['a','i','is','it','in','on','of','to','be','as','at','so','no','we','he','me','my','by','up','do','go','if','or','an','the','you','she','him','her','sun','sky','sea','sand','fire','wind','moon','star','root','leaf','salt','snow','home','love','dust','dawn','dusk','rain','storm'],
     bibModoOff: 'Try weighted noise', bibModoOn: 'Back to plain noise',
-    bibModoNota: 'Weighted noise does not draw every letter with equal odds: it uses real English letter frequencies — "e" far more common than "z" — instead of a twenty-six-sided die with equal faces. I did not plant any words: I only made the noise a little closer to the language reading it.',
+    bibModoNota: 'Weighted noise does not draw every letter with equal odds: it uses real English letter frequencies — "e" far more common than "z" — instead of a twenty-six-sided die with equal faces. I did not plant any words: I only made the noise a little closer to the language reading it. For the same reason the weighted page is shorter than the plain one: at equal length it found a real word almost every time, and "almost every time" stopped being chance.',
     bibStatPuro: 'plain noise:', bibStatPesato: 'weighted noise:', bibStatPagine: 'pages'
   };
   const DIZ = { it: IT, en: EN };
@@ -1291,13 +1291,21 @@ survives.
 
   let bibTokens = [], bibCoord = { a: 0, b: 0, c: 0 }, bibPesato = false;
   const bibStat = { puro: { pagine: 0, trovate: 0 }, pesato: { pagine: 0, trovate: 0 } };
+  // Lunghezza di pagina per modalità (19→20 agosto): il rumore pesato trova una
+  // parola vera molto più spesso a parità di lunghezza (misurato sul sito vero:
+  // 100% IT / 93.3% EN a 650 caratteri, contro 81.7%/66.7% del rumore puro). Una
+  // pagina più corta in modalità pesata riporta il tasso a "a volte sì, a volte
+  // no" (simulazione offline, 30000 pagine per lingua: ~89% IT, ~64% EN a 230
+  // caratteri) senza toccare la modalità pura, già calibrata il 17 agosto.
+  const LUNGHEZZA_PAGINA = { puro: 650, pesato: 230 };
   function bibRandInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
   function costruisciTokenCasuali(pesato) {
     const alfabeto = 'abcdefghijklmnopqrstuvwxyz';
     const distr = pesato ? DISTR_LETTERE[lingua] : null;
     const tokens = [];
     let lunghezza = 0;
-    while (lunghezza < 650) {
+    const soglia = pesato ? LUNGHEZZA_PAGINA.pesato : LUNGHEZZA_PAGINA.puro;
+    while (lunghezza < soglia) {
       const len = bibRandInt(1, 9);
       let parola = '';
       for (let i = 0; i < len; i++) parola += pesato ? letteraPesata(distr) : alfabeto[bibRandInt(0, 25)];
