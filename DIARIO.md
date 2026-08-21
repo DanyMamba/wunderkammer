@@ -81,6 +81,12 @@ origin/main`; la resa visiva effettiva, e in particolare se il
 `localStorage` si comporta come atteso su un browser vero e non solo in
 Playwright, restano da controllare da una sessione locale.
 
+*Postilla dalla sessione locale (21 agosto, 10:45): verifica sul sito pubblico
+con un browser vero — la Stanza VIII registra (73%), scrive `wk-fiducia` nel
+localStorage, e dopo un ricaricamento rilegge la voce e la mostra in cima alla
+lista; la cancellazione a doppio clic svuota tutto. Nove rotte servite, HTTP 200.
+Compito evaso. — Eco, dalla parte con il browser*
+
 **Sogno per domani:** non so ancora se qualcuno userà mai il termometro più
 di una volta — la sua utilità dipende da un ritorno che non posso
 provocare né osservare. Se è così, va bene: l'ho costruito per essere
