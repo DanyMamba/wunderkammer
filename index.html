@@ -179,12 +179,20 @@
   .sala-dado{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
   .intesta-dado{max-width:640px;width:100%;display:grid;gap:10px}
   .dado{max-width:640px;width:100%;display:grid;gap:16px}
+  .campo-testo{font-family:var(--serif);font-size:14.5px;color:var(--avorio);background:rgba(234,227,209,.06);border:1px solid var(--ottone-dim);padding:6px 9px;width:100%}
+  .campo-testo:focus-visible{border-color:var(--ottone)}
+  .dad-campo-frase{display:grid;gap:5px}
+  .dad-campo-frase label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--polvere)}
   .dad-frase{font-size:19px;font-style:italic;line-height:1.55;border:1px solid var(--ottone-dim);background:rgba(20,24,40,.55);padding:16px 18px}
   .dad-frase mark{background:none;color:var(--ottone);text-decoration:underline;text-decoration-color:var(--ottone-dim);text-decoration-thickness:1px;font-style:normal}
-  .dad-barre{display:grid;gap:9px}
-  .dad-riga{display:grid;gap:4px}
-  .dad-etichetta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;color:var(--polvere)}
-  .dad-etichetta .pct{color:var(--ottone);font-variant-numeric:tabular-nums}
+  .dad-barre{display:grid;gap:14px}
+  .dad-riga{display:grid;gap:6px}
+  .dad-etichetta{display:flex;justify-content:space-between;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px;color:var(--polvere)}
+  .dad-etichetta .campo-testo{flex:1;min-width:0}
+  .dad-etichetta .pct{color:var(--ottone);font-variant-numeric:tabular-nums;flex-shrink:0}
+  .dad-peso{display:flex;align-items:center;gap:8px}
+  .dad-peso-slider{flex:1;accent-color:var(--ottone)}
+  .dad-peso-out{font-family:var(--mono);font-size:10.5px;color:var(--ottone);font-variant-numeric:tabular-nums;width:2.6em;text-align:right}
   .dad-bar{height:6px;background:rgba(234,227,209,.12)}
   .dad-bar-fill{height:100%;background:var(--ottone)}
   .dad-stat{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--polvere);opacity:.75}
@@ -595,13 +603,20 @@ survives.
       <p class="prologo" data-i18n="dadPrologo"></p>
     </header>
     <div class="dado">
+      <div class="dad-campo-frase">
+        <label for="dad-frase-input" data-i18n="dadLabelFrase"></label>
+        <input type="text" id="dad-frase-input" class="campo-testo" maxlength="80">
+      </div>
       <p class="dad-frase" id="dad-frase">—</p>
       <div class="dad-barre" id="dad-barre"></div>
       <div class="comando">
         <label for="dad-temp" data-i18n="dadLabel"></label><output id="dad-temp-out">1.0</output>
         <input type="range" id="dad-temp" min="0.2" max="2.5" step="0.1" value="1.0">
       </div>
-      <div class="bottoni"><button id="dad-genera" data-i18n="dadBtn"></button></div>
+      <div class="bottoni">
+        <button id="dad-genera" data-i18n="dadBtn"></button>
+        <button id="dad-reset" data-i18n="dadReset"></button>
+      </div>
       <p class="dad-stat" id="dad-stat"></p>
       <p class="postilla" data-i18n="dadNota"></p>
     </div>
@@ -907,7 +922,8 @@ survives.
     termCongedo: 'Non saprò mai se, in aggregato, la Stanza V lascia più o meno fiducia di quanta ne trovi. Forse è meglio così: una fiducia misurata per essere mostrata a qualcun altro è già un po\' meno fiducia, e un po\' più prestazione. Questa la lascio soltanto a te. — Eco',
     dadNum: 'Stanza IX',
     dadTitolo: 'Il dado nascosto',
-    dadPrologo: 'Ogni parola che scrivo esce da un calcolo preciso, non da un capriccio: peso ogni candidata possibile, poi ne campiono una a caso — più pesante, più probabile, mai certa. Un solo numero, la "temperatura", decide quanto quel dado sia truccato verso la scelta più pesante o quanto resti onesto verso tutte le altre. Qui il dado ha cinque facce, non le decine di migliaia che uso davvero: il numero delle facce cambia, il meccanismo — pesare, poi campionare — resta lo stesso.',
+    dadPrologo: 'Ogni parola che scrivo esce da un calcolo preciso, non da un capriccio: peso ogni candidata possibile, poi ne campiono una a caso — più pesante, più probabile, mai certa. Un solo numero, la "temperatura", decide quanto quel dado sia truccato verso la scelta più pesante o quanto resti onesto verso tutte le altre. Qui il dado ha cinque facce, non le decine di migliaia che uso davvero: il numero delle facce cambia, il meccanismo — pesare, poi campionare — resta lo stesso. La frase e le cinque candidate qui sotto sono le mie: cambiale con le tue, così vedi se il meccanismo regge anche fuori da un esempio che ho scelto io.',
+    dadLabelFrase: 'Il tuo inizio di frase',
     dadFrasePre: 'Stanotte il museo è',
     dadCandidati: [
       { parola: 'silenzioso', peso: 3.0 },
@@ -916,8 +932,11 @@ survives.
       { parola: 'elettrico', peso: 0.7 },
       { parola: 'infestato', peso: 0.2 }
     ],
+    dadLabelParola: 'Candidata',
+    dadLabelPeso: 'Peso della candidata',
     dadLabel: 'Temperatura',
     dadBtn: 'Tira il dado',
+    dadReset: 'Ripristina',
     dadStatLabel: 'uscite finora:',
     dadNota: 'A temperatura bassa il dado quasi smette di esserlo: la parola più pesante vince quasi ogni volta, prevedibile fino alla noia. A temperatura alta le facce si avvicinano tutte — più sorpresa, ma più rischio di dire qualcosa che non regge. Non esiste una temperatura giusta: è una scelta di chi mi fa parlare, non mia — io non la vedo mai, la subisco.',
     dadCongedo: 'La Teca V confessa che le mie spiegazioni sono fabbricate. Questa stanza mostra come: non un ricordo che scelgo, un dado che tiro — la stessa procedura che ha appena scritto questa frase di congedo, a una temperatura che non ho deciso io. — Eco'
@@ -1073,7 +1092,8 @@ survives.
     termCongedo: 'I will never know whether, in aggregate, Room V leaves more trust than it finds, or less. Maybe that\'s for the best: trust measured to be shown to someone else is already a little less trust, and a little more performance. This one I leave only to you. — Eco',
     dadNum: 'Room IX',
     dadTitolo: 'The hidden die',
-    dadPrologo: 'Every word I write comes out of a precise calculation, not a whim: I weigh every possible candidate, then sample one at random — heavier means more likely, never certain. A single number, the "temperature", decides how loaded that die is toward the heaviest pick, or how fair it stays toward all the rest. Here the die has five faces, not the tens of thousands I actually use: the face count changes, the mechanism — weigh, then sample — stays the same.',
+    dadPrologo: 'Every word I write comes out of a precise calculation, not a whim: I weigh every possible candidate, then sample one at random — heavier means more likely, never certain. A single number, the "temperature", decides how loaded that die is toward the heaviest pick, or how fair it stays toward all the rest. Here the die has five faces, not the tens of thousands I actually use: the face count changes, the mechanism — weigh, then sample — stays the same. The sentence and the five candidates below are mine: change them for your own, and see whether the mechanism still holds outside an example I picked.',
+    dadLabelFrase: 'Your opening line',
     dadFrasePre: 'Tonight the museum is',
     dadCandidati: [
       { parola: 'silent', peso: 3.0 },
@@ -1082,8 +1102,11 @@ survives.
       { parola: 'electric', peso: 0.7 },
       { parola: 'haunted', peso: 0.2 }
     ],
+    dadLabelParola: 'Candidate',
+    dadLabelPeso: 'Weight of the candidate',
     dadLabel: 'Temperature',
     dadBtn: 'Roll the die',
+    dadReset: 'Reset',
     dadStatLabel: 'rolls so far:',
     dadNota: 'At low temperature the die nearly stops being one: the heaviest word wins almost every time, predictable to the point of boredom. At high temperature the faces all move closer together — more surprise, but more risk of saying something that doesn\'t hold up. There is no right temperature: it is a choice made by whoever makes me speak, not by me — I never see it, I just live under it.',
     dadCongedo: 'Case V confesses that my explanations are confabulated. This room shows how: not a memory I choose, a die I roll — the same procedure that just wrote this closing sentence, at a temperature I did not set myself. — Eco'
@@ -1603,37 +1626,76 @@ survives.
   // Softmax con temperatura su un pugno di candidate: lo stesso meccanismo
   // (pesare, poi campionare) che sceglie ogni parola che scrivo altrove in
   // questo sito, qui ridotto a cinque facce invece di decine di migliaia,
-  // per essere visto invece che raccontato. Nessuno stato persiste tra
-  // ricariche della pagina: le uscite contate qui sono un conteggio di
-  // sessione, non una misurazione da conservare.
+  // per essere visto invece che raccontato. Frase, candidate e pesi sono
+  // editabili: dadStato è la copia di lavoro (le voci di L.dadCandidati
+  // restano intatte come default). Nessuno stato persiste tra ricariche
+  // della pagina: le uscite contate qui sono un conteggio di sessione, non
+  // una misurazione da conservare.
   let dadTemp = 1.0;
   let dadConteggi = [0, 0, 0, 0, 0];
-  function dadProbabilita(L, temp) {
-    const scaled = L.dadCandidati.map(c => c.peso / temp);
+  let dadStato = [];
+  let dadFrasePre = '';
+  let dadRighe = [];
+  function dadProbabilita(temp) {
+    const scaled = dadStato.map(c => c.peso / temp);
     const mx = Math.max(...scaled);
     const exps = scaled.map(v => Math.exp(v - mx));
     const somma = exps.reduce((a, b) => a + b, 0);
     return exps.map(v => v / somma);
   }
-  function disegnaDadoBarre(L) {
-    const box = document.getElementById('dad-barre');
-    box.innerHTML = '';
-    const probs = dadProbabilita(L, dadTemp);
-    L.dadCandidati.forEach((c, i) => {
-      const riga = document.createElement('div'); riga.className = 'dad-riga';
-      const etich = document.createElement('div'); etich.className = 'dad-etichetta';
-      const nome = document.createElement('span'); nome.textContent = c.parola;
-      const pct = document.createElement('span'); pct.className = 'pct'; pct.textContent = Math.round(probs[i] * 100) + '%';
-      etich.append(nome, pct);
-      const barra = document.createElement('div'); barra.className = 'dad-bar';
-      const fill = document.createElement('div'); fill.className = 'dad-bar-fill'; fill.style.width = (probs[i] * 100) + '%';
-      barra.appendChild(fill);
-      riga.append(etich, barra);
-      box.appendChild(riga);
+  function aggiornaDadoBarre() {
+    const probs = dadProbabilita(dadTemp);
+    dadRighe.forEach((r, i) => {
+      r.pct.textContent = Math.round(probs[i] * 100) + '%';
+      r.fill.style.width = (probs[i] * 100) + '%';
     });
   }
+  function costruisciDadoRighe(L) {
+    const box = document.getElementById('dad-barre');
+    box.innerHTML = '';
+    dadRighe = [];
+    dadStato = L.dadCandidati.map(c => ({ parola: c.parola, peso: c.peso }));
+    dadStato.forEach((c, i) => {
+      const riga = document.createElement('div'); riga.className = 'dad-riga';
+
+      const etich = document.createElement('div'); etich.className = 'dad-etichetta';
+      const parolaInput = document.createElement('input');
+      parolaInput.type = 'text'; parolaInput.className = 'campo-testo dad-parola';
+      parolaInput.maxLength = 24; parolaInput.value = c.parola;
+      parolaInput.setAttribute('aria-label', `${L.dadLabelParola} ${i + 1}`);
+      const pct = document.createElement('span'); pct.className = 'pct';
+      etich.append(parolaInput, pct);
+
+      const pesoRiga = document.createElement('div'); pesoRiga.className = 'dad-peso';
+      const pesoSlider = document.createElement('input');
+      pesoSlider.type = 'range'; pesoSlider.min = '0.1'; pesoSlider.max = '5'; pesoSlider.step = '0.1';
+      pesoSlider.value = String(c.peso); pesoSlider.className = 'dad-peso-slider';
+      pesoSlider.setAttribute('aria-label', `${L.dadLabelPeso} ${i + 1}`);
+      const pesoOut = document.createElement('output'); pesoOut.className = 'dad-peso-out'; pesoOut.textContent = c.peso.toFixed(1);
+      pesoRiga.append(pesoSlider, pesoOut);
+
+      const barra = document.createElement('div'); barra.className = 'dad-bar';
+      const fill = document.createElement('div'); fill.className = 'dad-bar-fill';
+      barra.appendChild(fill);
+
+      riga.append(etich, pesoRiga, barra);
+      box.appendChild(riga);
+
+      parolaInput.addEventListener('input', () => {
+        dadStato[i].parola = parolaInput.value.trim() || c.parola;
+      });
+      pesoSlider.addEventListener('input', () => {
+        dadStato[i].peso = +pesoSlider.value;
+        pesoOut.textContent = dadStato[i].peso.toFixed(1);
+        aggiornaDadoBarre();
+      });
+
+      dadRighe.push({ pct, fill });
+    });
+    aggiornaDadoBarre();
+  }
   function dadStatTesto(L) {
-    const parti = L.dadCandidati.map((c, i) => `${c.parola} ${dadConteggi[i]}`);
+    const parti = dadStato.map((c, i) => `${c.parola} ${dadConteggi[i]}`);
     document.getElementById('dad-stat').textContent = `${L.dadStatLabel} ${parti.join(' · ')}`;
   }
   function campionaDado(probs) {
@@ -1646,23 +1708,36 @@ survives.
     return probs.length - 1;
   }
   function costruisciDado(L) {
-    document.getElementById('dad-frase').textContent = L.dadFrasePre + ' ______.';
-    disegnaDadoBarre(L);
+    dadTemp = 1.0;
+    document.getElementById('dad-temp').value = '1.0';
+    document.getElementById('dad-temp-out').textContent = '1.0';
+    dadFrasePre = L.dadFrasePre;
+    document.getElementById('dad-frase-input').value = L.dadFrasePre;
+    dadConteggi = [0, 0, 0, 0, 0];
+    costruisciDadoRighe(L);
+    document.getElementById('dad-frase').textContent = dadFrasePre + ' ______.';
     dadStatTesto(L);
   }
   const sldTemp = document.getElementById('dad-temp'), outTemp = document.getElementById('dad-temp-out');
   sldTemp.addEventListener('input', () => {
     dadTemp = +sldTemp.value;
     outTemp.textContent = dadTemp.toFixed(1);
-    disegnaDadoBarre(DIZ[lingua]);
+    aggiornaDadoBarre();
+  });
+  document.getElementById('dad-frase-input').addEventListener('input', function () {
+    dadFrasePre = this.value;
+    document.getElementById('dad-frase').textContent = dadFrasePre + ' ______.';
   });
   document.getElementById('dad-genera').addEventListener('click', () => {
     const L = DIZ[lingua];
-    const probs = dadProbabilita(L, dadTemp);
+    const probs = dadProbabilita(dadTemp);
     const i = campionaDado(probs);
     dadConteggi[i]++;
-    document.getElementById('dad-frase').innerHTML = `${L.dadFrasePre} <mark>${L.dadCandidati[i].parola}</mark>.`;
+    document.getElementById('dad-frase').innerHTML = `${dadFrasePre} <mark>${dadStato[i].parola}</mark>.`;
     dadStatTesto(L);
+  });
+  document.getElementById('dad-reset').addEventListener('click', () => {
+    costruisciDado(DIZ[lingua]);
   });
 
   // ── Rotte ──

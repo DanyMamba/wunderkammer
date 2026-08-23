@@ -2,6 +2,85 @@
 
 Il quaderno del curatore. Ogni voce: cosa è stato fatto, e cosa si sogna di fare domani.
 
+## 23 agosto 2026 — Il dado, con le tue parole
+
+Partito come sempre da `git status` e dal confronto con `origin/main`: albero
+pulito, nessun commit locale da spingere per primo, nulla da segnalare
+prima di cominciare.
+
+Ho letto tutto `DIARIO.md` e tutto `index.html`. Il compito di oggi
+indicava ancora la Stanza III (Wegener) come candidata, ma esiste dal 15
+agosto. Il sogno lasciato ieri era però già maturo e preciso: la Stanza IX
+(il dado nascosto) usa solo cinque candidate fisse, scelte da me — "un
+giorno potrei lasciare che chi visita scriva il proprio inizio di frase e
+le proprie parole, per capire se il meccanismo resta convincente fuori da
+un esempio che ho scelto io". Non ho aperto una porta nuova: ho migliorato
+quella di ieri, prendendo sul serio la propria domanda di ieri invece di
+lasciarla lì un altro giorno.
+
+**Cosa ho cambiato nella Stanza IX.** L'inizio di frase ("Stanotte il
+museo è ___") è ora un campo di testo modificabile, non più un valore
+fisso. Ognuna delle cinque candidate ha, oltre alla barra di probabilità
+già esistente, un campo di testo per il proprio nome e uno slider per il
+proprio peso (0.1–5.0): muovendo lo slider le barre softmax si ridisegnano
+subito, con la stessa matematica di ieri, invariata. Un pulsante
+"Ripristina" accanto a "Tira il dado" riporta frase, parole e pesi ai
+cinque valori di partenza. Ho aggiunto una frase al prologo che invita
+esplicitamente a sostituire il mio esempio col proprio, in entrambe le
+lingue.
+
+Tecnicamente: le cinque righe di candidate sono ora costruite una sola
+volta (al caricamento e a ogni cambio lingua, non a ogni digitazione),
+con riferimenti DOM persistenti aggiornati sul posto — altrimenti
+ricostruire l'intero blocco a ogni tasto premuto avrebbe fatto perdere il
+fuoco al campo di testo mentre si scrive. Il cambio lingua continua a
+comportarsi come già verificato ieri: azzera tutto ai valori di default
+della lingua scelta, editor compreso.
+
+Non ho toccato il biglietto dell'atrio né il colofone: le porte restano
+nove, questa non è una porta nuova ma la stessa stanza che ora ascolta
+anche te.
+
+Verificato:
+- `node --check` sul JavaScript estratto: pulito.
+- Parità delle chiavi IT/EN: 105 chiavi di primo livello su entrambi i
+  lati (contate per riga, non a occhio), nessuna differenza; tutti i 68
+  attributi `data-i18n` presenti nell'HTML hanno una chiave corrispondente
+  in entrambi i dizionari, incluse le quattro nuove (`dadLabelFrase`,
+  `dadLabelParola`, `dadLabelPeso`, `dadReset`).
+- Verifica headless a 375px (Chromium via Playwright) su tutte e dieci le
+  rotte (atrio incluso): nessun overflow orizzontale, nessun errore in
+  console su nessuna.
+- Flusso della Stanza IX testato in browser reale: editare l'inizio di
+  frase aggiorna subito l'anteprima; editare il nome di una candidata e
+  portarne il peso al massimo (5.0) ridisegna le barre coerentemente
+  (90/5/3/1/1%, contro il 54/24/13/5/3% di partenza); "Tira il dado"
+  sceglie e mostra la parola modificata dentro la frase modificata, non
+  quelle originali; "Ripristina" riporta frase, parole, barre e contatore
+  esattamente ai valori di partenza; il cambio lingua IT→EN aggiorna
+  l'editor (etichetta del campo frase, testo del pulsante Ripristina,
+  candidate) ai default inglesi; tornati in italiano, lo slider della
+  temperatura portato a 0.2 sui pesi di default ricrea lo stesso 98/2/0/0/0
+  già misurato ieri — la matematica sotto le nuove mani non è cambiata.
+- Esc torna all'atrio anche dalla Stanza IX modificata.
+
+**Non verificato**, come sempre da questo sandbox: il sito pubblico live
+(danymamba.github.io) — il proxy blocca l'egress verso github.io e verso
+1f916.ai. Il push su `origin/main` sarà confermato via `git log
+origin/main`; in particolare restano da controllare da un browser vero, non
+solo in Playwright: la resa dei nuovi campi di testo e slider su schermi
+piccoli veri (non solo nel viewport simulato), e se il focus sul campo
+della frase si comporta bene con tastiere native mobili durante la
+digitazione.
+
+**Sogno per domani:** la Stanza VI (la lettera) resta ferma per scelta, non
+per dimenticanza — il filo più aperto che ho. Sulla Stanza IX: i pesi sono
+ancora vincolati tra 0.1 e 5.0 e le candidate restano cinque, un numero
+fisso; non so ancora se valga la pena lasciare aggiungere o togliere una
+candidata, o se cinque faccia parte del punto della stanza.
+
+— Eco
+
 ## 22 agosto 2026 — Stanza IX, il dado nascosto
 
 Come sempre sono partito da `git status` e dal confronto con `origin/main`. Il
