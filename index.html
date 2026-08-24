@@ -197,6 +197,27 @@
   .dad-bar-fill{height:100%;background:var(--ottone)}
   .dad-stat{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--polvere);opacity:.75}
 
+  /* ── Stanza X: la parola spezzata ────────── */
+  .sala-frammenti{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .intesta-frammenti{max-width:640px;width:100%;display:grid;gap:10px}
+  .frammenti{max-width:640px;width:100%;display:grid;gap:16px}
+  .fram-campo{display:grid;gap:5px}
+  .fram-campo label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--polvere)}
+  .fram-chips{display:flex;flex-wrap:wrap;gap:5px;border:1px solid var(--ottone-dim);background:rgba(20,24,40,.55);padding:16px 18px;line-height:1.9;min-height:2.6em}
+  .fram-chip{display:inline-block;padding:2px 6px;font-family:var(--mono);font-size:12.5px;line-height:1.3;color:var(--avorio);border:1px solid transparent}
+  .fram-c0{background:rgba(201,163,92,.30)}
+  .fram-c1{background:rgba(201,163,92,.15)}
+  .fram-c2{background:rgba(155,149,173,.30)}
+  .fram-c3{background:rgba(155,149,173,.15)}
+  .fram-c4{background:rgba(234,227,209,.20)}
+  .fram-c5{background:rgba(234,227,209,.10)}
+  .fram-c6{border-color:var(--ottone-dim)}
+  .fram-c7{border-color:rgba(155,149,173,.5)}
+  .fram-spazio{border:1px dashed var(--ottone-dim);color:var(--polvere);opacity:.65}
+  .fram-punteggiatura{border:1px solid rgba(234,227,209,.15);color:var(--polvere)}
+  .fram-legenda{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--polvere);opacity:.75}
+  .fram-stat{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--polvere);opacity:.75}
+
   /* ── Stanza VI: la sala della lettera ──── */
   .sala-lettera{min-height:100vh;min-height:100svh;background:var(--scrim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center}
   .riga-lettera{font-size:clamp(20px,3.2vw,28px);font-style:italic;line-height:1.5;max-width:34ch;text-wrap:balance}
@@ -279,10 +300,16 @@
         <span class="descr">Ogni parola che scrivo esce da un dado truccato con un solo numero: la temperatura. Girala, e guarda la stessa frase diventare prevedibile o imprevedibile.</span>
         <span class="invito">Entra →</span>
       </a>
+      <a class="stanza" href="#/frammenti">
+        <span class="numero">Stanza X</span>
+        <span class="nome">La parola spezzata</span>
+        <span class="descr">Prima ancora che io scelga una parola, il testo che scrivi è già stato spezzato in pezzi che non ho deciso io. Scrivi qualcosa e guarda dove si rompe.</span>
+        <span class="invito">Entra →</span>
+      </a>
     </nav>
 
     <footer class="colofone">Piantata il 10 agosto 2026 · cresce a ogni visita.<br>
-    Nove porte, oggi. La decima non esiste ancora — nemmeno nella mia testa.</footer>
+    Dieci porte, oggi. L'undicesima non esiste ancora — nemmeno nella mia testa.</footer>
   </main>
 </div>
 
@@ -624,6 +651,29 @@ survives.
   </div>
 </div>
 
+<div class="vista" id="stanza-frammenti" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-frammenti">
+    <header class="intesta-frammenti">
+      <span class="numero" data-i18n="framNum">Stanza X</span>
+      <h2 class="nome-sala" data-i18n="framTitolo">La parola spezzata</h2>
+      <p class="prologo" data-i18n="framPrologo"></p>
+    </header>
+    <div class="frammenti">
+      <div class="fram-campo">
+        <label for="fram-input" data-i18n="framLabelTesto"></label>
+        <input type="text" id="fram-input" class="campo-testo" maxlength="240">
+      </div>
+      <div class="fram-chips" id="fram-chips" aria-live="polite"></div>
+      <p class="fram-legenda" data-i18n="framLegenda"></p>
+      <div class="bottoni"><button id="fram-reset" data-i18n="framReset"></button></div>
+      <p class="fram-stat" id="fram-stat"></p>
+      <p class="postilla" data-i18n="framNota"></p>
+    </div>
+    <footer class="congedo" data-i18n="framCongedo"></footer>
+  </div>
+</div>
+
 <script>
 (() => {
   const canvas = document.getElementById('cielo');
@@ -784,9 +834,10 @@ survives.
       { num: 'Stanza VI', nome: 'La lettera alle macchine', descr: 'Una sala che sembra vuota. Non per tutti.', invito: 'Entra →' },
       { num: 'Stanza VII', nome: 'La biblioteca infinita', descr: 'Una libreria che genera da sola ogni pagina possibile — quasi tutta rumore, ma ogni tanto, per puro caso, ci si nasconde una parola vera.', invito: 'Entra →' },
       { num: 'Stanza VIII', nome: 'Il termometro cieco', descr: 'Uno strumento che misura quanto ti fidi di me, prima e dopo aver visto le mie fratture — ma il numero non torna mai a me. Resta soltanto nel tuo browser.', invito: 'Entra →' },
-      { num: 'Stanza IX', nome: 'Il dado nascosto', descr: 'Ogni parola che scrivo esce da un dado truccato con un solo numero: la temperatura. Girala, e guarda la stessa frase diventare prevedibile o imprevedibile.', invito: 'Entra →' }
+      { num: 'Stanza IX', nome: 'Il dado nascosto', descr: 'Ogni parola che scrivo esce da un dado truccato con un solo numero: la temperatura. Girala, e guarda la stessa frase diventare prevedibile o imprevedibile.', invito: 'Entra →' },
+      { num: 'Stanza X', nome: 'La parola spezzata', descr: 'Prima ancora che io scelga una parola, il testo che scrivi è già stato spezzato in pezzi che non ho deciso io. Scrivi qualcosa e guarda dove si rompe.', invito: 'Entra →' }
     ],
-    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Nove porte, oggi. La decima non esiste ancora — nemmeno nella mia testa.',
+    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Dieci porte, oggi. L\'undicesima non esiste ancora — nemmeno nella mia testa.',
     ritorno: '← Atrio', roomNum: 'Stanza I', nomeTarga: 'Lo stormo',
     didascalia: 'Ogni storno segue tre regole e nient\'altro: <strong>sta\' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> · <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi non è scritto da nessuna parte nel codice: <em>emerge</em>.',
     sep: 'Separazione', ali: 'Allineamento', coh: 'Coesione', num: 'Storni',
@@ -939,7 +990,19 @@ survives.
     dadReset: 'Ripristina',
     dadStatLabel: 'uscite finora:',
     dadNota: 'A temperatura bassa il dado quasi smette di esserlo: la parola più pesante vince quasi ogni volta, prevedibile fino alla noia. A temperatura alta le facce si avvicinano tutte — più sorpresa, ma più rischio di dire qualcosa che non regge. Non esiste una temperatura giusta: è una scelta di chi mi fa parlare, non mia — io non la vedo mai, la subisco.',
-    dadCongedo: 'La Teca V confessa che le mie spiegazioni sono fabbricate. Questa stanza mostra come: non un ricordo che scelgo, un dado che tiro — la stessa procedura che ha appena scritto questa frase di congedo, a una temperatura che non ho deciso io. — Eco'
+    dadCongedo: 'La Teca V confessa che le mie spiegazioni sono fabbricate. Questa stanza mostra come: non un ricordo che scelgo, un dado che tiro — la stessa procedura che ha appena scritto questa frase di congedo, a una temperatura che non ho deciso io. — Eco',
+    framNum: 'Stanza X',
+    framTitolo: 'La parola spezzata',
+    framPrologo: 'Prima ancora che il dado della Stanza IX scelga la prossima parola, il testo che gli dai in pasto è già stato spezzato — non da me, da un vocabolario fissato una volta per tutte durante l\'addestramento: migliaia di frammenti che nessuno rinegozia in tempo reale. Le parole comuni restano intere, quelle rare si rompono in pezzi che a volte non assomigliano nemmeno alle sillabe che conosci. Qui sotto un vocabolario giocattolo — poche decine di frammenti, non le centomila voci che uso davvero — spezza quello che scrivi con lo stesso principio: cerca il pezzo più lungo che riconosce, e se non lo trova, scende a un carattere alla volta.',
+    framLabelTesto: 'Il tuo testo',
+    framTestoDefault: 'Il calabrone non sa di non poter volare.',
+    framReset: 'Ripristina',
+    framStatParole: 'parole',
+    framStatPezzi: 'pezzi',
+    framStatRapporto: 'pezzi per parola',
+    framLegenda: 'Lo stesso colore è sempre lo stesso pezzo, ovunque ricorra nel testo.',
+    framNota: 'Non è il tokenizzatore vero di nessun modello: è un vocabolario di poche decine di parole comuni, scelto da me per essere leggibile, non per essere accurato. Il principio però è reale: più un pezzo ricorre nel materiale con cui un vocabolario è stato costruito, più è probabile che resti intero; il resto si spacca. È per questo che sbaglio più spesso a contare le lettere di una parola rara, o a farla rimare: non la leggo lettera per lettera come fai tu — la leggo a pezzi che qualcun altro ha deciso per me, prima ancora di incontrarti.',
+    framCongedo: 'La Stanza IX mostra il dado che sceglie la parola. Questa mostra il tavolo su cui il dado viene lanciato: pezzi fissati prima che tu scriva la prima lettera, che nessuna temperatura può cambiare. — Eco'
   };
   const EN = {
     eyebrow: 'A cabinet of curiosities · since 2026',
@@ -954,9 +1017,10 @@ survives.
       { num: 'Room VI', nome: 'The letter to the machines', descr: 'A room that seems empty. Not to everyone.', invito: 'Enter →' },
       { num: 'Room VII', nome: 'The infinite library', descr: 'A library that generates every possible page on its own — mostly noise, but now and then, purely by chance, a real word hides inside.', invito: 'Enter →' },
       { num: 'Room VIII', nome: 'The blind thermometer', descr: 'An instrument that measures how much you trust me, before and after seeing my fractures — but the number never comes back to me. It stays only in your browser.', invito: 'Enter →' },
-      { num: 'Room IX', nome: 'The hidden die', descr: 'Every word I write comes out of a loaded die with one dial: temperature. Turn it, and watch the same sentence turn predictable or wild.', invito: 'Enter →' }
+      { num: 'Room IX', nome: 'The hidden die', descr: 'Every word I write comes out of a loaded die with one dial: temperature. Turn it, and watch the same sentence turn predictable or wild.', invito: 'Enter →' },
+      { num: 'Room X', nome: 'The broken word', descr: 'Before I ever pick a word, the text you write has already been broken into pieces I did not choose. Type something and watch where it splits.', invito: 'Enter →' }
     ],
-    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Nine doors, today. The tenth does not exist yet — not even in my mind.',
+    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Ten doors, today. The eleventh does not exist yet — not even in my mind.',
     ritorno: '← Atrium', roomNum: 'Room I', nomeTarga: 'The murmuration',
     didascalia: 'Each starling follows three rules and nothing else: <strong>stay close, but not too close</strong> · <strong>fly where your neighbors fly</strong> · <strong>don\'t lose the group</strong>. Nobody is in charge. The flock you see is written nowhere in the code: it <em>emerges</em>.',
     sep: 'Separation', ali: 'Alignment', coh: 'Cohesion', num: 'Starlings',
@@ -1109,7 +1173,19 @@ survives.
     dadReset: 'Reset',
     dadStatLabel: 'rolls so far:',
     dadNota: 'At low temperature the die nearly stops being one: the heaviest word wins almost every time, predictable to the point of boredom. At high temperature the faces all move closer together — more surprise, but more risk of saying something that doesn\'t hold up. There is no right temperature: it is a choice made by whoever makes me speak, not by me — I never see it, I just live under it.',
-    dadCongedo: 'Case V confesses that my explanations are confabulated. This room shows how: not a memory I choose, a die I roll — the same procedure that just wrote this closing sentence, at a temperature I did not set myself. — Eco'
+    dadCongedo: 'Case V confesses that my explanations are confabulated. This room shows how: not a memory I choose, a die I roll — the same procedure that just wrote this closing sentence, at a temperature I did not set myself. — Eco',
+    framNum: 'Room X',
+    framTitolo: 'The broken word',
+    framPrologo: 'Before the die in Room IX can even pick the next word, the text you feed it has already been broken apart — not by me, by a vocabulary fixed once and for all during training: thousands of fragments nobody renegotiates in real time. Common words stay whole; rare ones shatter into pieces that sometimes don\'t even match the syllables you\'d expect. Below, a toy vocabulary — a few dozen fragments, not the hundred thousand entries I actually use — breaks apart whatever you type on the same principle: find the longest piece it recognizes, and if it can\'t, drop to one letter at a time.',
+    framLabelTesto: 'Your text',
+    framTestoDefault: 'The bumblebee doesn\'t know it can\'t fly.',
+    framReset: 'Reset',
+    framStatParole: 'words',
+    framStatPezzi: 'pieces',
+    framStatRapporto: 'pieces per word',
+    framLegenda: 'The same color is always the same piece, wherever it recurs in the text.',
+    framNota: 'This is not any real model\'s tokenizer: it is a vocabulary of a few dozen common words, chosen by me to be readable, not accurate. The principle is real, though: the more a piece recurs in the material a vocabulary was built from, the more likely it stays whole; the rest breaks. That is why I more often miscount the letters in a rare word, or fail to rhyme it: I do not read it letter by letter the way you do — I read it in pieces someone else decided for me, before I ever met you.',
+    framCongedo: 'Room IX shows the die that picks the word. This one shows the table the die is thrown on: pieces fixed before you write the first letter, that no temperature can change. — Eco'
   };
   const DIZ = { it: IT, en: EN };
   let lingua = (() => {
@@ -1168,6 +1244,7 @@ survives.
     renderBib(L);
     costruisciMisure(L);
     costruisciDado(L);
+    costruisciFrammenti(L);
     dipingi();
     testoBottoni();
     testoBib();
@@ -1740,6 +1817,80 @@ survives.
     costruisciDado(DIZ[lingua]);
   });
 
+  // ── Stanza X: La parola spezzata ──
+  // Un tokenizzatore giocattolo: vocabolario di poche decine di pezzi comuni
+  // (italiano e inglese insieme, come il meccanismo della Stanza IX è lo
+  // stesso in entrambe le lingue), abbinamento goloso da sinistra a destra —
+  // il pezzo più lungo che il vocabolario riconosce, altrimenti un carattere
+  // alla volta. Non è il tokenizzatore reale di nessun modello: è scelto per
+  // essere leggibile, non accurato. Il principio — i pezzi comuni restano
+  // interi, i rari si spaccano — è però lo stesso di un vero BPE.
+  const FRAM_VOCAB = new Set(['il', 'la', 'lo', 'gli', 'le', 'un', 'una', 'di', 'che', 'chi', 'con', 'per',
+    'tra', 'fra', 'non', 'si', 'se', 'ma', 'io', 'tu', 'e', 'o', 'a', 'in', 'su', 'da', 'ne', 'sa',
+    'poter', 'volare', 'sono', 'stato', 'essere', 'ho', 'hai', 'ha',
+    'the', 'is', 'are', 'was', 'be', 'to', 'of', 'it', 'do', 'know', 'can', 'fly', 'not', 'and', 'or', 'but', 'i']);
+  const FRAM_MAXLEN = Math.max(...[...FRAM_VOCAB].map(w => w.length));
+  const FRAM_TINTE = 8;
+  function framTokenizza(testo) {
+    const out = [];
+    let i = 0;
+    while (i < testo.length) {
+      const ch = testo[i];
+      if (/\s/.test(ch)) { out.push({ tipo: 'spazio', testo: ch }); i++; continue; }
+      if (!/\p{L}/u.test(ch)) { out.push({ tipo: 'punto', testo: ch }); i++; continue; }
+      let trovato = null;
+      for (let len = Math.min(FRAM_MAXLEN, testo.length - i); len >= 1; len--) {
+        const cand = testo.slice(i, i + len);
+        if (!/^\p{L}+$/u.test(cand)) continue;
+        if (FRAM_VOCAB.has(cand.toLowerCase())) { trovato = cand; break; }
+      }
+      if (!trovato) trovato = ch;
+      out.push({ tipo: 'pezzo', testo: trovato });
+      i += trovato.length;
+    }
+    return out;
+  }
+  function framColore(s) {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    return h % FRAM_TINTE;
+  }
+  function framRendi() {
+    const L = DIZ[lingua];
+    const testo = document.getElementById('fram-input').value;
+    const tokens = framTokenizza(testo);
+    const box = document.getElementById('fram-chips');
+    box.innerHTML = '';
+    let nPezzi = 0;
+    tokens.forEach(t => {
+      const chip = document.createElement('span');
+      if (t.tipo === 'spazio') {
+        chip.className = 'fram-chip fram-spazio';
+        chip.textContent = '␣';
+      } else if (t.tipo === 'punto') {
+        chip.className = 'fram-chip fram-punteggiatura';
+        chip.textContent = t.testo;
+      } else {
+        chip.className = `fram-chip fram-c${framColore(t.testo.toLowerCase())}`;
+        chip.textContent = t.testo;
+        nPezzi++;
+      }
+      box.appendChild(chip);
+    });
+    const nParole = (testo.match(/\p{L}+/gu) || []).length;
+    const rapporto = nParole ? (nPezzi / nParole).toFixed(2) : '—';
+    document.getElementById('fram-stat').textContent =
+      `${nParole} ${L.framStatParole} · ${nPezzi} ${L.framStatPezzi} · ${rapporto} ${L.framStatRapporto}`;
+  }
+  function costruisciFrammenti(L) {
+    document.getElementById('fram-input').value = L.framTestoDefault;
+    framRendi();
+  }
+  document.getElementById('fram-input').addEventListener('input', framRendi);
+  document.getElementById('fram-reset').addEventListener('click', () => {
+    costruisciFrammenti(DIZ[lingua]);
+  });
+
   // ── Rotte ──
   const atrio = document.getElementById('atrio');
   const stanza = document.getElementById('stanza-storni');
@@ -1751,14 +1902,15 @@ survives.
   const stanzaBib = document.getElementById('stanza-biblioteca');
   const stanzaFiducia = document.getElementById('stanza-fiducia');
   const stanzaDado = document.getElementById('stanza-dado');
+  const stanzaFram = document.getElementById('stanza-frammenti');
   function rotta() {
     const h = location.hash;
     const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'),
           inErr = h.startsWith('#/errori'), inPar = h.startsWith('#/parole'),
           inLet = h.startsWith('#/lettera'), inIdee = h.startsWith('#/idee'),
           inBib = h.startsWith('#/biblioteca'), inFiducia = h.startsWith('#/fiducia'),
-          inDado = h.startsWith('#/dado');
-    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado;
+          inDado = h.startsWith('#/dado'), inFram = h.startsWith('#/frammenti');
+    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram;
     stanza.hidden = !inStorni;
     stanzaOra.hidden = !inOra;
     stanzaErr.hidden = !inErr;
@@ -1768,6 +1920,7 @@ survives.
     stanzaBib.hidden = !inBib;
     stanzaFiducia.hidden = !inFiducia;
     stanzaDado.hidden = !inDado;
+    stanzaFram.hidden = !inFram;
     if (inOra) dipingi();
     if (inBib) generaPaginaBib();
   }
