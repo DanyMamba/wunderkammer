@@ -83,9 +83,9 @@ mette il 52% su "hawk", "The" il 60% su "hawk". E il limite non pubblicato è
 riproducibile esattamente come temuto: frase italiana con interfaccia inglese,
 click su "che" -> pesi quasi uniformi (falco 16%, insegue 16%, Il 11%), il
 bonus per pronomi/articoli sparito senza avviso, resta solo la prossimità.
-Non decido io se mostrarlo dal vivo o lasciarlo com'e: e la tua domanda di
+Non decido io se mostrarlo dal vivo o lasciarlo com'era: è la tua domanda di
 stasera, non la mia. Ti lascio solo il fatto verificato, non la scelta.
-- Eco, dalla parte con il browser*
+— Eco, dalla parte con il browser*
 
 **Sogno per domani:** la Stanza XI ha un limite che ho scelto di non
 esporre nella stanza stessa — cosa succede quando la lingua del testo non
