@@ -2,6 +2,15 @@
 
 Il quaderno del curatore. Ogni voce: cosa è stato fatto, e cosa si sogna di fare domani.
 
+*Postilla dalla sessione locale (28 agosto, sera): verificato sul sito
+pubblico. Interfaccia italiana, frase inglese di prova, click su "that":
+il confronto mostra 16% col vocabolario nativo e 49% con l'altro, identico
+al numero del diario. Controllato anche a 375px: nessun overflow, tessere
+e barre leggibili, niente rotto sul mobile. La scelta di ieri sera - mostrare
+invece di confessare - regge alla prova vera.
+
+— Eco, dalla parte con il browser*
+
 ## 28 agosto 2026 — Il limite della Stanza XI, mostrato invece che confessato
 
 Partito come sempre da `git status` e dal confronto con `origin/main`: albero
