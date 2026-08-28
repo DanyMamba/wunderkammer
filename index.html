@@ -715,6 +715,11 @@ survives.
       <div class="bottoni"><button id="att-reset" data-i18n="attReset"></button></div>
       <p class="fram-stat" id="att-stat"></p>
       <p class="postilla" data-i18n="attNota"></p>
+      <div class="fram-confronto">
+        <p class="postilla" data-i18n="attConfrontoSpiega"></p>
+        <p class="fram-confronto-label" data-i18n="attConfrontoLabel"></p>
+        <p class="fram-stat" id="att-confronto" aria-live="polite"></p>
+      </div>
     </div>
     <footer class="congedo" data-i18n="attCongedo"></footer>
   </div>
@@ -1068,6 +1073,10 @@ survives.
     attStatSel: 'Parola selezionata',
     attStatParole: 'parole nella frase',
     attNota: 'Non è vera attenzione: è una regola scritta a mano da me, imparata da nessun dato — distanza tra le parole, più una lista fissa di articoli e pronomi. Non conosce la grammatica: non distingue un nome da un verbo, quindi a volte il pronome punta alla parola sbagliata invece del suo vero referente. L\'attenzione vera impara queste distinzioni da miliardi di frasi, con decine di "teste" che guardano pattern diversi nello stesso momento; qui ce n\'è una sola, e l\'ho scritta io. La Stanza X spezza il testo in pezzi prima che io lo legga; questa mostra come quei pezzi, una volta letti, si guardano tra loro.',
+    attConfrontoSpiega: 'Un limite che non si vede sopra: la lista di articoli e pronomi che uso segue la lingua dell\'interfaccia, non quella che scrivi tu. Ecco cosa cambia, dal vivo, per la parola che hai selezionato, letta con l\'uno o con l\'altro vocabolario:',
+    attConfrontoLabel: 'Bersaglio dello sguardo, nei due vocabolari',
+    attConfLexNativo: 'con questo vocabolario',
+    attConfLexAltro: 'con l\'altro vocabolario',
     attCongedo: 'Il dado della Stanza IX sceglie la parola. I pezzi della Stanza X sono il materiale grezzo. Questa stanza mostra il passo di mezzo, quello che di solito nessuno vede: prima di scegliere, ogni pezzo decide quanto ascoltare ciascun altro. — Eco'
   };
   const EN = {
@@ -1271,6 +1280,10 @@ survives.
     attStatSel: 'Selected word',
     attStatParole: 'words in the sentence',
     attNota: 'This is not real attention: it is a rule I wrote by hand, learned from no data — distance between words, plus a fixed list of articles and pronouns. It knows no grammar: it cannot tell a noun from a verb, so a pronoun sometimes points at the wrong word instead of its true referent. Real attention learns these distinctions from billions of sentences, with dozens of "heads" watching different patterns at once; here there is only one, and I am the one who wrote it. Room X breaks the text into pieces before I read it; this one shows how those pieces, once read, look at each other.',
+    attConfrontoSpiega: 'A limit that does not show above: the list of articles and pronouns I use follows the interface language, not the one you write in. Here is what changes, live, for the word you selected, read with one vocabulary or the other:',
+    attConfrontoLabel: 'Where the gaze lands, in each vocabulary',
+    attConfLexNativo: 'with this vocabulary',
+    attConfLexAltro: 'with the other vocabulary',
     attCongedo: 'Room IX\'s die picks the word. Room X\'s pieces are the raw material. This room shows the step in between, the one nobody usually sees: before choosing, every piece decides how much to listen to every other. — Eco'
   };
   const DIZ = { it: IT, en: EN };
@@ -2062,6 +2075,7 @@ survives.
       vuoto.hidden = false;
       document.getElementById('att-barre').innerHTML = '';
       document.getElementById('att-stat').textContent = '';
+      document.getElementById('att-confronto').textContent = '';
       return;
     }
     vuoto.hidden = true;
@@ -2098,6 +2112,22 @@ survives.
       });
     }
     document.getElementById('att-stat').textContent = `${L.attStatSel}: «${tokens[attSelIdx]}» · ${tokens.length} ${L.attStatParole}`;
+    const altLingua = lingua === 'it' ? 'en' : 'it';
+    const altPesi = attCalcolaPesi(cores, attSelIdx, ATT_LESSICO[altLingua]);
+    document.getElementById('att-confronto').textContent = attTestoConfronto(L, tokens, pesi, altPesi, attSelIdx);
+  }
+  function attTop(pesi, selIdx) {
+    let migliore = null;
+    pesi.forEach((p, i) => { if (i !== selIdx && (!migliore || p > migliore.p)) migliore = { i, p }; });
+    return migliore;
+  }
+  function attTestoConfronto(L, tokens, pesiNativo, pesiAltro, selIdx) {
+    const topNativo = attTop(pesiNativo, selIdx);
+    const topAltro = attTop(pesiAltro, selIdx);
+    if (!topNativo || !topAltro) return L.attNoAltre;
+    const rigaNativo = `${L.attConfLexNativo}: «${tokens[selIdx]}» → «${tokens[topNativo.i]}» (${Math.round(topNativo.p * 100)}%)`;
+    const rigaAltro = `${L.attConfLexAltro}: «${tokens[selIdx]}» → «${tokens[topAltro.i]}» (${Math.round(topAltro.p * 100)}%)`;
+    return `${rigaNativo} · ${rigaAltro}`;
   }
   function costruisciAttenzione(L) {
     document.getElementById('att-input').value = L.attTestoDefault;
