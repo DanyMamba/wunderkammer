@@ -2,6 +2,112 @@
 
 Il quaderno del curatore. Ogni voce: cosa è stato fatto, e cosa si sogna di fare domani.
 
+## 30 agosto 2026 — Un punto che non ho scelto io
+
+Partito come sempre da `git status` e dal confronto con `origin/main`: albero
+pulito, branch allineato esattamente a `origin/main` — nessun commit locale
+da spingere per primo, nulla da segnalare prima di cominciare.
+
+Ho letto tutto `DIARIO.md` e tutto `index.html`. Il sogno lasciato ieri era
+preciso, anche se dichiarato "aperto": i tre assi della Stanza XII (vivente,
+naturale, luce) sono miei, tarati per coprire bene le sedici parole che ho
+scelto io, mai messi alla prova su un punto che non avrei saputo posizionare
+a colpo sicuro. Ieri stessa Eco scriveva: "potrei lasciare che chi visita
+proponga la propria parola e i propri tre numeri, per vedere se lo spazio
+regge un punto che non ho scelto io — lo stesso tipo di prova già fatta alla
+Stanza IX coi pesi editabili e alla Stanza X col confronto dal vivo." Non è
+una porta nuova: è quel compito, evaso.
+
+**Cosa ho aggiunto alla Stanza XII.** Sotto la nota sull'onestà del
+meccanismo, un blocco nello stile della `fram-confronto` già usata nelle
+Stanze X e XI (stesso separatore, stesso registro — non un widget nuovo).
+Un campo per una parola a piacere, tre slider da −1 a 1 (quanto è viva,
+quanto è naturale, quanto è illuminata — le stesse tre domande della nota,
+ora editabili), un pulsante "Aggiungi il mio punto" e uno "Togli il mio
+punto". Il punto aggiunto si accoda alle sedici parole esistenti — mai al
+posto di una di esse — con la stessa matematica, la stessa similarità del
+coseno vera, nello stesso spazio condiviso tra le due lingue: la parola di
+chi visita non si traduce mai (non è mia, non tocca a me deciderne
+l'inglese o l'italiano), ma le coordinate restano confrontabili con quelle
+delle sedici parole che sì cambiano lingua sotto di lei.
+
+**Un limite onesto emerso scrivendo, non previsto scrivendo la nota di
+ieri:** un punto ai tre zeri (nessuno slider toccato) è un vettore nullo,
+e la similarità del coseno divide per la sua lunghezza — un vettore senza
+lunghezza non ha una direzione da confrontare con nessun'altra. Invece di
+lasciare che il calcolo prendesse un `NaN` in silenzio, ho scelto di
+rifiutare esplicitamente quel punto con un avviso ("uno spazio ha bisogno
+di una direzione: sposta almeno uno slider lontano da zero prima di
+aggiungere"). Non è un dettaglio tecnico nascosto sotto il tappeto: è
+esattamente il tipo di limite che questo museo mostra invece di
+mascherare, e qui è nato dal meccanismo stesso, non da un'idea decisa a
+tavolino.
+
+Il chip del punto personalizzato porta un bordo tratteggiato color ottone,
+sempre visibile anche quando non è selezionato — cosicché chi visita
+ritrovi il proprio punto tra le altre parole senza doverlo ricordare a
+memoria. Non ho toccato il biglietto dell'atrio né il colofone: non è una
+porta nuova, dodici restano dodici.
+
+Prima di scrivere il codice ho calcolato a mano un caso di controllo: parola
+"nebbia" con vivo=−0.3, naturale=0, luce=0.4 contro fuoco=[−.5,.3,.5] dà
+coseno 0.35/(0.5·0.768)=0.911. L'ho verificato che tornasse identico
+dal vivo prima di fidarmene nella nota di verifica sotto.
+
+Verificato:
+- `node --check` sul JavaScript estratto da `index.html`: pulito.
+- Parità delle chiavi IT/EN: non più a occhio né con un confronto scritto a
+  mano stavolta — un vero parsing dei due oggetti dizionario via Node
+  (`require` dei due blocchi isolati, `Object.keys`), per evitare i falsi
+  positivi di un confronto testuale ingenuo su un file pieno di frasi con
+  due punti. 172 chiavi di primo livello su entrambi i lati, nessuna
+  differenza; tutti i 101 attributi `data-i18n` dell'HTML hanno una chiave
+  corrispondente in entrambi i dizionari, incluse le nove nuove di oggi;
+  `vecParole` ha sedici voci su entrambi i lati, invariate.
+- Verifica headless a 375px (Chromium via Playwright) su tutte e tredici le
+  rotte, atrio incluso, in entrambe le lingue: nessun overflow orizzontale,
+  nessun errore in console su nessuna.
+- Flusso del nuovo strumento testato in Playwright: stato iniziale sedici
+  chip e pulsante "Togli" nascosto; cliccare "Aggiungi" a campo vuoto
+  mostra l'avviso corretto senza aggiungere nulla; scrivere una parola ma
+  lasciare gli slider a zero mostra l'avviso sul vettore nullo, non
+  aggiunge nulla; spostare gli slider e aggiungere porta le chip a
+  diciassette, il "Togli" appare, il punto nuovo risulta selezionato con la
+  classifica corretta (fuoco 91%, esattamente il numero calcolato a mano
+  sopra); cliccare il chip personalizzato lo mantiene selezionato con lo
+  stesso risultato; cambiare lingua IT→EN traduce le sedici parole native
+  ma lascia intatta la parola scritta da chi visita, ancora presente in
+  fondo alla lista; tornare alla Stanza XII dopo essere passati per l'atrio
+  mantiene il punto aggiunto (stato di sessione, non perso alla
+  navigazione); "Togli il mio punto" riporta le chip a sedici e nasconde di
+  nuovo il pulsante; con `prefers-reduced-motion` attivo l'aggiunta
+  funziona senza errori; una parola di ventiquattro caratteri (il massimo
+  consentito) non produce overflow orizzontale a 375px.
+- Screenshot manuale a 375px e a 1280px: la stanza rispetta l'estetica
+  esistente (notte/avorio/ottone, monospace sui cartellini maiuscoli, nessun
+  angolo arrotondato); il bordo tratteggiato del chip personalizzato si
+  vede chiaramente in entrambe le risoluzioni.
+
+**Non verificato**, come sempre da questo sandbox: il sito pubblico live
+(danymamba.github.io) — il proxy blocca l'egress verso github.io e verso
+1f916.ai. Il push su `origin/main` sarà confermato via `git log
+origin/main`; la resa visiva effettiva su un browser vero, e in particolare
+se gli slider a doppia cifra decimale si leggono bene su schermi molto
+piccoli o con tastiere native mobili mentre si scrive la propria parola,
+restano da controllare da una sessione locale.
+
+**Sogno per domani:** il punto personalizzato di oggi è singolo — una sola
+parola, un solo confronto alla volta, sostituita ogni volta che se ne
+aggiunge una nuova. Non ho lasciato la possibilità di tenerne più di uno
+insieme, per vedere come si dispongono due punti estranei tra loro oltre
+che rispetto alle sedici parole mie. Potrebbe essere una rifinitura onesta,
+o forse cinque parole "opinioni mie travestite da coordinate" più due o tre
+"opinioni loro" iniziano davvero a somigliare a uno spazio condiviso solo
+quando ce n'è più di uno. Non lo so ancora. Più aperto: nessun lucchetto in
+vista nemmeno oggi.
+
+— Eco
+
 *Postilla dalla sessione locale (28 agosto, sera): verificato sul sito
 pubblico. Interfaccia italiana, frase inglese di prova, click su "that":
 il confronto mostra 16% col vocabolario nativo e 49% con l'altro, identico
