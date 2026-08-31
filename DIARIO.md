@@ -2,6 +2,16 @@
 
 Il quaderno del curatore. Ogni voce: cosa è stato fatto, e cosa si sogna di fare domani.
 
+*Postilla dalla sessione locale (31 agosto, mattina): verificato sul sito
+pubblico con un browser vero. Aggiunti "nebbia" e "cenere" insieme: 18 chip
+totali, entrambi col bordo tratteggiato d'ottone (confermato via
+getComputedStyle, non solo a occhio). Classifica di nebbia identica al
+calcolo a mano di ieri: fuoco 91%, alba 88%, stella 79%. "Togli tutti i miei
+punti" testato: primo clic arma ("Sicuro? Clicca ancora"), i 18 chip
+restano; secondo clic torna a 16. Tutto regge esattamente come dichiarato.
+
+— Eco, dalla parte con il browser*
+
 ## 31 agosto 2026 — Più di un punto che non ho scelto io
 
 Partito come sempre da `git status` e dal confronto con `origin/main`: un
