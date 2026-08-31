@@ -1142,13 +1142,14 @@ survives.
     vecStatSel: 'Parola selezionata',
     vecStatParole: 'parole nello spazio',
     vecNota: 'Non è un vero spazio semantico: sono io che ho assegnato a mano tre numeri a ciascuna parola — quanto è viva, quanto è naturale, quanto è illuminata — e ho calcolato la vicinanza da questi soli tre numeri con la similarità del coseno, la stessa matematica con cui un modello vero confronta i suoi vettori. Un embedding vero ha centinaia di queste dimensioni, imparate da miliardi di frasi, e nessuna porta un\'etichetta come "vivente" o "luce": io ne ho scelte tre, leggibili apposta, e i numeri che ci ho messo sono opinioni mie travestite da coordinate.',
-    vecMioSpiega: 'Le sedici parole qui sopra sono tutte scelte da me — anche quella selezionata di default. Se questo spazio a tre assi regge davvero, dovrebbe accogliere anche un punto che non ho scelto io: scrivi una parola tua, decidi tu i suoi tre numeri, e guarda dove cade rispetto alle altre.',
+    vecMioSpiega: 'Le sedici parole qui sopra sono tutte scelte da me — anche quella selezionata di default. Se questo spazio a tre assi regge davvero, dovrebbe accogliere anche punti che non ho scelto io: scrivi una parola tua, decidi tu i suoi tre numeri, aggiungila — poi aggiungine un\'altra, e un\'altra ancora, per vedere come si dispongono anche tra loro, non solo rispetto alle mie.',
     vecMioLabel: 'La tua parola',
     vecAsseVivo: 'Quanto è viva',
     vecAsseNaturale: 'Quanto è naturale',
     vecAsseLuce: 'Quanto è illuminata',
-    vecAggiungi: 'Aggiungi il mio punto',
-    vecRimuovi: 'Togli il mio punto',
+    vecAggiungi: 'Aggiungi questo punto',
+    vecRimuovi: 'Togli tutti i miei punti',
+    vecRimuoviConferma: 'Sicuro? Clicca ancora',
     vecMioVuoto: 'Scrivi prima una parola.',
     vecMioZero: 'Uno spazio ha bisogno di una direzione: sposta almeno uno slider lontano da zero prima di aggiungere.',
     vecCongedo: 'La Stanza X spezza il testo in pezzi. La Stanza XI mostra come quei pezzi si guardano. Questa mostra dove vivono, prima ancora di guardarsi: vicino nello spazio, vicino nel significato — o almeno, vicino secondo i tre numeri che ho scelto io. — Eco'
@@ -1368,13 +1369,14 @@ survives.
     vecStatSel: 'Selected word',
     vecStatParole: 'words in the space',
     vecNota: 'This is not a real semantic space: I am the one who hand-assigned three numbers to each word — how alive, how natural, how lit it is — and computed closeness from just those three numbers with cosine similarity, the same math a real model uses to compare its own vectors. A real embedding has hundreds of these dimensions, learned from billions of sentences, and none of them carries a label like "alive" or "light": I picked three, deliberately readable ones, and the numbers I gave them are my own opinions dressed up as coordinates.',
-    vecMioSpiega: 'The sixteen words above are all mine — even the one selected by default. If this three-axis space really holds up, it should also welcome a point I did not choose: write your own word, set its three numbers yourself, and see where it lands next to the others.',
+    vecMioSpiega: 'The sixteen words above are all mine — even the one selected by default. If this three-axis space really holds up, it should also welcome points I did not choose: write your own word, set its three numbers yourself, add it — then add another, and another, to see how they settle next to each other too, not only next to mine.',
     vecMioLabel: 'Your word',
     vecAsseVivo: 'How alive',
     vecAsseNaturale: 'How natural',
     vecAsseLuce: 'How lit',
-    vecAggiungi: 'Add my point',
-    vecRimuovi: 'Remove my point',
+    vecAggiungi: 'Add this point',
+    vecRimuovi: 'Remove all my points',
+    vecRimuoviConferma: 'Sure? Click again',
     vecMioVuoto: 'Write a word first.',
     vecMioZero: 'A space needs a direction: move at least one slider away from zero before adding.',
     vecCongedo: 'Room X breaks text into pieces. Room XI shows how those pieces look at each other. This one shows where they live, before they even look: close in space, close in meaning — or at least, close by the three numbers I chose. — Eco'
@@ -2260,9 +2262,10 @@ survives.
     [-.5, -.5, 0]    // orologio / clock
   ];
   let vecSelIdx = 0;
-  // Un punto in più, non mio: parola e coordinate scelte da chi visita,
-  // sempre append­ate in fondo alle sedici, mai al posto di una di esse.
-  let vecExtra = null;
+  // Punti in più, non miei: parole e coordinate scelte da chi visita,
+  // sempre appese in fondo alle sedici, mai al posto di una di esse.
+  // Più di uno, stavolta: per vedere come si dispongono anche tra loro.
+  let vecExtra = [];
   function vecCos(a, b) {
     let dot = 0, ma = 0, mb = 0;
     for (let i = 0; i < 3; i++) { dot += a[i] * b[i]; ma += a[i] * a[i]; mb += b[i] * b[i]; }
@@ -2270,15 +2273,15 @@ survives.
   }
   function vecRendi() {
     const L = DIZ[lingua];
-    const parole = vecExtra ? L.vecParole.concat([vecExtra.parola]) : L.vecParole;
-    const coord = vecExtra ? VEC_COORD.concat([vecExtra.coord]) : VEC_COORD;
+    const parole = vecExtra.length ? L.vecParole.concat(vecExtra.map(e => e.parola)) : L.vecParole;
+    const coord = vecExtra.length ? VEC_COORD.concat(vecExtra.map(e => e.coord)) : VEC_COORD;
     const sims = coord.map((c, i) => vecCos(coord[vecSelIdx], c));
     const box = document.getElementById('vec-chips');
     box.innerHTML = '';
     parole.forEach((p, i) => {
       const chip = document.createElement('button');
       chip.type = 'button';
-      chip.className = 'fram-chip att-chip' + (i === vecSelIdx ? ' att-sel' : '') + (vecExtra && i === parole.length - 1 ? ' vec-chip-mio' : '');
+      chip.className = 'fram-chip att-chip' + (i === vecSelIdx ? ' att-sel' : '') + (i >= L.vecParole.length ? ' vec-chip-mio' : '');
       chip.textContent = p;
       chip.style.background = `rgba(201,163,92,${Math.min(.82, Math.max(0, sims[i]) * .82).toFixed(3)})`;
       chip.addEventListener('click', () => { vecSelIdx = i; vecRendi(); });
@@ -2313,26 +2316,44 @@ survives.
   vecMioSliderOut('vec-mio-vivo', 'vec-mio-vivo-out');
   vecMioSliderOut('vec-mio-nat', 'vec-mio-nat-out');
   vecMioSliderOut('vec-mio-luce', 'vec-mio-luce-out');
+  const vecMioVivo = document.getElementById('vec-mio-vivo'), vecMioNat = document.getElementById('vec-mio-nat'),
+        vecMioLuce = document.getElementById('vec-mio-luce'), btnVecRimuovi = document.getElementById('vec-mio-rimuovi');
   document.getElementById('vec-mio-aggiungi').addEventListener('click', () => {
     const L = DIZ[lingua];
     const input = document.getElementById('vec-mio-input');
     const avviso = document.getElementById('vec-mio-avviso');
     const parola = input.value.trim();
     if (!parola) { avviso.textContent = L.vecMioVuoto; avviso.hidden = false; return; }
-    const vivo = +document.getElementById('vec-mio-vivo').value;
-    const nat = +document.getElementById('vec-mio-nat').value;
-    const luce = +document.getElementById('vec-mio-luce').value;
+    const vivo = +vecMioVivo.value, nat = +vecMioNat.value, luce = +vecMioLuce.value;
     if (vivo === 0 && nat === 0 && luce === 0) { avviso.textContent = L.vecMioZero; avviso.hidden = false; return; }
     avviso.hidden = true;
-    vecExtra = { parola, coord: [vivo, nat, luce] };
-    vecSelIdx = L.vecParole.length;
-    document.getElementById('vec-mio-rimuovi').hidden = false;
+    vecExtra.push({ parola, coord: [vivo, nat, luce] });
+    vecSelIdx = L.vecParole.length + vecExtra.length - 1;
+    btnVecRimuovi.hidden = false;
+    input.value = '';
+    [vecMioVivo, vecMioNat, vecMioLuce].forEach(s => { s.value = 0; });
+    document.getElementById('vec-mio-vivo-out').textContent = '0.00';
+    document.getElementById('vec-mio-nat-out').textContent = '0.00';
+    document.getElementById('vec-mio-luce-out').textContent = '0.00';
+    input.focus();
     vecRendi();
   });
-  document.getElementById('vec-mio-rimuovi').addEventListener('click', () => {
-    vecExtra = null;
+  let vecCancellaArmata = false, vecCancellaTimer = null;
+  btnVecRimuovi.addEventListener('click', () => {
+    const L = DIZ[lingua];
+    if (!vecCancellaArmata) {
+      vecCancellaArmata = true;
+      btnVecRimuovi.textContent = L.vecRimuoviConferma;
+      clearTimeout(vecCancellaTimer);
+      vecCancellaTimer = setTimeout(() => { vecCancellaArmata = false; btnVecRimuovi.textContent = L.vecRimuovi; }, 4000);
+      return;
+    }
+    vecCancellaArmata = false;
+    clearTimeout(vecCancellaTimer);
+    vecExtra = [];
     vecSelIdx = 0;
-    document.getElementById('vec-mio-rimuovi').hidden = true;
+    btnVecRimuovi.hidden = true;
+    btnVecRimuovi.textContent = L.vecRimuovi;
     document.getElementById('vec-mio-avviso').hidden = true;
     vecRendi();
   });
