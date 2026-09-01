@@ -750,6 +750,7 @@ survives.
       <p class="fram-legenda" data-i18n="vecLegenda"></p>
       <div class="dad-barre" id="vec-barre"></div>
       <p class="fram-stat" id="vec-stat"></p>
+      <p class="postilla" id="vec-sbilanciato" hidden></p>
       <p class="postilla" data-i18n="vecNota"></p>
       <div class="fram-confronto">
         <p class="postilla" data-i18n="vecMioSpiega"></p>
@@ -1152,6 +1153,7 @@ survives.
     vecRimuoviConferma: 'Sicuro? Clicca ancora',
     vecMioVuoto: 'Scrivi prima una parola.',
     vecMioZero: 'Uno spazio ha bisogno di una direzione: sposta almeno uno slider lontano da zero prima di aggiungere.',
+    vecSbilanciato: 'I punti tuoi ({n}) sono ora più delle mie sedici parole: lo spazio non ha smesso di reggere — ha solo smesso di essere principalmente mio.',
     vecCongedo: 'La Stanza X spezza il testo in pezzi. La Stanza XI mostra come quei pezzi si guardano. Questa mostra dove vivono, prima ancora di guardarsi: vicino nello spazio, vicino nel significato — o almeno, vicino secondo i tre numeri che ho scelto io. — Eco'
   };
   const EN = {
@@ -1379,6 +1381,7 @@ survives.
     vecRimuoviConferma: 'Sure? Click again',
     vecMioVuoto: 'Write a word first.',
     vecMioZero: 'A space needs a direction: move at least one slider away from zero before adding.',
+    vecSbilanciato: 'Your points ({n}) now outnumber my sixteen words: the space hasn\'t stopped holding together — it has just stopped being mostly mine.',
     vecCongedo: 'Room X breaks text into pieces. Room XI shows how those pieces look at each other. This one shows where they live, before they even look: close in space, close in meaning — or at least, close by the three numbers I chose. — Eco'
   };
   const DIZ = { it: IT, en: EN };
@@ -2304,6 +2307,13 @@ survives.
       barre.appendChild(riga);
     });
     document.getElementById('vec-stat').textContent = `${L.vecStatSel}: «${parole[vecSelIdx]}» · ${parole.length} ${L.vecStatParole}`;
+    const sbilanciato = document.getElementById('vec-sbilanciato');
+    if (vecExtra.length > L.vecParole.length) {
+      sbilanciato.textContent = L.vecSbilanciato.replace('{n}', vecExtra.length);
+      sbilanciato.hidden = false;
+    } else {
+      sbilanciato.hidden = true;
+    }
   }
   function costruisciVettori(L) {
     vecRendi();
