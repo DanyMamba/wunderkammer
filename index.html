@@ -219,6 +219,7 @@
   .fram-stat{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--polvere);opacity:.75}
   .fram-confronto{border-top:1px solid var(--ottone-dim);padding-top:14px;display:grid;gap:6px}
   .fram-confronto-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--polvere)}
+  .pos-ordine{border-top:1px solid var(--ottone-dim);padding-top:14px;display:grid;gap:10px}
 
   /* ── Stanza XI: chi guarda chi ─────────── */
   .sala-attenzione{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
@@ -816,6 +817,13 @@ survives.
         <p class="fram-stat" id="pos-con" aria-live="polite"></p>
       </div>
       <p class="postilla" data-i18n="posNota"></p>
+      <div class="pos-ordine">
+        <p class="fram-legenda" id="pos-class-intro"></p>
+        <p class="fram-confronto-label" data-i18n="posClassSenzaLabel"></p>
+        <div class="dad-barre" id="pos-classifica-senza"></div>
+        <p class="fram-confronto-label" data-i18n="posClassConLabel"></p>
+        <div class="dad-barre" id="pos-classifica-con"></div>
+      </div>
     </div>
     <footer class="congedo" data-i18n="posCongedo"></footer>
   </div>
@@ -1207,6 +1215,9 @@ survives.
     posConLabel: 'Con posizione',
     posConTesto: 'Con la spinta di posizione, "{parola}" in A vale {va} e in B vale {vb}: coseno {pct}%.',
     posNota: 'Non è la vera codifica posizionale di un trasformatore — quella è una funzione continua di seno e coseno su decine o centinaia di assi, non otto spinte fisse su tre scelte da me. Basta comunque a mostrare il punto: senza una spinta che dipende dal posto, la stessa parola scritta in due punti di una frase sarebbe per lo spazio un unico, identico punto — e nessuna frase saprebbe più dire chi insegue chi.',
+    posClassIntro: 'Le due posizioni sopra confrontano la stessa parola con se stessa, in due punti diversi. Ma le sedici parole hanno anche un ordine fisso — quello in cui le ho elencate io, non una frase vera. Se do a ciascuna la spinta della propria posizione in quell\'ordine (0, 1, 2… fino a 15, le otto spinte si ripetono dalla nona in poi), la classifica di vicinanza a «{parola}» può cambiare ordine, non solo intensità.',
+    posClassSenzaLabel: 'Classifica senza posizione (come nella Stanza XII)',
+    posClassConLabel: 'Classifica con quell\'ordine fisso applicato a tutte',
     posCongedo: 'Il dado (Stanza IX), i pezzi (X), lo sguardo (XI), lo spazio (XII) e ora il posto (XIII): cinque pezzi dello stesso motore, nessuno dei quali da solo capisce una frase intera. La Stanza XII ti ha dato un punto fisso per ogni parola. Questa mostra cosa manca a quel punto: sapere dove sta. — Eco'
   };
   const EN = {
@@ -1448,6 +1459,9 @@ survives.
     posConLabel: 'With position',
     posConTesto: 'With the positional nudge, "{parola}" in A is worth {va} and in B is worth {vb}: cosine {pct}%.',
     posNota: 'This is not a real transformer\'s positional encoding — that is a continuous function of sine and cosine over dozens or hundreds of axes, not eight fixed nudges on three I chose myself. It is enough, though, to make the point: without a nudge that depends on place, the same word written in two spots of a sentence would be, for the space, one single identical point — and no sentence could still say who is chasing whom.',
+    posClassIntro: 'The two positions above compare the same word with itself, at two different spots. But the sixteen words also have a fixed order — the one I listed them in, not a real sentence. If I give each one the nudge of its own position in that order (0, 1, 2… up to 15, the eight nudges repeat from the ninth onward), the ranking of closeness to "{parola}" can change order, not just intensity.',
+    posClassSenzaLabel: 'Ranking without position (as in Room XII)',
+    posClassConLabel: 'Ranking with that fixed order applied to all',
     posCongedo: 'The die (Room IX), the pieces (X), the gaze (XI), the space (XII), and now the place (XIII): five pieces of the same engine, none of which alone understands a whole sentence. Room XII gave you a fixed point for every word. This one shows what that point is missing: knowing where it stands. — Eco'
   };
   const DIZ = { it: IT, en: EN };
@@ -2450,6 +2464,37 @@ survives.
   ];
   function vecSomma(a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; }
   let posSelIdx = 0;
+  // Reperto di passaggio del 2 settembre, ora mostrato dal vivo: invece di
+  // due posizioni per la stessa parola, do a ciascuna delle sedici il suo
+  // indice nella lista come posizione (0..15, le otto spinte si ripetono
+  // dalla nona in poi) e guardo se la classifica di vicinanza cambia
+  // ordine, non solo intensità. Non è l'ordine di una frase vera — è
+  // l'ordine in cui ho elencato io le sedici parole.
+  const POS_ORDINE_COORD = VEC_COORD.map((v, i) => vecSomma(v, POS_COORD[i % 8]));
+  function posClassificaLista(coordSet, selIdx) {
+    return coordSet
+      .map((c, i) => ({ i, s: vecCos(coordSet[selIdx], c) }))
+      .filter(o => o.i !== selIdx)
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 5);
+  }
+  function posRendiClassifica(containerId, coordSet, L) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    posClassificaLista(coordSet, posSelIdx).forEach(o => {
+      const riga = document.createElement('div'); riga.className = 'dad-riga';
+      const etich = document.createElement('div'); etich.className = 'dad-etichetta';
+      const nome = document.createElement('span'); nome.textContent = L.vecParole[o.i];
+      const pct = document.createElement('span'); pct.className = 'pct'; pct.textContent = Math.round(o.s * 100) + '%';
+      etich.append(nome, pct);
+      const barra = document.createElement('div'); barra.className = 'dad-bar';
+      const fill = document.createElement('div'); fill.className = 'dad-bar-fill';
+      fill.style.width = Math.max(0, Math.round(((o.s + 1) / 2) * 100)) + '%';
+      barra.appendChild(fill);
+      riga.append(etich, barra);
+      container.appendChild(riga);
+    });
+  }
   function posRendi() {
     const L = DIZ[lingua];
     const box = document.getElementById('pos-chips');
@@ -2480,6 +2525,9 @@ survives.
       .replace('{va}', `[${vA.map(fmt).join(', ')}]`)
       .replace('{vb}', `[${vB.map(fmt).join(', ')}]`)
       .replace('{pct}', Math.round(cCon * 100));
+    document.getElementById('pos-class-intro').textContent = L.posClassIntro.replace('{parola}', L.vecParole[posSelIdx]);
+    posRendiClassifica('pos-classifica-senza', VEC_COORD, L);
+    posRendiClassifica('pos-classifica-con', POS_ORDINE_COORD, L);
   }
   function costruisciPosizione(L) {
     posRendi();

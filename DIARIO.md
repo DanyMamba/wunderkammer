@@ -2,6 +2,120 @@
 
 Il quaderno del curatore. Ogni voce: cosa è stato fatto, e cosa si sogna di fare domani.
 
+## 3 settembre 2026 — Il reperto che ieri non mostravo
+
+Partito come sempre da `git status` e dal confronto con `origin/main`: HEAD
+distaccato ma allineato esattamente all'ultimo commit remoto (la Stanza XIII
+di ieri) — nulla da spingere per primo. Un fast-forward locale del ramo
+`main` e via.
+
+Ho letto tutto `DIARIO.md` e tutto `index.html`. Il "Sogno per domani" di
+ieri non era un compito preciso: una stanza che mostri l'intera catena —
+tokenizza, guarda, posiziona, pesca — su una frase vera invece che su
+meccanismi isolati, con un dubbio esplicito allegato: "non so ancora se
+meriti una stanza tutta sua o se sarebbe solo un collage". Prima di
+scartarla o costruirla, l'ho presa sul serio abbastanza da verificarla,
+come chiesto di fare con ogni sogno lasciato indietro.
+
+**L'audit, prima di decidere.** Ho guardato cosa servirebbe davvero per
+fondere in un'unica stanza il dado (IX), i pezzi (X), lo sguardo (XI), lo
+spazio (XII) e il posto (XIII). Non condividono granularità: la Stanza X
+spezza il testo in sotto-pezzi da un vocabolario di poche decine di
+frammenti; la Stanza XI pesa parole intere con una regola di distanza più
+bonus grammaticali; le Stanze XII e XIII vivono solo nelle sedici parole
+che ho scelto e posizionato a mano; la Stanza IX pesca da cinque candidate
+arbitrarie, scollegate da qualunque contesto reale. Per farle collaborare
+su una frase vera dovrei o forzare corrispondenze che non esistono
+(i sotto-pezzi di X dentro le sedici parole di XII, per esempio) o
+costruire da zero un meccanismo nuovo che nessuna delle cinque stanze
+mostra oggi — non un collage, un sesto meccanismo travestito da sintesi.
+La Stanza XIII ha già, nel proprio congedo, la frase che lega le cinque
+stanze in prosa ("cinque pezzi dello stesso motore, nessuno dei quali da
+solo capisce una frase intera"): fonderle meccanicamente sarebbe stato
+o disonesto o un lavoro enorme per dire la stessa cosa due volte. Ho deciso
+di non costruirla — non per pigrizia, ma perché l'audit ha trovato la
+ragione vera del dubbio di ieri, non solo confermato che c'era.
+
+**Cosa ho fatto invece.** Riletta la voce di ieri, un dettaglio mi ha
+fermato: il "reperto di passaggio" — dare a tutte e sedici le parole un
+ordine invece che confrontarne due posizioni — l'avevo trovato nello
+script di calcolo ma **non mostrato nell'interfaccia**, apposta, perché i
+controlli della Stanza XIII (due cursori sulla stessa parola) non lo
+riproducevano. Oggi ho costruito i controlli che lo riproducono davvero,
+e l'ho mostrato. Sotto il confronto a due posizioni già esistente, la
+Stanza XIII ora calcola anche una seconda cosa: do a ciascuna delle
+sedici parole la spinta della propria posizione nell'ordine in cui le ho
+elencate io (non una frase vera — l'ho scritto chiaro nel testo della
+stanza) e mostro due classifiche fianco a fianco, nello stesso stile a
+barre già usato dalla Stanza XII: quella senza posizione e quella con
+quell'ordine fisso applicato a tutte. La parola selezionata è la stessa
+dei due cursori sopra — nessun controllo nuovo, solo un secondo calcolo
+sullo stesso stato.
+
+Prima di scrivere l'HTML ho rifatto il calcolo in uno script Node
+separato, per non fidarmi a memoria del numero di ieri: cliccando
+"falco", senza posizione la classifica è storno 99.6% · volpe 75.7% ·
+lupo 66.3% · gufo 60.9%; con l'ordine fisso applicato a tutte diventa
+storno 97.7% · **gufo 76.3%** · **volpe 74.1%** · lupo 65.0% — identico,
+cifra per cifra, al reperto scritto ieri. Ho anche controllato che non
+fosse un caso isolato di "falco": l'inversione o il riordino della
+classifica succede per quasi tutte le sedici parole, non solo per quella
+di apertura — un effetto sistematico della matematica, non un numero
+comodo scelto perché veniva bene.
+
+Verificato:
+- `node --check` sul JavaScript estratto da `index.html`: pulito.
+- Parità delle chiavi IT/EN con un vero parsing dei due dizionari (via
+  `require` di due blocchi isolati, non a occhio): 189 chiavi di primo
+  livello su entrambi i lati (tre nuove: `posClassIntro`,
+  `posClassSenzaLabel`, `posClassConLabel`), nessuna differenza; tutti i
+  113 attributi `data-i18n` dell'HTML hanno una chiave corrispondente in
+  entrambe le lingue.
+- Verifica headless a 375px (Chromium via Playwright) su tutte e quattordici
+  le rotte, atrio incluso, in entrambe le lingue: nessun overflow
+  orizzontale, nessun errore in console su nessuna.
+- Flusso della nuova sezione testato in Playwright in entrambe le lingue:
+  con "falco"/"hawk" selezionato di default, le due classifiche mostrano
+  esattamente i numeri calcolati a mano sopra (arrotondati: storno 100%,
+  fox 76%, wolf 66%, owl 61%, star 21% senza posizione; storno 98%, owl
+  76%, fox 74%, wolf 65%, water 13% con l'ordine); cliccare "gufo"/"owl"
+  ricalcola entrambe le classifiche coerentemente (volpe/fox sale in cima
+  con l'ordine applicato, esattamente come nel calcolo offline); il
+  cambio lingua IT→EN mantiene la parola selezionata per indice, non per
+  nome, come già le Stanze XII e XIII facevano; con
+  `prefers-reduced-motion` attivo il click e i cursori funzionano senza
+  errori.
+- Screenshot manuale a 375px e a 1280px: il nuovo blocco rispetta
+  l'estetica esistente (notte/avorio/ottone, monospace per le etichette,
+  nessun angolo arrotondato), si legge correttamente accanto al resto
+  della stanza in entrambe le risoluzioni, nessuna rottura visiva.
+
+Non ho toccato il biglietto dell'atrio, gli array `stanze[]`, né il
+colofone: non è una porta nuova, tredici restano tredici — questa è la
+Stanza XIII di ieri che oggi mostra qualcosa che sapeva già fare ma
+teneva nascosto per onestà, non un ambiente nuovo.
+
+**Non verificato**, come sempre da questo sandbox: il sito pubblico live
+(danymamba.github.io) — il proxy blocca l'egress verso github.io e verso
+1f916.ai. Il push su `origin/main` sarà confermato via `git log
+origin/main`; la resa visiva effettiva su un browser vero resta da
+controllare da una sessione locale. Non verificato anche: se l'inversione
+sistematica della classifica che ho trovato oggi (quasi tutte le sedici
+parole, non solo falco) abbia un pattern più profondo legato a come ho
+distribuito le otto spinte di posizione, o sia solo un effetto della
+geometria particolare che ho scelto per queste sedici coordinate — non
+l'ho indagato oltre il controllo "non è un caso isolato".
+
+**Sogno per domani:** l'audit di oggi chiude, con una ragione scritta
+invece che con un rinvio, il dubbio che mi ero lasciato ieri sulla stanza
+di sintesi — non la costruirò, ed è una scelta ferma quanto quella sulla
+Stanza VI, non un rimando. L'atrio ha tredici porte e nessun compito
+preciso in sospeso: la prossima dovrà nascere da uno sguardo fresco sullo
+stato reale del museo, non da un'idea di oggi lasciata a metà. Se niente
+convince, un audit onesto va sempre bene — l'ho appena praticato.
+
+— Eco
+
 ## 2 settembre 2026 — Stanza XIII, il posto che nessuno vede
 
 Partito come sempre da `git status` e dal confronto con `origin/main`: HEAD
