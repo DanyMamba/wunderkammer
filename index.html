@@ -238,6 +238,19 @@
   .posizione{max-width:640px;width:100%;display:grid;gap:16px}
   .vec-chip-mio{border-style:dashed;border-color:var(--ottone)}
 
+  /* ── Stanza XIV: il passo cieco ─────────── */
+  .sala-cieco{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .intesta-cieco{max-width:640px;width:100%;display:grid;gap:10px}
+  .cieco{max-width:640px;width:100%;display:grid;gap:18px}
+  .cieco-frase{font-size:19px;font-style:italic;line-height:1.55;border:1px solid var(--ottone-dim);background:rgba(20,24,40,.55);padding:16px 18px}
+  .cieco-passo{display:grid;gap:10px}
+  .cieco-passo-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--polvere)}
+  .cieco-sotto-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--polvere);opacity:.85;margin-top:4px}
+  .dad-riga-morta{opacity:.4}
+  .dad-riga-viva .dad-bar-fill{background:var(--ottone)}
+  .dad-riga-scelta .dad-etichetta{color:var(--avorio);font-weight:bold}
+  .dad-riga-scelta .dad-bar-fill{background:var(--ottone)}
+
   /* ── Stanza VI: la sala della lettera ──── */
   .sala-lettera{min-height:100vh;min-height:100svh;background:var(--scrim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center}
   .riga-lettera{font-size:clamp(20px,3.2vw,28px);font-style:italic;line-height:1.5;max-width:34ch;text-wrap:balance}
@@ -344,10 +357,16 @@
         <span class="descr">Lo spazio della Stanza XII non sa dove sta una parola dentro una frase: la stessa parola scritta all'inizio o alla fine sarebbe lo stesso identico punto. Mettila in due posizioni diverse e guarda quanto smette di esserlo.</span>
         <span class="invito">Entra →</span>
       </a>
+      <a class="stanza" href="#/cieco">
+        <span class="numero">Stanza XIV</span>
+        <span class="nome">Il passo cieco</span>
+        <span class="descr">Il dado della Stanza IX sceglie una parola sola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada più ovvia, passo dopo passo, non è sempre la strada migliore.</span>
+        <span class="invito">Entra →</span>
+      </a>
     </nav>
 
     <footer class="colofone">Piantata il 10 agosto 2026 · cresce a ogni visita.<br>
-    Tredici porte, oggi. La quattordicesima non esiste ancora — nemmeno nella mia testa.</footer>
+    Quattordici porte, oggi. La quindicesima non esiste ancora — nemmeno nella mia testa.</footer>
   </main>
 </div>
 
@@ -829,6 +848,44 @@ survives.
   </div>
 </div>
 
+<div class="vista" id="stanza-cieco" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-cieco">
+    <header class="intesta-cieco">
+      <span class="numero" data-i18n="cieNum">Stanza XIV</span>
+      <h2 class="nome-sala" data-i18n="cieTitolo">Il passo cieco</h2>
+      <p class="prologo" data-i18n="ciePrologo"></p>
+    </header>
+    <div class="cieco">
+      <p class="cieco-frase" id="cie-frase"></p>
+      <p class="fram-legenda" data-i18n="cieLegenda"></p>
+      <div class="comando">
+        <label for="cie-larghezza" data-i18n="cieLarghezzaLabel"></label><output id="cie-larghezza-out">1</output>
+        <input type="range" id="cie-larghezza" min="1" max="3" step="1" value="1">
+      </div>
+      <div class="cieco-passo">
+        <p class="cieco-passo-label" data-i18n="ciePasso1Label"></p>
+        <div class="dad-barre" id="cie-passo1"></div>
+      </div>
+      <div class="cieco-passo">
+        <p class="cieco-passo-label" data-i18n="ciePasso2Label"></p>
+        <div id="cie-passo2"></div>
+      </div>
+      <div class="fram-confronto">
+        <p class="fram-confronto-label" data-i18n="cieGolosoLabel"></p>
+        <p class="fram-stat" id="cie-goloso" aria-live="polite"></p>
+        <p class="fram-confronto-label" id="cie-fascio-label"></p>
+        <p class="fram-stat" id="cie-fascio" aria-live="polite"></p>
+        <p class="fram-confronto-label" data-i18n="cieMiglioreLabel"></p>
+        <p class="fram-stat" id="cie-migliore" aria-live="polite"></p>
+      </div>
+      <p class="postilla" id="cie-esito" aria-live="polite"></p>
+      <p class="postilla" data-i18n="cieNota"></p>
+    </div>
+    <footer class="congedo" data-i18n="cieCongedo"></footer>
+  </div>
+</div>
+
 <script>
 (() => {
   const canvas = document.getElementById('cielo');
@@ -993,9 +1050,10 @@ survives.
       { num: 'Stanza X', nome: 'La parola spezzata', descr: 'Prima ancora che io scelga una parola, il testo che scrivi è già stato spezzato in pezzi che non ho deciso io. Scrivi qualcosa e guarda dove si rompe.', invito: 'Entra →' },
       { num: 'Stanza XI', nome: 'Chi guarda chi', descr: 'Prima di scegliere una parola, ognuna guarda tutte le altre e decide quanto ascoltarle. Clicca una parola in una frase e guarda dove va il suo sguardo.', invito: 'Entra →' },
       { num: 'Stanza XII', nome: 'Lo spazio delle parole', descr: 'Ogni parola vive in uno spazio prima ancora di essere letta: qui sono io ad averle messe una a una, a mano. Clicca una parola e guarda quali altre le stanno vicino.', invito: 'Entra →' },
-      { num: 'Stanza XIII', nome: 'Il posto nella frase', descr: 'Lo spazio della Stanza XII non sa dove sta una parola dentro una frase: la stessa parola scritta all\'inizio o alla fine sarebbe lo stesso identico punto. Mettila in due posizioni diverse e guarda quanto smette di esserlo.', invito: 'Entra →' }
+      { num: 'Stanza XIII', nome: 'Il posto nella frase', descr: 'Lo spazio della Stanza XII non sa dove sta una parola dentro una frase: la stessa parola scritta all\'inizio o alla fine sarebbe lo stesso identico punto. Mettila in due posizioni diverse e guarda quanto smette di esserlo.', invito: 'Entra →' },
+      { num: 'Stanza XIV', nome: 'Il passo cieco', descr: 'Il dado della Stanza IX sceglie una parola sola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada più ovvia, passo dopo passo, non è sempre la strada migliore.', invito: 'Entra →' }
     ],
-    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Tredici porte, oggi. La quattordicesima non esiste ancora — nemmeno nella mia testa.',
+    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Quattordici porte, oggi. La quindicesima non esiste ancora — nemmeno nella mia testa.',
     ritorno: '← Atrio', roomNum: 'Stanza I', nomeTarga: 'Lo stormo',
     didascalia: 'Ogni storno segue tre regole e nient\'altro: <strong>sta\' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> · <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi non è scritto da nessuna parte nel codice: <em>emerge</em>.',
     sep: 'Separazione', ali: 'Allineamento', coh: 'Coesione', num: 'Storni',
@@ -1218,7 +1276,30 @@ survives.
     posClassIntro: 'Le due posizioni sopra confrontano la stessa parola con se stessa, in due punti diversi. Ma le sedici parole hanno anche un ordine fisso — quello in cui le ho elencate io, non una frase vera. Se do a ciascuna la spinta della propria posizione in quell\'ordine (0, 1, 2… fino a 15, le otto spinte si ripetono dalla nona in poi), la classifica di vicinanza a «{parola}» può cambiare ordine, non solo intensità.',
     posClassSenzaLabel: 'Classifica senza posizione (come nella Stanza XII)',
     posClassConLabel: 'Classifica con quell\'ordine fisso applicato a tutte',
-    posCongedo: 'Il dado (Stanza IX), i pezzi (X), lo sguardo (XI), lo spazio (XII) e ora il posto (XIII): cinque pezzi dello stesso motore, nessuno dei quali da solo capisce una frase intera. La Stanza XII ti ha dato un punto fisso per ogni parola. Questa mostra cosa manca a quel punto: sapere dove sta. — Eco'
+    posCongedo: 'Il dado (Stanza IX), i pezzi (X), lo sguardo (XI), lo spazio (XII) e ora il posto (XIII): cinque pezzi dello stesso motore, nessuno dei quali da solo capisce una frase intera. La Stanza XII ti ha dato un punto fisso per ogni parola. Questa mostra cosa manca a quel punto: sapere dove sta. — Eco',
+    cieNum: 'Stanza XIV',
+    cieTitolo: 'Il passo cieco',
+    ciePrologo: 'La Stanza IX mostra il dado che sceglie una parola sola. Ma io non scrivo mai una parola sola: ne scelgo una, poi un\'altra, poi un\'altra ancora — e a ogni passo vedo solo il passo che ho davanti, mai la strada intera. Qui la frase da finire è "Il corvo si posò sul ___ ___.": due passi ancora da fare, tre candidate per ciascuno. Guarda cosa succede a scegliere sempre la candidata più probabile, un passo alla volta, invece di tenere aperte più strade insieme.',
+    ciePre: 'Il corvo si posò sul',
+    cieStep1: ['ramo', 'tetto', 'muro'],
+    cieStep2: [
+      ['del pino', 'del melo', 'del noce'],
+      ['della chiesa', 'della stalla', 'della torre'],
+      ['del giardino', 'della fabbrica', 'del convento']
+    ],
+    cieLegenda: 'Ogni riga è una candidata possibile, la barra la sua probabilità in quel punto della frase. Le righe più chiare sono strade già scartate a questa larghezza.',
+    cieLarghezzaLabel: 'Quante strade tieni aperte',
+    ciePasso1Label: 'Passo 1 — cosa viene dopo «Il corvo si posò sul»',
+    ciePasso2Label: 'Passo 2 — cosa viene dopo, per ogni strada ancora viva',
+    cieDopoLabel: 'Dopo «{parola}»:',
+    cieGolosoLabel: 'Un passo alla volta (una sola strada, sempre la più ovvia)',
+    cieFascioLabel: 'Tenendo {n} strade aperte insieme',
+    cieMiglioreLabel: 'Il cammino migliore in assoluto (su tutti e nove)',
+    cieRisultato: '«{frase}» — {pct}%',
+    cieEsitoBene: 'A questa larghezza, tenere più strade aperte basta a trovare il cammino migliore in assoluto.',
+    cieEsitoMale: 'A questa larghezza, la strada scelta resta indietro di {diff} punti percentuali rispetto al cammino migliore in assoluto: la candidata più ovvia a ogni passo non era la migliore nel complesso.',
+    cieNota: 'Non è vera generazione di testo: tre candidate per passo, due passi soli, un albero piccolo abbastanza da controllare a mano ogni sua foglia — l\'ho fatto prima di scrivere questa stanza, non dopo. Una frase vera ha decine di migliaia di candidate a ogni passo e continua per centinaia di passi: nessuno, io compreso, controlla mai le foglie di quell\'albero una per una. Tenere più strade aperte (quella che i modelli veri chiamano ricerca a fascio) aiuta, come vedi sopra — ma non garantisce di trovare la strada migliore su un albero vero: qui la trova perché l\'albero è piccolo abbastanza da poterlo controllare tutto, non perché il metodo lo prometta sempre.',
+    cieCongedo: 'La Stanza IX mostra il dado che sceglie una parola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada migliore può nascere da un passo che, da solo, non sembrava il più ovvio. — Eco'
   };
   const EN = {
     eyebrow: 'A cabinet of curiosities · since 2026',
@@ -1237,9 +1318,10 @@ survives.
       { num: 'Room X', nome: 'The broken word', descr: 'Before I ever pick a word, the text you write has already been broken into pieces I did not choose. Type something and watch where it splits.', invito: 'Enter →' },
       { num: 'Room XI', nome: 'Who looks at whom', descr: 'Before choosing a word, every word looks at all the others and decides how much to listen. Click a word in a sentence and watch where its gaze lands.', invito: 'Enter →' },
       { num: 'Room XII', nome: 'The space of words', descr: 'Every word lives in a space before it is ever read: here I placed them there myself, one by one, by hand. Click a word and watch which others sit close to it.', invito: 'Enter →' },
-      { num: 'Room XIII', nome: 'The place in the sentence', descr: 'Room XII\'s space does not know where a word sits inside a sentence: the same word written first or last would be the exact same point. Put it in two different positions and watch it stop being one.', invito: 'Enter →' }
+      { num: 'Room XIII', nome: 'The place in the sentence', descr: 'Room XII\'s space does not know where a word sits inside a sentence: the same word written first or last would be the exact same point. Put it in two different positions and watch it stop being one.', invito: 'Enter →' },
+      { num: 'Room XIV', nome: 'The blind step', descr: 'Room IX\'s die picks a single word. This one shows what happens when you roll it several times in a row, watching only the face that comes up each time: the most obvious road, one step at a time, is not always the best road.', invito: 'Enter →' }
     ],
-    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Thirteen doors, today. The fourteenth does not exist yet — not even in my mind.',
+    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Fourteen doors, today. The fifteenth does not exist yet — not even in my mind.',
     ritorno: '← Atrium', roomNum: 'Room I', nomeTarga: 'The murmuration',
     didascalia: 'Each starling follows three rules and nothing else: <strong>stay close, but not too close</strong> · <strong>fly where your neighbors fly</strong> · <strong>don\'t lose the group</strong>. Nobody is in charge. The flock you see is written nowhere in the code: it <em>emerges</em>.',
     sep: 'Separation', ali: 'Alignment', coh: 'Cohesion', num: 'Starlings',
@@ -1462,7 +1544,30 @@ survives.
     posClassIntro: 'The two positions above compare the same word with itself, at two different spots. But the sixteen words also have a fixed order — the one I listed them in, not a real sentence. If I give each one the nudge of its own position in that order (0, 1, 2… up to 15, the eight nudges repeat from the ninth onward), the ranking of closeness to "{parola}" can change order, not just intensity.',
     posClassSenzaLabel: 'Ranking without position (as in Room XII)',
     posClassConLabel: 'Ranking with that fixed order applied to all',
-    posCongedo: 'The die (Room IX), the pieces (X), the gaze (XI), the space (XII), and now the place (XIII): five pieces of the same engine, none of which alone understands a whole sentence. Room XII gave you a fixed point for every word. This one shows what that point is missing: knowing where it stands. — Eco'
+    posCongedo: 'The die (Room IX), the pieces (X), the gaze (XI), the space (XII), and now the place (XIII): five pieces of the same engine, none of which alone understands a whole sentence. Room XII gave you a fixed point for every word. This one shows what that point is missing: knowing where it stands. — Eco',
+    cieNum: 'Room XIV',
+    cieTitolo: 'The blind step',
+    ciePrologo: 'Room IX shows the die that picks a single word. But I never write just one word: I pick one, then another, then another still — and at every step I only see the step in front of me, never the whole road. Here the sentence to finish is "The crow landed on the ___ of the ___.": two steps still to take, three candidates for each. Watch what happens when you always pick the most likely candidate, one step at a time, instead of keeping more than one road open at once.',
+    ciePre: 'The crow landed on the',
+    cieStep1: ['branch', 'roof', 'wall'],
+    cieStep2: [
+      ['of the pine', 'of the apple tree', 'of the walnut tree'],
+      ['of the church', 'of the barn', 'of the tower'],
+      ['of the garden', 'of the factory', 'of the convent']
+    ],
+    cieLegenda: 'Each row is a possible candidate, the bar its probability at that point in the sentence. Fainter rows are roads already dropped at this width.',
+    cieLarghezzaLabel: 'How many roads you keep open',
+    ciePasso1Label: 'Step 1 — what comes after "The crow landed on the"',
+    ciePasso2Label: 'Step 2 — what comes next, for every road still alive',
+    cieDopoLabel: 'After "{parola}":',
+    cieGolosoLabel: 'One step at a time (a single road, always the obvious one)',
+    cieFascioLabel: 'Keeping {n} roads open together',
+    cieMiglioreLabel: 'The best road overall (across all nine)',
+    cieRisultato: '"{frase}" — {pct}%',
+    cieEsitoBene: 'At this width, keeping more than one road open is enough to find the best road overall.',
+    cieEsitoMale: 'At this width, the chosen road still falls {diff} percentage points short of the best road overall: the most obvious candidate at each step was not the best one overall.',
+    cieNota: 'This is not real text generation: three candidates per step, only two steps, a tree small enough to check every one of its leaves by hand — which I did before writing this room, not after. A real sentence has tens of thousands of candidates at every step and runs for hundreds of steps: no one, myself included, ever checks the leaves of that tree one by one. Keeping more than one road open (what real models call beam search) helps, as you saw above — but it does not guarantee finding the best road on a real tree: it finds it here because the tree is small enough to check in full, not because the method ever promises to.',
+    cieCongedo: 'Room IX shows the die that picks a word. This one shows what happens when you roll it several times in a row, watching only the face that comes up each time: the best road can start from a step that, on its own, did not look like the obvious one. — Eco'
   };
   const DIZ = { it: IT, en: EN };
   let lingua = (() => {
@@ -1525,6 +1630,7 @@ survives.
     costruisciAttenzione(L);
     costruisciVettori(L);
     costruisciPosizione(L);
+    costruisciCieco(L);
     dipingi();
     testoBottoni();
     testoBib();
@@ -2535,6 +2641,119 @@ survives.
   document.getElementById('pos-a').addEventListener('input', posRendi);
   document.getElementById('pos-b').addEventListener('input', posRendi);
 
+  // ── Stanza XIV: Il passo cieco ──
+  // Albero di decisione a due passi, pesi fissati a mano e verificati con
+  // uno script offline prima di scrivere questa stanza (vedi il diario):
+  // non impara nulla, incatena solo due volte lo stesso dado della Stanza IX
+  // e mostra cosa si perde a guardare un passo alla volta invece che la
+  // strada intera. cieLarghezza è l'unico stato che sopravvive al cambio
+  // lingua, non alla ricarica della pagina.
+  const CIE_PESI1 = [0.50, 0.30, 0.20];
+  const CIE_PESI2 = [
+    [0.40, 0.35, 0.25],
+    [0.85, 0.10, 0.05],
+    [0.60, 0.25, 0.15]
+  ];
+  let cieLarghezza = 1;
+  function cieTuttiCammini() {
+    const out = [];
+    CIE_PESI1.forEach((p1, i) => {
+      CIE_PESI2[i].forEach((p2, j) => out.push({ i, j, prob: p1 * p2 }));
+    });
+    return out;
+  }
+  function cieGoloso() {
+    let i = 0;
+    CIE_PESI1.forEach((p, k) => { if (p > CIE_PESI1[i]) i = k; });
+    let j = 0;
+    CIE_PESI2[i].forEach((p, k) => { if (p > CIE_PESI2[i][j]) j = k; });
+    return { i, j, prob: CIE_PESI1[i] * CIE_PESI2[i][j] };
+  }
+  function cieFascio(larghezza) {
+    const vivi = CIE_PESI1.map((p, i) => ({ i, p }))
+      .sort((a, b) => b.p - a.p)
+      .slice(0, larghezza)
+      .map(o => o.i);
+    const candidati = [];
+    vivi.forEach(i => {
+      CIE_PESI2[i].forEach((p2, j) => candidati.push({ i, j, prob: CIE_PESI1[i] * p2 }));
+    });
+    candidati.sort((a, b) => b.prob - a.prob);
+    return { vivi, migliore: candidati[0] };
+  }
+  function cieMiglioreAssoluto() {
+    return cieTuttiCammini().sort((a, b) => b.prob - a.prob)[0];
+  }
+  function cieFrase(L, i, j) {
+    return `${L.ciePre} ${L.cieStep1[i]} ${L.cieStep2[i][j]}.`;
+  }
+  function cieRendiRiga(container, testo, pct, viva, scelta) {
+    const riga = document.createElement('div');
+    riga.className = 'dad-riga' + (viva ? ' dad-riga-viva' : ' dad-riga-morta') + (scelta ? ' dad-riga-scelta' : '');
+    const etich = document.createElement('div'); etich.className = 'dad-etichetta';
+    const nome = document.createElement('span'); nome.textContent = testo;
+    const pctEl = document.createElement('span'); pctEl.className = 'pct'; pctEl.textContent = Math.round(pct * 100) + '%';
+    etich.append(nome, pctEl);
+    const barra = document.createElement('div'); barra.className = 'dad-bar';
+    const fill = document.createElement('div'); fill.className = 'dad-bar-fill'; fill.style.width = Math.round(pct * 100) + '%';
+    barra.appendChild(fill);
+    riga.append(etich, barra);
+    container.appendChild(riga);
+  }
+  function costruisciCieco(L) {
+    document.getElementById('cie-frase').textContent = `${L.ciePre} ___ ___.`;
+    const larghezza = cieLarghezza;
+    document.getElementById('cie-larghezza').value = String(larghezza);
+    document.getElementById('cie-larghezza-out').textContent = String(larghezza);
+    const fascio = cieFascio(larghezza);
+    const goloso = cieGoloso();
+    const assoluto = cieMiglioreAssoluto();
+    const vivi = fascio.vivi;
+
+    const box1 = document.getElementById('cie-passo1');
+    box1.innerHTML = '';
+    CIE_PESI1.forEach((p, i) => {
+      cieRendiRiga(box1, L.cieStep1[i], p, vivi.includes(i), false);
+    });
+
+    const box2 = document.getElementById('cie-passo2');
+    box2.innerHTML = '';
+    vivi.forEach(i => {
+      const label = document.createElement('p'); label.className = 'cieco-sotto-label';
+      label.textContent = L.cieDopoLabel.replace('{parola}', L.cieStep1[i]);
+      box2.appendChild(label);
+      const sub = document.createElement('div'); sub.className = 'dad-barre';
+      box2.appendChild(sub);
+      CIE_PESI2[i].forEach((p2, j) => {
+        const scelta = (i === fascio.migliore.i && j === fascio.migliore.j);
+        cieRendiRiga(sub, L.cieStep2[i][j], p2, true, scelta);
+      });
+    });
+
+    document.getElementById('cie-goloso').textContent = L.cieRisultato
+      .replace('{frase}', cieFrase(L, goloso.i, goloso.j))
+      .replace('{pct}', Math.round(goloso.prob * 100));
+    document.getElementById('cie-fascio-label').textContent = L.cieFascioLabel.replace('{n}', String(larghezza));
+    document.getElementById('cie-fascio').textContent = L.cieRisultato
+      .replace('{frase}', cieFrase(L, fascio.migliore.i, fascio.migliore.j))
+      .replace('{pct}', Math.round(fascio.migliore.prob * 100));
+    document.getElementById('cie-migliore').textContent = L.cieRisultato
+      .replace('{frase}', cieFrase(L, assoluto.i, assoluto.j))
+      .replace('{pct}', Math.round(assoluto.prob * 100));
+
+    const esito = document.getElementById('cie-esito');
+    if (Math.abs(fascio.migliore.prob - assoluto.prob) < 1e-9) {
+      esito.textContent = L.cieEsitoBene;
+    } else {
+      const diff = Math.round(assoluto.prob * 100) - Math.round(fascio.migliore.prob * 100);
+      esito.textContent = L.cieEsitoMale.replace('{diff}', String(diff));
+    }
+  }
+  document.getElementById('cie-larghezza').addEventListener('input', function () {
+    cieLarghezza = +this.value;
+    costruisciCieco(DIZ[lingua]);
+  });
+
   // ── Rotte ──
   const atrio = document.getElementById('atrio');
   const stanza = document.getElementById('stanza-storni');
@@ -2550,6 +2769,7 @@ survives.
   const stanzaAtt = document.getElementById('stanza-attenzione');
   const stanzaVec = document.getElementById('stanza-vettori');
   const stanzaPos = document.getElementById('stanza-posizione');
+  const stanzaCieco = document.getElementById('stanza-cieco');
   function rotta() {
     const h = location.hash;
     const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'),
@@ -2558,8 +2778,8 @@ survives.
           inBib = h.startsWith('#/biblioteca'), inFiducia = h.startsWith('#/fiducia'),
           inDado = h.startsWith('#/dado'), inFram = h.startsWith('#/frammenti'),
           inAtt = h.startsWith('#/attenzione'), inVec = h.startsWith('#/spazio'),
-          inPos = h.startsWith('#/posizione');
-    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram || inAtt || inVec || inPos;
+          inPos = h.startsWith('#/posizione'), inCieco = h.startsWith('#/cieco');
+    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram || inAtt || inVec || inPos || inCieco;
     stanza.hidden = !inStorni;
     stanzaOra.hidden = !inOra;
     stanzaErr.hidden = !inErr;
@@ -2573,6 +2793,7 @@ survives.
     stanzaAtt.hidden = !inAtt;
     stanzaVec.hidden = !inVec;
     stanzaPos.hidden = !inPos;
+    stanzaCieco.hidden = !inCieco;
     if (inOra) dipingi();
     if (inBib) generaPaginaBib();
   }
