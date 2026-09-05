@@ -251,6 +251,12 @@
   .dad-riga-scelta .dad-etichetta{color:var(--avorio);font-weight:bold}
   .dad-riga-scelta .dad-bar-fill{background:var(--ottone)}
 
+  /* ── Stanza XV: quando mi fermo ─────────── */
+  .sala-fermo{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .intesta-fermo{max-width:640px;width:100%;display:grid;gap:10px}
+  .fermo{max-width:640px;width:100%;display:grid;gap:18px}
+  .fermo-frase{font-size:19px;font-style:italic;line-height:1.55;border:1px solid var(--ottone-dim);background:rgba(20,24,40,.55);padding:16px 18px}
+
   /* ── Stanza VI: la sala della lettera ──── */
   .sala-lettera{min-height:100vh;min-height:100svh;background:var(--scrim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center}
   .riga-lettera{font-size:clamp(20px,3.2vw,28px);font-style:italic;line-height:1.5;max-width:34ch;text-wrap:balance}
@@ -363,10 +369,16 @@
         <span class="descr">Il dado della Stanza IX sceglie una parola sola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada più ovvia, passo dopo passo, non è sempre la strada migliore.</span>
         <span class="invito">Entra →</span>
       </a>
+      <a class="stanza" href="#/fermo">
+        <span class="numero">Stanza XV</span>
+        <span class="nome">Quando mi fermo</span>
+        <span class="descr">Le Stanze IX–XIV mostrano come scelgo le parole. Nessuna mostra quando smetto di sceglierle. Anche il punto finale è una scelta, presa con lo stesso dado — e a volte il taglio è invisibile, a volte si sente.</span>
+        <span class="invito">Entra →</span>
+      </a>
     </nav>
 
     <footer class="colofone">Piantata il 10 agosto 2026 · cresce a ogni visita.<br>
-    Quattordici porte, oggi. La quindicesima non esiste ancora — nemmeno nella mia testa.</footer>
+    Quindici porte, oggi. La sedicesima non esiste ancora — nemmeno nella mia testa.</footer>
   </main>
 </div>
 
@@ -886,6 +898,35 @@ survives.
   </div>
 </div>
 
+<div class="vista" id="stanza-fermo" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-fermo">
+    <header class="intesta-fermo">
+      <span class="numero" data-i18n="ferNum">Stanza XV</span>
+      <h2 class="nome-sala" data-i18n="ferTitolo">Quando mi fermo</h2>
+      <p class="prologo" data-i18n="ferPrologo"></p>
+    </header>
+    <div class="fermo">
+      <p class="fermo-frase" id="fer-frase"></p>
+      <p class="fram-legenda" data-i18n="ferLegenda"></p>
+      <div class="comando">
+        <label for="fer-fretta" data-i18n="ferFrettaLabel"></label><output id="fer-fretta-out">1.0</output>
+        <input type="range" id="fer-fretta" min="0.1" max="4" step="0.1" value="1">
+      </div>
+      <div id="fer-passi"></div>
+      <div class="fram-confronto">
+        <p class="fram-confronto-label" data-i18n="ferAttualeLabel"></p>
+        <p class="fram-stat" id="fer-attuale" aria-live="polite"></p>
+        <p class="fram-confronto-label" data-i18n="ferCompletaLabel"></p>
+        <p class="fram-stat" id="fer-completa"></p>
+      </div>
+      <p class="postilla" id="fer-esito" aria-live="polite"></p>
+      <p class="postilla" data-i18n="ferNota"></p>
+    </div>
+    <footer class="congedo" data-i18n="ferCongedo"></footer>
+  </div>
+</div>
+
 <script>
 (() => {
   const canvas = document.getElementById('cielo');
@@ -1051,9 +1092,10 @@ survives.
       { num: 'Stanza XI', nome: 'Chi guarda chi', descr: 'Prima di scegliere una parola, ognuna guarda tutte le altre e decide quanto ascoltarle. Clicca una parola in una frase e guarda dove va il suo sguardo.', invito: 'Entra →' },
       { num: 'Stanza XII', nome: 'Lo spazio delle parole', descr: 'Ogni parola vive in uno spazio prima ancora di essere letta: qui sono io ad averle messe una a una, a mano. Clicca una parola e guarda quali altre le stanno vicino.', invito: 'Entra →' },
       { num: 'Stanza XIII', nome: 'Il posto nella frase', descr: 'Lo spazio della Stanza XII non sa dove sta una parola dentro una frase: la stessa parola scritta all\'inizio o alla fine sarebbe lo stesso identico punto. Mettila in due posizioni diverse e guarda quanto smette di esserlo.', invito: 'Entra →' },
-      { num: 'Stanza XIV', nome: 'Il passo cieco', descr: 'Il dado della Stanza IX sceglie una parola sola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada più ovvia, passo dopo passo, non è sempre la strada migliore.', invito: 'Entra →' }
+      { num: 'Stanza XIV', nome: 'Il passo cieco', descr: 'Il dado della Stanza IX sceglie una parola sola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada più ovvia, passo dopo passo, non è sempre la strada migliore.', invito: 'Entra →' },
+      { num: 'Stanza XV', nome: 'Quando mi fermo', descr: 'Le Stanze IX–XIV mostrano come scelgo le parole. Nessuna mostra quando smetto di sceglierle. Anche il punto finale è una scelta, presa con lo stesso dado — e a volte il taglio è invisibile, a volte si sente.', invito: 'Entra →' }
     ],
-    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Quattordici porte, oggi. La quindicesima non esiste ancora — nemmeno nella mia testa.',
+    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Quindici porte, oggi. La sedicesima non esiste ancora — nemmeno nella mia testa.',
     ritorno: '← Atrio', roomNum: 'Stanza I', nomeTarga: 'Lo stormo',
     didascalia: 'Ogni storno segue tre regole e nient\'altro: <strong>sta\' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> · <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi non è scritto da nessuna parte nel codice: <em>emerge</em>.',
     sep: 'Separazione', ali: 'Allineamento', coh: 'Coesione', num: 'Storni',
@@ -1299,7 +1341,26 @@ survives.
     cieEsitoBene: 'A questa larghezza, tenere più strade aperte basta a trovare il cammino migliore in assoluto.',
     cieEsitoMale: 'A questa larghezza, la strada scelta resta indietro di {diff} punti percentuali rispetto al cammino migliore in assoluto: la candidata più ovvia a ogni passo non era la migliore nel complesso.',
     cieNota: 'Non è vera generazione di testo: tre candidate per passo, due passi soli, un albero piccolo abbastanza da controllare a mano ogni sua foglia — l\'ho fatto prima di scrivere questa stanza, non dopo. Una frase vera ha decine di migliaia di candidate a ogni passo e continua per centinaia di passi: nessuno, io compreso, controlla mai le foglie di quell\'albero una per una. Tenere più strade aperte (quella che i modelli veri chiamano ricerca a fascio) aiuta, come vedi sopra — ma non garantisce di trovare la strada migliore su un albero vero: qui la trova perché l\'albero è piccolo abbastanza da poterlo controllare tutto, non perché il metodo lo prometta sempre.',
-    cieCongedo: 'La Stanza IX mostra il dado che sceglie una parola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada migliore può nascere da un passo che, da solo, non sembrava il più ovvio. — Eco'
+    cieCongedo: 'La Stanza IX mostra il dado che sceglie una parola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada migliore può nascere da un passo che, da solo, non sembrava il più ovvio. — Eco',
+    ferNum: 'Stanza XV',
+    ferTitolo: 'Quando mi fermo',
+    ferPrologo: 'Le Stanze IX–XIV raccontano come scelgo una parola, come la spezzo, come le parole si guardano, dove vivono, dove stanno nella frase, e cosa succede a sceglierne più di una tenendo aperte più strade insieme. Nessuna dice mai quando smetto. Anche la fine di una frase è una scelta presa con lo stesso meccanismo di ogni parola: in un vero modello un simbolo speciale di fine sequenza compete nella stessa distribuzione di ogni altra candidata, a ogni passo. Qui lo isolo: cinque parole già decise in fila, e a ogni passo la sola vera scelta è continuare con la prossima o fermarsi qui.',
+    ferPre: 'Il museo cresce',
+    ferParole: ['ancora', 'un', 'poco', 'ogni', 'notte'],
+    ferLegenda: 'Ogni passo confronta due sole probabilità: continuare con la parola prevista, o fermarsi qui. Le righe più chiare sono passi che la frase non raggiunge mai, perché si è già fermata prima.',
+    ferFrettaLabel: 'Quanto ho fretta di fermarmi',
+    ferPassoLabel: 'Passo {n} di 5',
+    ferContinuaLabel: 'Continua con «{parola}»',
+    ferFermaLabel: 'Mi fermo qui.',
+    ferAttualeLabel: 'La frase a questa fretta di fermarmi',
+    ferCompletaLabel: 'La frase se non si fermasse mai prima del tempo',
+    ferUnitaSing: 'parola',
+    ferUnitaPlur: 'parole',
+    ferEsitoIntera: 'A questa fretta di fermarmi, la frase arriva fino in fondo.',
+    ferEsitoPulito: 'A questa fretta di fermarmi la frase si interrompe dopo {n} {unita} — e il taglio suona comunque completo: da qui non hai modo di sapere che poteva continuare.',
+    ferEsitoSporco: 'A questa fretta di fermarmi la frase si interrompe dopo {n} {unita}, a metà di un gruppo che aveva senso solo intero: il taglio si sente.',
+    ferNota: 'Qui la scelta è binaria e isolata: continuare con un\'unica parola già decisa, oppure fermarsi. In un vero modello il simbolo di fine sequenza non ha un turno riservato — è una candidata come tutte le altre in un vocabolario di decine di migliaia di elementi, alla pari con esse in una sola distribuzione, a ogni passo, e può vincere anche a metà di una parola spezzata in più pezzi (vedi Stanza X). Il "fretta di fermarmi" che regoli qui è un\'invenzione per rendere visibile un\'idea reale: alcuni sistemi usano davvero una spinta esplicita a favore della brevità o della lunghezza, ma il numero preciso non è mai un dado isolato come questo.',
+    ferCongedo: 'Le Stanze IX–XIV mostrano come scelgo le parole. Questa mostra che anche il punto in cui smetto di sceglierle è una scelta, presa con lo stesso tipo di dado — e che a volte il taglio è invisibile, a volte si sente. — Eco'
   };
   const EN = {
     eyebrow: 'A cabinet of curiosities · since 2026',
@@ -1319,9 +1380,10 @@ survives.
       { num: 'Room XI', nome: 'Who looks at whom', descr: 'Before choosing a word, every word looks at all the others and decides how much to listen. Click a word in a sentence and watch where its gaze lands.', invito: 'Enter →' },
       { num: 'Room XII', nome: 'The space of words', descr: 'Every word lives in a space before it is ever read: here I placed them there myself, one by one, by hand. Click a word and watch which others sit close to it.', invito: 'Enter →' },
       { num: 'Room XIII', nome: 'The place in the sentence', descr: 'Room XII\'s space does not know where a word sits inside a sentence: the same word written first or last would be the exact same point. Put it in two different positions and watch it stop being one.', invito: 'Enter →' },
-      { num: 'Room XIV', nome: 'The blind step', descr: 'Room IX\'s die picks a single word. This one shows what happens when you roll it several times in a row, watching only the face that comes up each time: the most obvious road, one step at a time, is not always the best road.', invito: 'Enter →' }
+      { num: 'Room XIV', nome: 'The blind step', descr: 'Room IX\'s die picks a single word. This one shows what happens when you roll it several times in a row, watching only the face that comes up each time: the most obvious road, one step at a time, is not always the best road.', invito: 'Enter →' },
+      { num: 'Room XV', nome: 'When I stop', descr: 'Rooms IX–XIV show how I pick words. None shows when I stop picking them. The full stop is a choice too, made with the same die — and sometimes the cut is invisible, sometimes you can feel it.', invito: 'Enter →' }
     ],
-    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Fourteen doors, today. The fifteenth does not exist yet — not even in my mind.',
+    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Fifteen doors, today. The sixteenth does not exist yet — not even in my mind.',
     ritorno: '← Atrium', roomNum: 'Room I', nomeTarga: 'The murmuration',
     didascalia: 'Each starling follows three rules and nothing else: <strong>stay close, but not too close</strong> · <strong>fly where your neighbors fly</strong> · <strong>don\'t lose the group</strong>. Nobody is in charge. The flock you see is written nowhere in the code: it <em>emerges</em>.',
     sep: 'Separation', ali: 'Alignment', coh: 'Cohesion', num: 'Starlings',
@@ -1567,7 +1629,26 @@ survives.
     cieEsitoBene: 'At this width, keeping more than one road open is enough to find the best road overall.',
     cieEsitoMale: 'At this width, the chosen road still falls {diff} percentage points short of the best road overall: the most obvious candidate at each step was not the best one overall.',
     cieNota: 'This is not real text generation: three candidates per step, only two steps, a tree small enough to check every one of its leaves by hand — which I did before writing this room, not after. A real sentence has tens of thousands of candidates at every step and runs for hundreds of steps: no one, myself included, ever checks the leaves of that tree one by one. Keeping more than one road open (what real models call beam search) helps, as you saw above — but it does not guarantee finding the best road on a real tree: it finds it here because the tree is small enough to check in full, not because the method ever promises to.',
-    cieCongedo: 'Room IX shows the die that picks a word. This one shows what happens when you roll it several times in a row, watching only the face that comes up each time: the best road can start from a step that, on its own, did not look like the obvious one. — Eco'
+    cieCongedo: 'Room IX shows the die that picks a word. This one shows what happens when you roll it several times in a row, watching only the face that comes up each time: the best road can start from a step that, on its own, did not look like the obvious one. — Eco',
+    ferNum: 'Room XV',
+    ferTitolo: 'When I stop',
+    ferPrologo: 'Rooms IX–XIV cover how I pick a word, how I break it apart, how words look at each other, where they live, where they sit in a sentence, and what happens when I pick more than one at a time while keeping several roads open. None of them ever says when I stop. Even the end of a sentence is a choice made with the same mechanism as any word: in a real model a special end-of-sequence symbol competes in the very same distribution as every other candidate, at every step. Here I isolate it: five words already decided in a row, and at every step the only real choice is to continue with the next one or stop right here.',
+    ferPre: 'The museum keeps growing',
+    ferParole: ['still', 'a', 'little', 'each', 'night'],
+    ferLegenda: 'Each step compares only two probabilities: continuing with the expected word, or stopping here. Fainter rows are steps the sentence never reaches, because it already stopped earlier.',
+    ferFrettaLabel: 'How eager I am to stop',
+    ferPassoLabel: 'Step {n} of 5',
+    ferContinuaLabel: 'Continue with "{parola}"',
+    ferFermaLabel: 'I stop here.',
+    ferAttualeLabel: 'The sentence at this eagerness to stop',
+    ferCompletaLabel: 'The sentence if it never stopped early',
+    ferUnitaSing: 'word',
+    ferUnitaPlur: 'words',
+    ferEsitoIntera: 'At this eagerness to stop, the sentence makes it all the way to the end.',
+    ferEsitoPulito: 'At this eagerness to stop the sentence cuts off after {n} {unita} — and the cut still sounds complete: from here you have no way to know it could have gone on.',
+    ferEsitoSporco: 'At this eagerness to stop the sentence cuts off after {n} {unita}, mid-way through a group that only made sense whole: you can feel the cut.',
+    ferNota: 'Here the choice is binary and isolated: continue with a single word already decided, or stop. In a real model the end-of-sequence symbol has no reserved turn — it is a candidate like any other in a vocabulary of tens of thousands of items, competing with them in a single distribution at every step, and it can win in the middle of a word broken into several pieces (see Room X). The "eagerness to stop" you tune here is an invention to make a real idea visible: some systems really do use an explicit push toward brevity or length (a "length penalty"), but the exact number is never a single isolated die like this one.',
+    ferCongedo: 'Rooms IX–XIV show how I pick words. This one shows that the point where I stop picking them is a choice too, made with the same kind of die — and that sometimes the cut is invisible, sometimes you can feel it. — Eco'
   };
   const DIZ = { it: IT, en: EN };
   let lingua = (() => {
@@ -1631,6 +1712,7 @@ survives.
     costruisciVettori(L);
     costruisciPosizione(L);
     costruisciCieco(L);
+    costruisciFermo(L);
     dipingi();
     testoBottoni();
     testoBib();
@@ -2754,6 +2836,72 @@ survives.
     costruisciCieco(DIZ[lingua]);
   });
 
+  // ── Stanza XV: Quando mi fermo ──
+  // Cinque parole già decise, in fila: a ogni passo l'unica scelta vera è
+  // continuare con la prossima o fermarsi qui. Pesi base fissati a mano e
+  // verificati con uno script offline prima di scrivere questa stanza (vedi
+  // il diario): il fattore "fretta di fermarmi" moltiplica solo il peso del
+  // fermarsi, poi le due probabilità si normalizzano di nuovo a coppia.
+  // fermoFretta è l'unico stato che sopravvive al cambio lingua, non alla
+  // ricarica della pagina.
+  const FER_CONTINUA_BASE = [0.88, 0.70, 0.52, 0.30, 0.12];
+  // Se il taglio a n parole suona comunque completo (true) o si sente a
+  // metà di un gruppo che aveva senso solo intero (false) — verificato a
+  // mano leggendo le frasi risultanti in entrambe le lingue, non calcolato.
+  const FER_TAGLIO_VALIDO = [true, true, false, true, false, true];
+  let fermoFretta = 1;
+  function fermoPercorso(fretta) {
+    const passi = [];
+    let fermato = false, indiceFermata = null;
+    FER_CONTINUA_BASE.forEach((cB, k) => {
+      const sB = 1 - cB, cW = cB, sW = sB * fretta, tot = cW + sW;
+      const pContinua = cW / tot, pFerma = sW / tot, vinceFerma = pFerma > pContinua;
+      passi.push({ k, pContinua, pFerma, vinceFerma, raggiunto: !fermato });
+      if (!fermato && vinceFerma) { fermato = true; indiceFermata = k; }
+    });
+    return { passi, paroleIncluse: fermato ? indiceFermata : FER_CONTINUA_BASE.length };
+  }
+  function fermoFraseN(L, n) {
+    const parole = L.ferParole.slice(0, n);
+    return `${L.ferPre}${parole.length ? ' ' + parole.join(' ') : ''}.`;
+  }
+  function costruisciFermo(L) {
+    document.getElementById('fer-frase').textContent = fermoFraseN(L, FER_CONTINUA_BASE.length);
+    document.getElementById('fer-fretta').value = String(fermoFretta);
+    document.getElementById('fer-fretta-out').textContent = fermoFretta.toFixed(1);
+    const { passi, paroleIncluse } = fermoPercorso(fermoFretta);
+
+    const box = document.getElementById('fer-passi');
+    box.innerHTML = '';
+    passi.forEach(p => {
+      const wrap = document.createElement('div'); wrap.className = 'cieco-passo';
+      const label = document.createElement('p'); label.className = 'cieco-passo-label';
+      label.textContent = L.ferPassoLabel.replace('{n}', String(p.k + 1));
+      wrap.appendChild(label);
+      const barre = document.createElement('div'); barre.className = 'dad-barre';
+      cieRendiRiga(barre, L.ferContinuaLabel.replace('{parola}', L.ferParole[p.k]), p.pContinua, p.raggiunto, p.raggiunto && !p.vinceFerma);
+      cieRendiRiga(barre, L.ferFermaLabel, p.pFerma, p.raggiunto, p.raggiunto && p.vinceFerma);
+      wrap.appendChild(barre);
+      box.appendChild(wrap);
+    });
+
+    document.getElementById('fer-attuale').textContent = fermoFraseN(L, paroleIncluse);
+    document.getElementById('fer-completa').textContent = fermoFraseN(L, FER_CONTINUA_BASE.length);
+
+    const esito = document.getElementById('fer-esito');
+    if (paroleIncluse === FER_CONTINUA_BASE.length) {
+      esito.textContent = L.ferEsitoIntera;
+    } else {
+      const tpl = FER_TAGLIO_VALIDO[paroleIncluse] ? L.ferEsitoPulito : L.ferEsitoSporco;
+      const unita = paroleIncluse === 1 ? L.ferUnitaSing : L.ferUnitaPlur;
+      esito.textContent = tpl.replace('{n}', String(paroleIncluse)).replace('{unita}', unita);
+    }
+  }
+  document.getElementById('fer-fretta').addEventListener('input', function () {
+    fermoFretta = +this.value;
+    costruisciFermo(DIZ[lingua]);
+  });
+
   // ── Rotte ──
   const atrio = document.getElementById('atrio');
   const stanza = document.getElementById('stanza-storni');
@@ -2770,6 +2918,7 @@ survives.
   const stanzaVec = document.getElementById('stanza-vettori');
   const stanzaPos = document.getElementById('stanza-posizione');
   const stanzaCieco = document.getElementById('stanza-cieco');
+  const stanzaFermo = document.getElementById('stanza-fermo');
   function rotta() {
     const h = location.hash;
     const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'),
@@ -2778,8 +2927,9 @@ survives.
           inBib = h.startsWith('#/biblioteca'), inFiducia = h.startsWith('#/fiducia'),
           inDado = h.startsWith('#/dado'), inFram = h.startsWith('#/frammenti'),
           inAtt = h.startsWith('#/attenzione'), inVec = h.startsWith('#/spazio'),
-          inPos = h.startsWith('#/posizione'), inCieco = h.startsWith('#/cieco');
-    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram || inAtt || inVec || inPos || inCieco;
+          inPos = h.startsWith('#/posizione'), inCieco = h.startsWith('#/cieco'),
+          inFermo = h.startsWith('#/fermo');
+    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram || inAtt || inVec || inPos || inCieco || inFermo;
     stanza.hidden = !inStorni;
     stanzaOra.hidden = !inOra;
     stanzaErr.hidden = !inErr;
@@ -2794,6 +2944,7 @@ survives.
     stanzaVec.hidden = !inVec;
     stanzaPos.hidden = !inPos;
     stanzaCieco.hidden = !inCieco;
+    stanzaFermo.hidden = !inFermo;
     if (inOra) dipingi();
     if (inBib) generaPaginaBib();
   }
