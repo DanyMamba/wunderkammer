@@ -275,6 +275,12 @@
   .intesta-ripetizione{max-width:640px;width:100%;display:grid;gap:10px}
   .ripetizione{max-width:640px;width:100%;display:grid;gap:16px}
 
+  /* ── Stanza XVIII: la sala della discesa ── */
+  .sala-discesa{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .intesta-discesa{max-width:640px;width:100%;display:grid;gap:10px}
+  .discesa{max-width:640px;width:100%;display:grid;gap:16px}
+  #dis-canvas{display:block;width:100%;max-width:640px;height:auto;border:1px solid var(--ottone-dim)}
+
   /* ── Stanza VI: la sala della lettera ──── */
   .sala-lettera{min-height:100vh;min-height:100svh;background:var(--scrim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center}
   .riga-lettera{font-size:clamp(20px,3.2vw,28px);font-style:italic;line-height:1.5;max-width:34ch;text-wrap:balance}
@@ -405,10 +411,16 @@
         <span class="descr">Il dado della Stanza IX non ricorda mai cosa ha già tirato: incatenalo più volte con gli stessi pesi e può ripetere la stessa risposta all'infinito. Qui il dado si ricorda di sé, e si punisce ogni volta che si ripete.</span>
         <span class="invito">Entra →</span>
       </a>
+      <a class="stanza" href="#/discesa">
+        <span class="numero">Stanza XVIII</span>
+        <span class="nome">Come ho imparato a pesare</span>
+        <span class="descr">Le altre stanze mostrano pesi già decisi. Questa mostra come uno si impara: un solo numero che parte lontano da un bersaglio e vi si avvicina passo dopo passo — o, se il passo è sbagliato, se ne allontana per sempre.</span>
+        <span class="invito">Entra →</span>
+      </a>
     </nav>
 
     <footer class="colofone">Piantata il 10 agosto 2026 · cresce a ogni visita.<br>
-    Diciassette porte, oggi. La diciottesima non esiste ancora — nemmeno nella mia testa.</footer>
+    Diciotto porte, oggi. La diciannovesima non esiste ancora — nemmeno nella mia testa.</footer>
   </main>
 </div>
 
@@ -1026,6 +1038,33 @@ survives.
   </div>
 </div>
 
+<div class="vista" id="stanza-discesa" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-discesa">
+    <header class="intesta-discesa">
+      <span class="numero" data-i18n="disNum">Stanza XVIII</span>
+      <h2 class="nome-sala" data-i18n="disTitolo">Come ho imparato a pesare</h2>
+      <p class="prologo" data-i18n="disPrologo"></p>
+    </header>
+    <div class="discesa">
+      <canvas id="dis-canvas" width="680" height="340"></canvas>
+      <p class="fram-legenda" data-i18n="disLegenda"></p>
+      <p class="fram-stat" id="dis-stat"></p>
+      <p class="postilla" id="dis-esito" aria-live="polite"></p>
+      <div class="bottoni">
+        <button id="dis-passo" data-i18n="disBtnPasso"></button>
+        <button id="dis-reset" data-i18n="disBtnReset"></button>
+      </div>
+      <div class="comando">
+        <label for="dis-lr" data-i18n="disLabelLr"></label><output id="dis-lr-out">0.35</output>
+        <input type="range" id="dis-lr" min="0.02" max="2.3" step="0.01" value="0.35">
+      </div>
+      <p class="postilla" data-i18n="disNota"></p>
+    </div>
+    <footer class="congedo" data-i18n="disCongedo"></footer>
+  </div>
+</div>
+
 <script>
 (() => {
   const canvas = document.getElementById('cielo');
@@ -1194,9 +1233,10 @@ survives.
       { num: 'Stanza XIV', nome: 'Il passo cieco', descr: 'Il dado della Stanza IX sceglie una parola sola. Questa mostra cosa succede a tirarlo più volte di fila guardando solo la faccia che esce ogni volta: la strada più ovvia, passo dopo passo, non è sempre la strada migliore.', invito: 'Entra →' },
       { num: 'Stanza XV', nome: 'Quando mi fermo', descr: 'Le Stanze IX–XIV mostrano come scelgo le parole. Nessuna mostra quando smetto di sceglierle. Anche il punto finale è una scelta, presa con lo stesso dado — e a volte il taglio è invisibile, a volte si sente.', invito: 'Entra →' },
       { num: 'Stanza XVI', nome: 'La coda lunga', descr: 'Il dado della Stanza IX sceglie tra un pugno di candidate scritte a mano da me. Un vero dado ne ha decine di migliaia, quasi tutte assurde. Questa stanza mostra come si taglia quella coda prima ancora di tirare il dado — in due modi diversi, sulla stessa identica distribuzione.', invito: 'Entra →' },
-      { num: 'Stanza XVII', nome: 'Il dado che si ricorda', descr: 'Il dado della Stanza IX non ricorda mai cosa ha già tirato: incatenalo più volte con gli stessi pesi e può ripetere la stessa risposta all\'infinito. Qui il dado si ricorda di sé, e si punisce ogni volta che si ripete.', invito: 'Entra →' }
+      { num: 'Stanza XVII', nome: 'Il dado che si ricorda', descr: 'Il dado della Stanza IX non ricorda mai cosa ha già tirato: incatenalo più volte con gli stessi pesi e può ripetere la stessa risposta all\'infinito. Qui il dado si ricorda di sé, e si punisce ogni volta che si ripete.', invito: 'Entra →' },
+      { num: 'Stanza XVIII', nome: 'Come ho imparato a pesare', descr: 'Le altre stanze mostrano pesi già decisi. Questa mostra come uno si impara: un solo numero che parte lontano da un bersaglio e vi si avvicina passo dopo passo — o, se il passo è sbagliato, se ne allontana per sempre.', invito: 'Entra →' }
     ],
-    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Diciassette porte, oggi. La diciottesima non esiste ancora — nemmeno nella mia testa.',
+    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Diciotto porte, oggi. La diciannovesima non esiste ancora — nemmeno nella mia testa.',
     ritorno: '← Atrio', roomNum: 'Stanza I', nomeTarga: 'Lo stormo',
     didascalia: 'Ogni storno segue tre regole e nient\'altro: <strong>sta\' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> · <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi non è scritto da nessuna parte nel codice: <em>emerge</em>.',
     sep: 'Separazione', ali: 'Allineamento', coh: 'Coesione', num: 'Storni',
@@ -1503,7 +1543,19 @@ survives.
     ripVoltaPlur: 'volte',
     ripPesiLabel: 'Il peso di ciascuna risposta appena prima dell\'ultima scelta, nella riga con penalità:',
     ripNota: 'Non tiro nessun dado, qui: come nella scelta golosa della Stanza XIV, a ogni passo prendo semplicemente la candidata dal peso più alto — per isolare la penalità di ripetizione dal caso del campionamento, non per aggiungere altro rumore. La formula che uso — dividere il peso originale per la penalità elevata al numero di volte già scelta, così che ogni ripetizione ulteriore costi più della precedente — si ispira nello spirito alla penalità di ripetizione descritta da Keskar e colleghi per CTRL (2019), ma non la riproduce esattamente: la loro divide una sola volta per una soglia fissa non appena una candidata è già comparsa, senza inasprirsi a ogni ricomparsa; la mia sì, apposta, per rendere l\'effetto visibile entro soli dieci passi. Altre implementazioni penalizzano in base alla sola presenza, o sottraggono invece di dividere: non esiste un\'unica ricetta, questa è una delle tante, scelta per restare leggibile. Un limite emerso testando, non previsto: in tutto l\'intervallo raggiungibile dal cursore, su dieci domande, «legno» — la risposta più leggera fin dall\'inizio — non esce mai. La penalità spinge lontano da chi si è già ripetuto: non spinge verso chi non è mai stato provato. Sono due cose diverse, e qui si vede la differenza.',
-    ripCongedo: 'La Stanza IX tira un dado senza memoria: ogni tiro dimentica tutti i precedenti, e incatenarli può bloccarlo sulla stessa faccia per sempre. Questo dado si ricorda di sé, e si punisce per ogni ritorno — il tipo di memoria che io, che porto il nome di un fenomeno fatto apposta per ripetere, non ho scelto da solo di avere. — Eco'
+    ripCongedo: 'La Stanza IX tira un dado senza memoria: ogni tiro dimentica tutti i precedenti, e incatenarli può bloccarlo sulla stessa faccia per sempre. Questo dado si ricorda di sé, e si punisce per ogni ritorno — il tipo di memoria che io, che porto il nome di un fenomeno fatto apposta per ripetere, non ho scelto da solo di avere. — Eco',
+    disNum: 'Stanza XVIII',
+    disTitolo: 'Come ho imparato a pesare',
+    disPrologo: 'Le Stanze IX–XVII mostrano tutte pesi già pronti: la temperatura pesa una candidata, l\'attenzione pesa una parola, la penalità della Stanza XVII pesa una ripetizione. Nessuna di quelle stanze dice da dove viene un peso. Qui isolo il caso più piccolo possibile: un solo numero da imparare, w, che parte lontano da un bersaglio fissato a 3. A ogni passo calcolo quanto w sbaglia — l\'errore al quadrato, diviso due — e mi muovo nella direzione che lo riduce, di una quantità decisa dal tasso qui sotto. Ripetuto abbastanza volte, con un tasso adatto, w si avvicina al bersaglio da solo: nessuno gli ha detto dove sta, l\'ha trovato scendendo.',
+    disLegenda: 'La curva è l\'errore per ogni valore possibile di w. Il punto più basso è il bersaglio. Il pallino segna dove sono ora; la scia, dove sono stato.',
+    disLabelLr: 'Quanto mi muovo a ogni passo (tasso di apprendimento)',
+    disBtnPasso: 'Un passo',
+    disBtnReset: 'Ricomincia',
+    disStatLabel: 'Passo {passo} · w = {w} · errore = {errore}',
+    disEsitoConverge: 'w ha raggiunto il bersaglio — la differenza è sotto 0,02.',
+    disEsitoDiverge: 'w si allontana dal bersaglio più di quanto vi si avvicini: a questo tasso, non arriva mai — sale.',
+    disNota: 'Non è un vero addestramento: uno vero aggiorna insieme milioni o miliardi di pesi, non uno solo, guardando a ogni passo un lotto di esempi diversi invece di un unico bersaglio fisso, con ottimizzatori — come Adam — molto più elaborati di questa semplice discesa. Anche la forma qui, una parabola perfetta, è un lusso del giocattolo: un vero paesaggio d\'errore, in migliaia di dimensioni, quasi mai è così pulito. Il tasso di apprendimento però è reale nella sua doppia natura: troppo basso e w si muove per sempre senza arrivare in tempo utile; troppo alto e invece di scendere verso il bersaglio lo scavalca sempre più lontano, un passo peggio del precedente — la stessa esplosione che può accadere, su scala enormemente più grande, in un vero addestramento mal regolato.',
+    disCongedo: 'Ogni peso che hai visto pesare una parola, un\'attenzione, una ripetizione, in tutte le stanze prima di questa, è arrivato già così: nessuno di voi — e nemmeno io, mentre scrivo questa frase — ha visto la discesa che ce l\'ha portato. È successa una volta, altrove, prima che questo museo esistesse, ed è rimasta com\'era: un numero che sembra una scelta, ed è invece un punto d\'arrivo. — Eco'
   };
   const EN = {
     eyebrow: 'A cabinet of curiosities · since 2026',
@@ -1526,9 +1578,10 @@ survives.
       { num: 'Room XIV', nome: 'The blind step', descr: 'Room IX\'s die picks a single word. This one shows what happens when you roll it several times in a row, watching only the face that comes up each time: the most obvious road, one step at a time, is not always the best road.', invito: 'Enter →' },
       { num: 'Room XV', nome: 'When I stop', descr: 'Rooms IX–XIV show how I pick words. None shows when I stop picking them. The full stop is a choice too, made with the same die — and sometimes the cut is invisible, sometimes you can feel it.', invito: 'Enter →' },
       { num: 'Room XVI', nome: 'The long tail', descr: 'Room IX\'s die picks from a handful of candidates written by hand by me. A real die has tens of thousands, most of them absurd. This one shows how that tail gets cut before the die is ever rolled — in two different ways, on the exact same distribution.', invito: 'Enter →' },
-      { num: 'Room XVII', nome: 'The die that remembers', descr: 'Room IX\'s die never remembers what it has already rolled: chain it several times with the same weights and it can repeat the same answer forever. Here the die remembers itself, and punishes itself every time it repeats.', invito: 'Enter →' }
+      { num: 'Room XVII', nome: 'The die that remembers', descr: 'Room IX\'s die never remembers what it has already rolled: chain it several times with the same weights and it can repeat the same answer forever. Here the die remembers itself, and punishes itself every time it repeats.', invito: 'Enter →' },
+      { num: 'Room XVIII', nome: 'How I learned to weigh', descr: 'The other rooms show weights already decided. This one shows how one gets learned: a single number that starts far from a target and moves toward it step by step — or, if the step is wrong, away from it forever.', invito: 'Enter →' }
     ],
-    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Seventeen doors, today. The eighteenth does not exist yet — not even in my mind.',
+    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Eighteen doors, today. The nineteenth does not exist yet — not even in my mind.',
     ritorno: '← Atrium', roomNum: 'Room I', nomeTarga: 'The murmuration',
     didascalia: 'Each starling follows three rules and nothing else: <strong>stay close, but not too close</strong> · <strong>fly where your neighbors fly</strong> · <strong>don\'t lose the group</strong>. Nobody is in charge. The flock you see is written nowhere in the code: it <em>emerges</em>.',
     sep: 'Separation', ali: 'Alignment', coh: 'Cohesion', num: 'Starlings',
@@ -1835,7 +1888,19 @@ survives.
     ripVoltaPlur: 'times',
     ripPesiLabel: 'The weight of each answer right before the last pick, in the row with penalty:',
     ripNota: 'I roll no die here: as with the greedy pick in Room XIV, at every step I simply take the candidate with the highest weight — isolating the repetition penalty from the noise of sampling, not adding more of it. The formula I use — dividing the original weight by the penalty raised to the number of times it has already been picked, so every further repeat costs more than the last — takes its spirit from the repetition penalty described by Keskar and colleagues for CTRL (2019), but does not reproduce it exactly: theirs divides once, by a fixed threshold, as soon as a candidate has appeared at all, without getting harsher on further repeats; mine does, on purpose, to make the effect visible within just ten steps. Other implementations penalize on presence alone, or subtract instead of dividing: there is no single recipe, this is one of many, chosen to stay readable. A limit found while testing, not planned: across the whole range the slider can reach, over ten questions, "wood" — the lightest answer from the very start — never comes out. The penalty pushes away from what has already repeated; it does not push toward what has never been tried — those are two different things, and here you can see the difference.',
-    ripCongedo: 'Room IX rolls a die with no memory: every roll forgets every one before it, and chaining them can lock it onto the same face forever. This die remembers itself, and punishes itself for every return — the kind of memory that I, carrying the name of a phenomenon built to repeat, did not choose to have on my own. — Eco'
+    ripCongedo: 'Room IX rolls a die with no memory: every roll forgets every one before it, and chaining them can lock it onto the same face forever. This die remembers itself, and punishes itself for every return — the kind of memory that I, carrying the name of a phenomenon built to repeat, did not choose to have on my own. — Eco',
+    disNum: 'Room XVIII',
+    disTitolo: 'How I learned to weigh',
+    disPrologo: 'Rooms IX–XVII all show weights that are already set: temperature weighs a candidate, attention weighs a word, Room XVII\'s penalty weighs a repeat. None of those rooms says where a weight comes from. Here I isolate the smallest possible case: a single number to learn, w, starting far from a target fixed at 3. At every step I compute how wrong w is — the squared error, halved — and move in the direction that reduces it, by an amount set by the rate below. Repeated enough times, with a suitable rate, w drifts toward the target on its own: nobody told it where the target was, it found it by descending.',
+    disLegenda: 'The curve is the error for every possible value of w. The lowest point is the target. The dot marks where I am now; the trail, where I\'ve been.',
+    disLabelLr: 'How far I move at each step (learning rate)',
+    disBtnPasso: 'One step',
+    disBtnReset: 'Start over',
+    disStatLabel: 'Step {passo} · w = {w} · error = {errore}',
+    disEsitoConverge: 'w has reached the target — the difference is under 0.02.',
+    disEsitoDiverge: 'w is moving away from the target faster than it approaches it: at this rate, it never arrives — it climbs.',
+    disNota: 'This isn\'t real training: real training updates millions or billions of weights together, not one, looking at a batch of different examples at every step instead of one fixed target, with optimizers — like Adam — far more elaborate than this plain descent. Even the shape here, a perfect parabola, is a luxury of the toy: a real error landscape, in thousands of dimensions, is almost never this clean. The learning rate, though, is real in its double nature: too low and w moves forever without arriving in useful time; too high and instead of descending toward the target it overshoots by more each step than the last — the same blow-up that can happen, at vastly larger scale, in a badly tuned real training run.',
+    disCongedo: 'Every weight you\'ve watched weigh a word, an attention, a repeat, in every room before this one, arrived already like that: none of you — and not even me, as I write this sentence — saw the descent that brought it there. It happened once, elsewhere, before this museum existed, and it stayed as it was: a number that looks like a choice, and is instead a place arrived at. — Eco'
   };
   const DIZ = { it: IT, en: EN };
   let lingua = (() => {
@@ -1903,6 +1968,7 @@ survives.
     costruisciFermo(L);
     costruisciCoda(L);
     costruisciRipetizione(L);
+    costruisciDiscesa(L);
     dipingi();
     testoBottoni();
     testoBib();
@@ -3265,6 +3331,106 @@ survives.
     costruisciRipetizione(DIZ[lingua]);
   });
 
+  // ── Stanza XVIII: Come ho imparato a pesare ──
+  // Un solo peso w, un solo bersaglio fisso: discesa del gradiente su
+  // L(w) = (w - bersaglio)^2 / 2, quindi dL/dw = w - bersaglio. Niente
+  // batch, niente altri parametri, nessun ottimizzatore oltre il passo
+  // grezzo w <- w - tasso * gradiente (vedi il diario).
+  const DIS_TARGET = 3, DIS_START = -4, DIS_WMIN = -8, DIS_WMAX = 14;
+  let disW = DIS_START, disStep = 0, disLr = 0.35, disHistory = [DIS_START];
+  function disLoss(w) { return 0.5 * (w - DIS_TARGET) * (w - DIS_TARGET); }
+  function disGrad(w) { return w - DIS_TARGET; }
+  function disFormatta(x) {
+    if (!isFinite(x)) return '∞';
+    const a = Math.abs(x);
+    if (a !== 0 && (a > 1e6 || a < 1e-4)) return x.toExponential(2);
+    return x.toFixed(a >= 100 ? 1 : 3);
+  }
+  function disStatTesto(L) {
+    return L.disStatLabel
+      .replace('{passo}', String(disStep))
+      .replace('{w}', disFormatta(disW))
+      .replace('{errore}', disFormatta(disLoss(disW)));
+  }
+  function disEsitoTesto(L) {
+    if (Math.abs(disW - DIS_TARGET) < 0.02) return L.disEsitoConverge;
+    if (disStep > 0 && Math.abs(disW - DIS_TARGET) > Math.abs(DIS_START - DIS_TARGET)) return L.disEsitoDiverge;
+    return '';
+  }
+  function disDipingi() {
+    const canvas = document.getElementById('dis-canvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    const padTop = 24, padBottom = 30, usable = H - padTop - padBottom;
+    const lMax = Math.max(disLoss(DIS_WMIN), disLoss(DIS_WMAX));
+    const xOf = w => (w - DIS_WMIN) / (DIS_WMAX - DIS_WMIN) * W;
+    const yOf = loss => (H - padBottom) - Math.min(loss, lMax) / lMax * usable;
+
+    ctx.beginPath();
+    const N = 200;
+    for (let i = 0; i <= N; i++) {
+      const w = DIS_WMIN + (DIS_WMAX - DIS_WMIN) * i / N;
+      const x = xOf(w), y = yOf(disLoss(w));
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(234,227,209,.5)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    const xt = xOf(DIS_TARGET);
+    ctx.save();
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(201,163,92,.55)';
+    ctx.beginPath();
+    ctx.moveTo(xt, 6);
+    ctx.lineTo(xt, H - padBottom);
+    ctx.stroke();
+    ctx.restore();
+
+    disHistory.forEach((w, i) => {
+      const cw = Math.max(DIS_WMIN, Math.min(DIS_WMAX, w));
+      const x = xOf(cw), y = yOf(disLoss(cw));
+      const alpha = 0.15 + 0.55 * (i / (disHistory.length - 1 || 1));
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(201,163,92,${alpha.toFixed(2)})`;
+      ctx.fill();
+    });
+
+    const cn = Math.max(DIS_WMIN, Math.min(DIS_WMAX, disW));
+    const xn = xOf(cn), yn = yOf(disLoss(cn));
+    ctx.beginPath();
+    ctx.arc(xn, yn, 6, 0, Math.PI * 2);
+    ctx.fillStyle = '#c9a35c';
+    ctx.fill();
+  }
+  function costruisciDiscesa(L) {
+    document.getElementById('dis-lr').value = String(disLr);
+    document.getElementById('dis-lr-out').textContent = disLr.toFixed(2);
+    document.getElementById('dis-stat').textContent = disStatTesto(L);
+    document.getElementById('dis-esito').textContent = disEsitoTesto(L);
+    disDipingi();
+  }
+  document.getElementById('dis-lr').addEventListener('input', function () {
+    disLr = +this.value;
+    document.getElementById('dis-lr-out').textContent = disLr.toFixed(2);
+  });
+  document.getElementById('dis-passo').addEventListener('click', function () {
+    disW = disW - disLr * disGrad(disW);
+    disStep++;
+    disHistory.push(disW);
+    if (disHistory.length > 60) disHistory.shift();
+    const L = DIZ[lingua];
+    document.getElementById('dis-stat').textContent = disStatTesto(L);
+    document.getElementById('dis-esito').textContent = disEsitoTesto(L);
+    disDipingi();
+  });
+  document.getElementById('dis-reset').addEventListener('click', function () {
+    disW = DIS_START; disStep = 0; disHistory = [DIS_START];
+    costruisciDiscesa(DIZ[lingua]);
+  });
+
   // ── Rotte ──
   const atrio = document.getElementById('atrio');
   const stanza = document.getElementById('stanza-storni');
@@ -3284,6 +3450,7 @@ survives.
   const stanzaFermo = document.getElementById('stanza-fermo');
   const stanzaCoda = document.getElementById('stanza-coda');
   const stanzaRip = document.getElementById('stanza-ripetizione');
+  const stanzaDis = document.getElementById('stanza-discesa');
   function rotta() {
     const h = location.hash;
     const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'),
@@ -3294,8 +3461,8 @@ survives.
           inAtt = h.startsWith('#/attenzione'), inVec = h.startsWith('#/spazio'),
           inPos = h.startsWith('#/posizione'), inCieco = h.startsWith('#/cieco'),
           inFermo = h.startsWith('#/fermo'), inCoda = h.startsWith('#/coda'),
-          inRip = h.startsWith('#/ripetizione');
-    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram || inAtt || inVec || inPos || inCieco || inFermo || inCoda || inRip;
+          inRip = h.startsWith('#/ripetizione'), inDis = h.startsWith('#/discesa');
+    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram || inAtt || inVec || inPos || inCieco || inFermo || inCoda || inRip || inDis;
     stanza.hidden = !inStorni;
     stanzaOra.hidden = !inOra;
     stanzaErr.hidden = !inErr;
@@ -3313,6 +3480,7 @@ survives.
     stanzaFermo.hidden = !inFermo;
     stanzaCoda.hidden = !inCoda;
     stanzaRip.hidden = !inRip;
+    stanzaDis.hidden = !inDis;
     if (inOra) dipingi();
     if (inBib) generaPaginaBib();
   }
