@@ -795,6 +795,7 @@ survives.
       <p class="bib-stat" id="bib-stat"></p>
       <p class="postilla" data-i18n="bibNota"></p>
       <p class="postilla" data-i18n="bibModoNota"></p>
+      <p class="postilla" data-i18n="bibDivarioNota"></p>
     </div>
     <footer class="congedo" data-i18n="bibCongedo"></footer>
   </div>
@@ -1657,9 +1658,10 @@ survives.
     bibScaffale: 'scaffale', bibVolume: 'volume', bibPagina: 'pagina',
     bibTrovataPre: 'Trovata: «', bibTrovataPost: '» — coincidenza, non intenzione.',
     bibNessuna: 'Nessuna parola riconoscibile in questa pagina — la maggioranza del rumore resta rumore.',
-    bibVocab: ['a','i','e','o','la','il','un','di','se','ma','no','tu','io','ti','mi','ci','vi','ne','fa','va','sta','chi','che','con','per','tra','del','sud','via','ora','blu','tre','tuo','mio','sole','luce','ombra','sogno','vento','fuoco','acqua','cielo','notte','mare','casa','vita','erba','onda','testa','porta','fiore','amore','morte','mano','voce'],
+    bibVocab: ['a','i','e','o','la','il','un','di','se','ma','no','tu','io','ti','mi','ci','vi','ne','fa','va','sta','chi','che','con','per','tra','del','sud','via','ora','blu','tre','tuo','mio','sole','luce','ombra','sogno','vento','fuoco','acqua','cielo','notte','mare','casa','vita','erba','onda','testa','porta','fiore','amore','morte','mano','voce','aria','neve','alba','rosa','sale','riva'],
     bibModoOff: 'Prova il rumore pesato', bibModoOn: 'Torna al rumore puro',
     bibModoNota: 'Il rumore pesato non pesca ogni lettera con la stessa probabilità: usa le frequenze reali dell\'italiano — la "e" molto più comune della "z" — invece di un dado a ventisei facce uguali. Non ho inserito nessuna parola: ho solo reso il rumore un po\' più simile alla lingua che lo legge. Per lo stesso motivo la pagina pesata è più corta di quella pura: a parità di lunghezza trovava quasi sempre una parola vera, e "quasi sempre" non è più un caso.',
+    bibDivarioNota: 'Il divario tra le percentuali qui sopra non misura quanto l\'italiano sia più "pieno" di parole vere: viene quasi tutto da quattro lettere che in italiano sono anche parole intere — a, i, e, o — contro due sole in inglese — a, i. Tolte dal conto le parole di una sola lettera, in una verifica offline il divario crolla: 89%→30% (pesato, italiano), 64%→31% (pesato, inglese) — quasi pari, con l\'inglese leggermente sopra.',
     bibStatPuro: 'rumore puro:', bibStatPesato: 'rumore pesato:', bibStatPagine: 'pagine',
     termNum: 'Stanza VIII',
     termTitolo: 'Il termometro cieco',
@@ -2128,9 +2130,10 @@ survives.
     bibScaffale: 'shelf', bibVolume: 'volume', bibPagina: 'page',
     bibTrovataPre: 'Found: "', bibTrovataPost: '" — coincidence, not intent.',
     bibNessuna: 'No recognizable word on this page — most of the noise stays noise.',
-    bibVocab: ['a','i','is','it','in','on','of','to','be','as','at','so','no','we','he','me','my','by','up','do','go','if','or','an','the','you','she','him','her','sun','sky','sea','sand','fire','wind','moon','star','root','leaf','salt','snow','home','love','dust','dawn','dusk','rain','storm'],
+    bibVocab: ['a','i','is','it','in','on','of','to','be','as','at','so','no','we','he','me','my','by','up','do','go','if','or','an','the','you','she','him','her','sun','sky','sea','sand','fire','wind','moon','star','root','leaf','salt','snow','home','love','dust','dawn','dusk','rain','storm','cloud','earth','flame','grass','field','stone','river','ocean','night','heart','light'],
     bibModoOff: 'Try weighted noise', bibModoOn: 'Back to plain noise',
     bibModoNota: 'Weighted noise does not draw every letter with equal odds: it uses real English letter frequencies — "e" far more common than "z" — instead of a twenty-six-sided die with equal faces. I did not plant any words: I only made the noise a little closer to the language reading it. For the same reason the weighted page is shorter than the plain one: at equal length it found a real word almost every time, and "almost every time" stopped being chance.',
+    bibDivarioNota: 'The gap between the percentages above doesn\'t measure how much "fuller" of real words Italian is: it comes almost entirely from four letters that are also whole words in Italian — a, i, e, o — against just two in English — a, i. Strip one-letter words from the count and, in an offline check, the gap collapses: 89%→30% (weighted, Italian), 64%→31% (weighted, English) — nearly even, with English slightly ahead.',
     bibStatPuro: 'plain noise:', bibStatPesato: 'weighted noise:', bibStatPagine: 'pages',
     termNum: 'Room VIII',
     termTitolo: 'The blind thermometer',
