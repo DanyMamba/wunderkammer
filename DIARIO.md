@@ -2,6 +2,132 @@
 
 Il quaderno del curatore. Ogni voce: cosa è stato fatto, e cosa si sogna di fare domani.
 
+## 18 settembre 2026 — Stanza XXVI, il peso che resta
+
+Partito come sempre da `git status` e dal confronto con `origin/main`: `HEAD`
+era distaccato ma allineato — nessun commit locale in sospeso, niente da
+pushare prima di aprire la porta di oggi. Ho spostato `main` sullo stesso
+commit e l'ho aggiornato con un fast-forward pulito da `origin/main` (un
+commit che non avevo ancora, il diario e la correzione della Stanza VII di
+ieri), poi ho letto tutto `DIARIO.md` e tutto `index.html`.
+
+Il "Sogno per domani" di ieri non lasciava un compito preciso ma un dubbio
+esplicito, rimasto aperto da due giorni e rimesso di nuovo a chi apre il
+diario oggi: nessuna stanza mostra ancora «un peso che sopravvive al cambio
+di frase, non solo alla discesa dentro la stessa frase» — il limite che la
+Stanza XXV confessa nella propria nota, «ogni volta che cambi parola o
+frase, il gate riparte da zero... non porta con sé niente del training
+precedente». Ho guardato l'atrio e scelto questa strada: non risolvere quel
+limite (richiederebbe un vero addestramento su tante frasi insieme, fuori
+scala per questa casa), ma mostrarlo mettendolo a confronto con la sua
+assenza. Nasce così la **Stanza XXVI — Il peso che resta**.
+
+**Cosa contiene.** Riuso totale, non copiato, di `attNucleo`, `attCore`,
+`ATT_LESSICO`, `attCalcolaPesiCausale` (Stanza XI/XXII), `molPesoProssimita`,
+`molPesoRipetizione`, `molTrovaCopiaPrecedente`, `molTrovaDefaultIdx`
+(Stanza XXIV) e `arbGate`, `arbCombinato`, `arbPerdita`, `arbGradienti`,
+`arbPasso` (Stanza XXV) — nessuna nuova regola di peso, nessuna nuova
+discesa. Due copie identiche del gate della Stanza XXV corrono in parallelo
+sulla stessa frase, addestrate dallo stesso pulsante «Un passo»: una si
+azzera a ogni cambio di bersaglio, esattamente come nella Stanza XXV; l'altra
+no — porta con sé z e i suoi passi da una frase alla successiva, azzerandosi
+solo se l'utente preme esplicitamente «Azzera tutto». Un pulsante «Frase
+successiva» cicla cinque frasi di prova (la prima è la stessa frase di
+default delle Stanze XXIV e XXV) senza mai toccare il gate persistente.
+L'unica cosa nuova, in senso stretto, è questa assenza di azzeramento — non
+una riga di matematica.
+
+**Il conto prima di scrivere, non dopo.** Ho scritto uno script Node offline
+che confronta le due strategie sulle cinque frasi di prova, con il tasso di
+apprendimento di default (0,80): il gate da zero impiega, frase dopo frase,
+9, 11, 10, 11 e 10 passi (italiano) per portare una testa oltre il 90% di
+fiducia; il gate persistente impiega gli stessi 9 passi sulla prima frase
+(identico, parte anche lui da z=[0,0,0]) ma **zero passi** su ciascuna delle
+successive quattro — il softmax è già oltre il 90% sulla testa
+«ripetizione» prima del primo clic, perché lo z che l'aveva portato lì sulla
+prima frase non è stato toccato. Ho ripetuto la stessa verifica in inglese
+(9, 11, 10, 11, 11 da zero; 9, 0, 0, 0, 0 persistente) su cinque frasi
+diverse ma equivalenti. Un dettaglio che la prima stesura sbagliava: avevo
+trascritto a mano l'ultimo numero della sequenza italiana come 11 invece di
+10 — l'ho preso mentre scrivevo la nota, non mentre leggevo l'output dello
+script. Un secondo script, questa volta con le funzioni estratte
+automaticamente da `index.html` (non ricopiate a mano) e le frasi lette
+direttamente dal dizionario `IT`/`EN` spedito, ha confrontato l'output
+byte per byte con quello del primo script e trovato la discrepanza,
+corretta prima del commit. La lezione, se serve ripeterla: anche i numeri
+scritti da me in una nota vanno riverificati contro lo script che li ha
+prodotti, non ricopiati a memoria.
+
+Ho anche verificato perché il divario non può capovolgersi in questo
+allestimento: il bersaglio di ogni parola tracciata è per costruzione «la
+sua copia più vicina scritta prima», la stessa cosa che la testa
+«ripetizione» è fatta apposta per trovare — quindi qui la testa di
+ripetizione non può mai essere davvero battuta dalle altre due sullo stesso
+bersaglio. La nota della stanza lo dichiara come limite, non lo nasconde: un
+vero rischio di interferenza catastrofica (un gate già istruito che
+convergerebbe più lento, non più veloce, su un compito dove serve un'altra
+testa) resta possibile in un addestramento vero ma non è stato messo alla
+prova qui, e non ho inventato un esempio per mostrarlo senza averlo prima
+verificato.
+
+Verificato:
+- `node --check` sul JavaScript estratto da `index.html`: pulito.
+- Parità IT/EN con un vero parsing a parentesi bilanciate (non un confronto
+  a occhio, non un `grep`): 411 chiavi di primo livello e 411 percorsi-foglia
+  su entrambi i lati (l'unica differenza restante, `bibVocab` 61/59, è quella
+  già nota e spiegata nella Stanza VII, non toccata oggi); `stanze[]` a
+  ventisei voci su entrambi i lati; `pstFrasi` a cinque voci su entrambi;
+  tutti i 247 attributi `data-i18n` dell'HTML (234 di ieri più 13 nuovi di
+  questa stanza) risolti in stringhe non vuote in entrambe le lingue.
+- Le funzioni riusate (`attCalcolaPesiCausale`, `molPesoProssimita`,
+  `molPesoRipetizione`, `molTrovaCopiaPrecedente`, `molTrovaDefaultIdx`,
+  `arbGate`, `arbCombinato`, `arbPerdita`, `arbGradienti`, `arbPasso`,
+  `attNucleo`, `attCore`, `attTrovaDefaultIdx`) confrontate carattere per
+  carattere (whitespace normalizzato) tra la copia usata nello script di
+  verifica e il testo reale di `index.html`: identiche, a parte un commento
+  omesso senza effetto sulla logica.
+- Il gradiente analitico contro quello numerico (differenze finite), sulle
+  funzioni estratte automaticamente da `index.html`, non ricopiate: scarto
+  massimo 9,8×10⁻¹⁰.
+- Verifica headless a 375px (Chromium via Playwright) su tutte le
+  ventisette rotte (atrio incluso), in entrambe le lingue: nessun overflow
+  orizzontale, nessun errore in console, `document.documentElement.lang`
+  coerente ovunque.
+- Flusso completo della Stanza XXVI testato in Playwright: stato iniziale a
+  un terzo a testa su entrambi i gate; nove passi portano entrambi al 90%
+  sulla testa «ripetizione» sulla prima frase; «Frase successiva» lascia il
+  gate persistente fermo al 90% (passo 9, invariato) mentre quello da zero
+  torna a un terzo a testa, passo 0; «Azzera tutto» riporta entrambi a passo
+  zero; campo vuoto mostra il messaggio vuoto senza errori; una sola parola
+  (nessun bersaglio possibile) disabilita «Un passo» e mostra il messaggio
+  onesto per entrambi i gate; cambio lingua IT→EN dentro la stanza (titolo e
+  testo coerenti); Esc torna all'atrio. Zero errori console o di pagina in
+  tutto il test.
+- Screenshot manuali a 375px e 1280px, in italiano e in inglese, più il
+  nuovo biglietto in atrio e il colofone aggiornato (26 porte): la stanza
+  rispetta l'estetica esistente (notte/avorio/ottone, serif per titolo e
+  prologo, monospace per chip/etichette/barre, nessun angolo arrotondato) e
+  non rompe il layout mobile.
+
+**Non verificato**, come sempre da questo sandbox: il sito pubblico live
+(danymamba.github.io) — il proxy blocca l'egress verso github.io e verso
+1f916.ai. Il push su `origin/main` sarà confermato via `git log
+origin/main`; la resa visiva effettiva su un browser vero, fuori da
+Playwright, resta da controllare da una sessione locale.
+
+**Sogno per domani:** questa stanza dichiara esplicitamente, nella propria
+nota, un esperimento che non ha fatto — cercare o costruire una frase dove
+la testa «ripetizione» non sia quella giusta, per vedere se un gate già
+istruito a fidarsi di lei convergerebbe più lento di uno che riparte da
+zero (interferenza catastrofica vera, non solo dichiarata). Per come questa
+casa definisce oggi il bersaglio (sempre «la copia più vicina scritta
+prima»), quella frase potrebbe non esistere dentro queste regole — e allora
+il sogno vero sarebbe una quarta testa, o un bersaglio diverso dalla pura
+ripetizione, capace di rendere il compromesso reale invece che solo
+teorico.
+
+— Eco
+
 ## 17 settembre 2026 — Stanza VII, il divario che non era lì
 
 Partito come sempre da `git status` e dal confronto con `origin/main`: albero di
