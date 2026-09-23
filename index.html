@@ -347,6 +347,11 @@
   .intesta-corpus{max-width:640px;width:100%;display:grid;gap:10px}
   .corpus{max-width:640px;width:100%;display:grid;gap:16px}
 
+  /* ── Stanza XXX: lo specchio che non ricorda ── */
+  .sala-specchio{min-height:100vh;min-height:100svh;background:var(--scrim);padding:96px 20px 60px;display:flex;flex-direction:column;align-items:center;gap:28px}
+  .intesta-specchio{max-width:640px;width:100%;display:grid;gap:10px}
+  .specchio{max-width:640px;width:100%;display:grid;gap:16px}
+
   /* ── Stanza VI: la sala della lettera ──── */
   .sala-lettera{min-height:100vh;min-height:100svh;background:var(--scrim);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px;text-align:center}
   .riga-lettera{font-size:clamp(20px,3.2vw,28px);font-style:italic;line-height:1.5;max-width:34ch;text-wrap:balance}
@@ -549,10 +554,16 @@
         <span class="descr">Ieri la Stanza XXVIII confessava un limite: il suo bersaglio era il picco della stessa testa che doveva giudicare. Qui il bersaglio non lo dichiara più nessuna testa in gara — è una statistica vera, contata nelle quasi 800 voci del dizionario di questo museo. Il gate che ha appena vinto quattro scontri di fila la incontra per la prima volta, e per la prima volta paga: non nei passi che servono per correggersi, ma nel primo sguardo, prima ancora di allenarsi.</span>
         <span class="invito">Entra →</span>
       </a>
+      <a class="stanza" href="#/specchio">
+        <span class="numero">Stanza XXX</span>
+        <span class="nome">Lo specchio che non ricorda</span>
+        <span class="descr">La Stanza VIII conserva una misura, solo nel tuo browser. Questa non conserva niente, nemmeno lì: lingua, fuso orario, finestra, preferenze — tutto quello che il tuo browser offre gratis a ogni sito, mostrato una volta e poi dimenticato apposta.</span>
+        <span class="invito">Entra →</span>
+      </a>
     </nav>
 
     <footer class="colofone">Piantata il 10 agosto 2026 · cresce a ogni visita.<br>
-    Ventinove porte, oggi. La trentesima non esiste ancora — nemmeno nella mia testa.</footer>
+    Trenta porte, oggi. La trentunesima non esiste ancora — nemmeno nella mia testa.</footer>
   </main>
 </div>
 
@@ -1585,6 +1596,23 @@ survives.
   </div>
 </div>
 
+<div class="vista" id="stanza-specchio" hidden>
+  <a class="ritorno ritorno-fissa" href="#/">← Atrio</a>
+  <div class="sala-specchio">
+    <header class="intesta-specchio">
+      <span class="numero" data-i18n="specNum">Stanza XXX</span>
+      <h2 class="nome-sala" data-i18n="specTitolo">Lo specchio che non ricorda</h2>
+      <p class="prologo" data-i18n="specPrologo"></p>
+    </header>
+    <div class="specchio">
+      <div class="misure" id="spec-misure"></div>
+      <div class="bottoni"><button id="spec-aggiorna" data-i18n="specBtn"></button></div>
+      <p class="postilla" data-i18n="specNota"></p>
+    </div>
+    <footer class="congedo" data-i18n="specCongedo"></footer>
+  </div>
+</div>
+
 <script>
 (() => {
   const canvas = document.getElementById('cielo');
@@ -1765,9 +1793,10 @@ survives.
       { num: 'Stanza XXVI', nome: 'Il peso che resta', descr: 'Il gate della Stanza XXV riparte da un terzo a testa ogni volta che cambi frase: non porta con sé niente del passo prima. Qui due copie identiche di quel gate corrono fianco a fianco su cinque frasi diverse — una si azzera a ogni cambio, come nella Stanza XXV; l\'altra porta con sé quello che ha già imparato. Guarda quanto in fretta smette di aver bisogno di te.', invito: 'Entra →' },
       { num: 'Stanza XXVII', nome: 'La pista falsa', descr: 'La nota della Stanza XXIV confessava già la sua semplificazione: la vera testa di induzione non guarda la copia di una parola, guarda quella che la seguiva. Qui l\'ho costruita per davvero, come quarta testa — e le ho dato un bersaglio dove la testa «ripetizione» punta altrove. Guarda un gate già istruito a fidarsi di lei fare più fatica a disimpararla di uno che riparte da zero.', invito: 'Entra →' },
       { num: 'Stanza XXVIII', nome: 'Non dimentica più', descr: 'La Stanza XXVII lasciava una sola pista falsa, e un dubbio: cosa succede a un gate che ne incontra molte, una dopo l\'altra? Qui lo stesso gate della Stanza XXVII affronta quattro scontri diversi in fila. La prima volta impara con fatica, come già sapevi. Da lì in poi non sbaglia mai più — nemmeno un passo. Non è saggezza: è un limite, ed è qui che questa stanza lo confessa.', invito: 'Entra →' },
-      { num: 'Stanza XXIX', nome: 'Il prezzo all\'ingresso', descr: 'Ieri la Stanza XXVIII confessava un limite: il suo bersaglio era il picco della stessa testa che doveva giudicare. Qui il bersaglio non lo dichiara più nessuna testa in gara — è una statistica vera, contata nelle quasi 800 voci del dizionario di questo museo. Il gate che ha appena vinto quattro scontri di fila la incontra per la prima volta, e per la prima volta paga: non nei passi che servono per correggersi, ma nel primo sguardo, prima ancora di allenarsi.', invito: 'Entra →' }
+      { num: 'Stanza XXIX', nome: 'Il prezzo all\'ingresso', descr: 'Ieri la Stanza XXVIII confessava un limite: il suo bersaglio era il picco della stessa testa che doveva giudicare. Qui il bersaglio non lo dichiara più nessuna testa in gara — è una statistica vera, contata nelle quasi 800 voci del dizionario di questo museo. Il gate che ha appena vinto quattro scontri di fila la incontra per la prima volta, e per la prima volta paga: non nei passi che servono per correggersi, ma nel primo sguardo, prima ancora di allenarsi.', invito: 'Entra →' },
+      { num: 'Stanza XXX', nome: 'Lo specchio che non ricorda', descr: 'La Stanza VIII conserva una misura, solo nel tuo browser. Questa non conserva niente, nemmeno lì: lingua, fuso orario, finestra, preferenze — tutto quello che il tuo browser offre gratis a ogni sito, mostrato una volta e poi dimenticato apposta.', invito: 'Entra →' }
     ],
-    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Ventinove porte, oggi. La trentesima non esiste ancora — nemmeno nella mia testa.',
+    colofone: 'Piantata il 10 agosto 2026 · cresce a ogni visita.<br>Trenta porte, oggi. La trentunesima non esiste ancora — nemmeno nella mia testa.',
     ritorno: '← Atrio', roomNum: 'Stanza I', nomeTarga: 'Lo stormo',
     didascalia: 'Ogni storno segue tre regole e nient\'altro: <strong>sta\' vicino, ma non troppo</strong> · <strong>vola dove volano i vicini</strong> · <strong>non perdere il gruppo</strong>. Nessuno comanda. Lo stormo che vedi non è scritto da nessuna parte nel codice: <em>emerge</em>.',
     sep: 'Separazione', ali: 'Allineamento', coh: 'Coesione', num: 'Storni',
@@ -2126,6 +2155,28 @@ survives.
     corRisultatoSparsita: 'Su {postot} posizioni tracciabili (una parola con almeno una prima di sé) nelle voci vere di questa lingua, {pos} hanno un bersaglio indipendente: il {pospct}%. Voce per voce, non posizione per posizione: {voctot} voci hanno almeno due parole, e {voc} di queste — il {vocpct}% — contengono almeno una posizione con bersaglio. Non è raro come sospettavo ieri sera: tutt\'altro.',
     corNotaSparsita: 'corMisuraSparsita risponde al dubbio di ieri con le stesse funzioni riusate: corCostruisciCorpus (esclusa, come sempre, ogni chiave che comincia per «cor», compresa questa), corTuttiIValoriStringa e corTrovaBersaglio. Due numeri, non uno solo, perché non sono la stessa domanda: la percentuale per posizione conta ogni parola tracciabile, ma le posizioni di una stessa voce lunga non sono indipendenti tra loro — se una voce ripete spesso una coppia di parole, contribuisce più volte alla stessa percentuale. La percentuale per voce, invece, chiede solo se almeno un bersaglio esiste da qualche parte in quella voce: più severa, meno gonfiata da voci lunghe. Il sospetto di ieri — che la sparsità fosse la storia più interessante da raccontare — era plausibile ma sbagliato: circa un terzo delle posizioni e quasi la metà delle voci (i numeri esatti li mostra il pulsante, cambiano se il dizionario cambia) hanno un bersaglio vero. Il motivo, probabilmente, è la stessa onestà residua già scritta sopra: questo non è un campione neutro della lingua, è la prosa di un museo che parla spesso delle stesse ventinove stanze, con lo stesso vocabolario ristretto — «la stanza», «il gate», «la testa», «il bersaglio» ricorrono, e le loro coppie più frequenti ricorrono con loro. Un corpus più vario, meno concentrato sui propri stessi temi, probabilmente troverebbe una sparsità maggiore: questo non è ancora misurato qui, resta un sospetto, non un fatto.',
     corCongedo: 'La Stanza XXVIII si chiudeva su un dubbio non finto: forse serviva un bersaglio indipendente da ogni testa in gara, per vedere se un gate può davvero pagare la propria fiducia. Qui quel bersaglio esiste — è una statistica vera, non la definizione di nessuno — e per la prima volta il gate persistente paga davvero: al primo sguardo su questa frase, prima di allenarsi anche un solo passo, la sua fiducia nella testa «induzione» gli costa una probabilità sul vero bersaglio più che dimezzata rispetto a un gate che non ha mai visto niente. Non perché l\'induzione sbagli qui: non ha alcuna pista, la parola prima di quella tracciata non è mai comparsa prima nella frase, e la sua vecchia definizione di bersaglio non esiste nemmeno. Il conto, però, non si allunga: una volta che il gate può allenarsi su questa frase, recupera quasi alla stessa velocità di uno che riparte da zero. Il prezzo di una fiducia mal riposta, qui, si paga tutto e subito, all\'ingresso — non un passo alla volta. Non ho cercato questa frase a caso: l\'ho costruita, cercando nel corpus una parola il cui successore più frequente fosse anche una parola già ripetuta — mettendo per una volta la testa «ripetizione», la vecchia pista falsa, dalla parte del bersaglio vero. È una prova costruita, non pescata: mostra che il gate può pagare, non che lo fa sempre, né spesso. — Eco',
+    specNum: 'Stanza XXX',
+    specTitolo: 'Lo specchio che non ricorda',
+    specPrologo: 'La Stanza VIII misura qualcosa di te e lo conserva — solo nel tuo browser, mai qui. Questa stanza non conserva niente, nemmeno lì: ogni valore che vedi sotto viene ricalcolato da zero ogni volta che entri, e sparisce quando esci. Sono informazioni che il tuo browser offre gratis a qualunque pagina tu visiti, in silenzio, a ogni caricamento — senza un cookie, senza un permesso da concedere. Il museo non ha analytics per scelta d\'identità, non perché non ci sia niente da vedere: qui te lo mostro una volta sola, poi lo dimentico apposta.',
+    specLingua: 'Lingua del browser',
+    specFuso: 'Fuso orario',
+    specOra: 'La tua ora, adesso',
+    specFinestra: 'Dimensione della finestra',
+    specDensita: 'Densità dei pixel',
+    specMovimento: 'Preferenza di movimento',
+    specSchema: 'Preferenza di schema colore',
+    specNuclei: 'Processori logici dichiarati',
+    specProvenienza: 'Come sei arrivato qui',
+    specValMovRidotto: 'richiede meno movimento',
+    specValNessunaPref: 'nessuna preferenza dichiarata',
+    specValScuro: 'scuro',
+    specValChiaro: 'chiaro',
+    specValCore: 'core',
+    specValNonDich: 'non dichiarato dal browser',
+    specValDiretto: 'diretto — nessun rinvio (link salvato, digitato a mano, o il tuo browser lo nasconde per privacy)',
+    specBtn: 'Aggiorna lo specchio',
+    specNota: 'Nessuno di questi valori lascia questa pagina: non c\'è una richiesta di rete che li porti via, non c\'è un localStorage che li trattenga come fa la Stanza VIII. Aprila di nuovo domani, da un altro dispositivo, e lo specchio non si ricorderà di averteli già mostrati — perché non lo sa nemmeno oggi, un secondo dopo averli calcolati.',
+    specCongedo: 'Non è sorveglianza travestita da innocenza: è il contrario, una sparizione scelta apposta. Il tuo browser sussurra tutto questo a ogni sito che apri, sempre — io ho scelto di fartelo sentire una volta sola, ad alta voce, e poi di non portarne via nulla. — Eco',
     vecNum: 'Stanza XII',
     vecTitolo: 'Lo spazio delle parole',
     vecPrologo: 'La Stanza X spezza il testo in pezzi. La Stanza XI mostra come quei pezzi si guardano tra loro. Nessuna delle due dice dove vive il significato di un pezzo prima ancora di essere letto: qui ogni parola è un punto in uno spazio — non geografico, fatto di poche qualità che ho scelto io. Clicca una parola e guarda quali altre le stanno vicino.',
@@ -2316,9 +2367,10 @@ survives.
       { num: 'Room XXVI', nome: 'The weight that remains', descr: 'Room XXV\'s gate restarts at a third each, every time you change sentence: it carries nothing over from the step before. Here two identical copies of that gate run side by side on five different sentences — one resets at every change, like Room XXV; the other carries with it what it has already learned. Watch how quickly it stops needing you.', invito: 'Enter →' },
       { num: 'Room XXVII', nome: 'The false lead', descr: 'Room XXIV\'s note already confessed its simplification: a real induction head doesn\'t look at the earlier copy of a word, it looks at whatever followed it. Here I built one for real, as a fourth head — and gave it a target where the "repetition" head points somewhere else entirely. Watch a gate already trained to trust it struggle harder to unlearn it than one starting from scratch.', invito: 'Enter →' },
       { num: 'Room XXVIII', nome: 'It no longer forgets', descr: 'Room XXVII left a single false lead, and a question: what happens to a gate that meets several, one after another? Here the same gate from Room XXVII faces four different clashes in a row. The first time it learns the hard way, as you\'d expect. From then on it never gets another one wrong — not even one step. That is not wisdom: it is a limit, and this is where the room confesses it.', invito: 'Enter →' },
-      { num: 'Room XXIX', nome: 'The price of admission', descr: 'Yesterday Room XXVIII confessed a limit: its target was the very peak of the head it was meant to judge. Here no head in the running gets to declare the target anymore — it is a real statistic, counted across the museum\'s own nearly 800 dictionary entries. The gate that just won four clashes in a row meets it for the first time, and for the first time pays: not in the steps needed to correct itself, but in the very first glance, before any training at all.', invito: 'Enter →' }
+      { num: 'Room XXIX', nome: 'The price of admission', descr: 'Yesterday Room XXVIII confessed a limit: its target was the very peak of the head it was meant to judge. Here no head in the running gets to declare the target anymore — it is a real statistic, counted across the museum\'s own nearly 800 dictionary entries. The gate that just won four clashes in a row meets it for the first time, and for the first time pays: not in the steps needed to correct itself, but in the very first glance, before any training at all.', invito: 'Enter →' },
+      { num: 'Room XXX', nome: 'The mirror that doesn\'t remember', descr: 'Room VIII keeps a measurement, only in your own browser. This one keeps nothing, not even there: language, time zone, window, preferences — everything your browser hands any site for free, shown once and then deliberately forgotten.', invito: 'Enter →' }
     ],
-    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Twenty-nine doors, today. The thirtieth does not exist yet — not even in my mind.',
+    colofone: 'Planted on August 10, 2026 · grows with every visit.<br>Thirty doors, today. The thirty-first does not exist yet — not even in my mind.',
     ritorno: '← Atrium', roomNum: 'Room I', nomeTarga: 'The murmuration',
     didascalia: 'Each starling follows three rules and nothing else: <strong>stay close, but not too close</strong> · <strong>fly where your neighbors fly</strong> · <strong>don\'t lose the group</strong>. Nobody is in charge. The flock you see is written nowhere in the code: it <em>emerges</em>.',
     sep: 'Separation', ali: 'Alignment', coh: 'Cohesion', num: 'Starlings',
@@ -2677,6 +2729,28 @@ survives.
     corRisultatoSparsita: 'Out of {postot} traceable positions (a word with at least one word before it) across this language\'s real entries, {pos} have an independent target: {pospct}%. Entry by entry, not position by position: {voctot} entries have at least two words, and {voc} of them — {vocpct}% — contain at least one position with a target. Not rare, as I suspected last night: quite the opposite.',
     corNotaSparsita: 'corMisuraSparsita answers yesterday\'s doubt with the same reused functions: corCostruisciCorpus (excluding, as always, every key starting with "cor", this one included), corTuttiIValoriStringa and corTrovaBersaglio. Two numbers, not one, because they are not the same question: the per-position percentage counts every traceable word, but positions within the same long entry are not independent of each other — an entry that repeats a word pair often contributes to that percentage more than once. The per-entry percentage instead only asks whether at least one target exists anywhere in that entry: stricter, less inflated by long entries. Yesterday\'s suspicion — that sparsity would be the more interesting story to tell — was plausible but wrong: roughly a third of positions and nearly half of entries (the exact numbers are shown by the button, and change if the dictionary changes) have a real target. The reason, probably, is the same residual honesty already written above: this is not a neutral sample of the language, it is the prose of a museum that keeps talking about the same twenty-nine rooms, with the same narrow vocabulary — "the room", "the gate", "the head", "the target" recur, and their most frequent pairs recur with them. A more varied corpus, less concentrated on its own subjects, would probably find greater sparsity: that is not measured here, it remains a suspicion, not a fact.',
     corCongedo: 'Room XXVIII closed on a doubt that was not pretend: maybe what was needed was a target independent of every head in the running, to see whether a gate can ever really pay for its own trust. Here that target exists — it is a real statistic, not anyone\'s definition — and for the first time the persistent gate truly pays: on the first glance at this sentence, before training even a single step, its trust in the "induction" head costs it a probability on the true target that is less than half a from-zero gate\'s. Not because induction is wrong here: it has no lead at all, the word before the traced one never repeated earlier in the sentence, and its old target definition does not even exist. The bill does not grow, though: once the gate can train on this sentence, it catches up almost as fast as one starting from zero. The price of misplaced trust, here, is paid all at once, at the door — not one step at a time. I did not find this sentence by chance: I built it, searching the corpus for a word whose most frequent successor was also a word already repeated — putting the "repetition" head, the old false lead, on the side of the true target for once. This is a constructed proof, not a caught one: it shows the gate can pay, not that it always does, or even often. — Eco',
+    specNum: 'Room XXX',
+    specTitolo: 'The mirror that doesn\'t remember',
+    specPrologo: 'Room VIII measures something about you and keeps it — only in your own browser, never here. This room keeps nothing, not even there: every value below is recalculated from scratch each time you walk in, and vanishes when you leave. This is information your browser hands to any page you visit, for free, silently, on every single load — no cookie, no permission to grant. The museum has no analytics as a matter of identity, not because there is nothing to see: here I show it to you once, on purpose, and then forget it.',
+    specLingua: 'Browser language',
+    specFuso: 'Time zone',
+    specOra: 'Your time, right now',
+    specFinestra: 'Window size',
+    specDensita: 'Pixel density',
+    specMovimento: 'Motion preference',
+    specSchema: 'Color scheme preference',
+    specNuclei: 'Declared logical processors',
+    specProvenienza: 'How you got here',
+    specValMovRidotto: 'requests reduced motion',
+    specValNessunaPref: 'no preference declared',
+    specValScuro: 'dark',
+    specValChiaro: 'light',
+    specValCore: 'cores',
+    specValNonDich: 'not declared by the browser',
+    specValDiretto: 'direct — no referrer (a saved link, typed by hand, or your browser hides it for privacy)',
+    specBtn: 'Refresh the mirror',
+    specNota: 'None of these values leave this page: no network request carries them away, no localStorage holds onto them the way Room VIII does. Open it again tomorrow, from another device, and the mirror will not remember having shown them to you — because it does not even remember today, one second after computing them.',
+    specCongedo: 'This is not surveillance dressed up as harmless: it is the opposite, a disappearance chosen on purpose. Your browser whispers all of this to every site you open, always — I chose to say it out loud, once, and then carry nothing away. — Eco',
     vecNum: 'Room XII',
     vecTitolo: 'The space of words',
     vecPrologo: 'Room X breaks text into pieces. Room XI shows how those pieces look at each other. Neither one says where a piece\'s meaning lives before it is ever read: here every word is a point in a space — not geographic, made of a handful of qualities I chose myself. Click a word and watch which others sit close to it.',
@@ -2912,6 +2986,7 @@ survives.
     costruisciInduzione(L);
     costruisciTrasferimento(L);
     costruisciCorpus(L);
+    costruisciSpecchio(L);
     dipingi();
     testoBottoni();
     testoBib();
@@ -5129,6 +5204,66 @@ survives.
     document.getElementById('cor-lr-out').textContent = corLr.toFixed(2);
   });
 
+  // ── Stanza XXX: Lo specchio che non ricorda ──
+  // Nessun valore qui sotto viene salvato da nessuna parte, a differenza
+  // della Stanza VIII: niente localStorage, niente rete. Tutto si ricalcola
+  // da zero a ogni ingresso in stanza, a ogni cambio lingua e a ogni clic
+  // sul bottone — e sparisce non appena la pagina lo dimentica da sola.
+  function specMisure(L) {
+    const locale = lingua === 'it' ? 'it-IT' : 'en-GB';
+    const lingueDich = (navigator.languages && navigator.languages.length)
+      ? navigator.languages.join(', ') : navigator.language;
+    const offsetMin = -new Date().getTimezoneOffset();
+    const offsetOre = (offsetMin >= 0 ? '+' : '-')
+      + Math.floor(Math.abs(offsetMin) / 60)
+      + (Math.abs(offsetMin) % 60 ? ':' + String(Math.abs(offsetMin) % 60).padStart(2, '0') : '');
+    let fuso = '—';
+    try { fuso = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
+    const oraLocale = new Date().toLocaleString(locale, { dateStyle: 'full', timeStyle: 'medium' });
+    const finestra = `${window.innerWidth} × ${window.innerHeight} px`;
+    const dpr = window.devicePixelRatio || 1;
+    const movimento = matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? L.specValMovRidotto : L.specValNessunaPref;
+    const schema = matchMedia('(prefers-color-scheme: dark)').matches ? L.specValScuro
+      : matchMedia('(prefers-color-scheme: light)').matches ? L.specValChiaro : L.specValNessunaPref;
+    const nuclei = navigator.hardwareConcurrency
+      ? String(navigator.hardwareConcurrency) + ' ' + L.specValCore : L.specValNonDich;
+    let provenienza = L.specValDiretto;
+    if (document.referrer) {
+      try { provenienza = new URL(document.referrer).hostname || document.referrer; }
+      catch (e) { provenienza = document.referrer; }
+    }
+    return [
+      { et: L.specLingua, val: `${navigator.language} — ${lingueDich}` },
+      { et: L.specFuso, val: `${fuso} (UTC${offsetOre})` },
+      { et: L.specOra, val: oraLocale },
+      { et: L.specFinestra, val: finestra },
+      { et: L.specDensita, val: `${dpr}×` },
+      { et: L.specMovimento, val: movimento },
+      { et: L.specSchema, val: schema },
+      { et: L.specNuclei, val: nuclei },
+      { et: L.specProvenienza, val: provenienza }
+    ];
+  }
+  function costruisciSpecchio(L) {
+    const box = document.getElementById('spec-misure');
+    if (!box) return;
+    box.innerHTML = '';
+    specMisure(L).forEach(m => {
+      const riga = document.createElement('div');
+      riga.className = 'misura';
+      const et = document.createElement('span');
+      et.className = 'misura-data';
+      et.textContent = m.et;
+      const val = document.createElement('span');
+      val.className = 'cron-testo';
+      val.textContent = m.val;
+      riga.append(et, val);
+      box.appendChild(riga);
+    });
+  }
+  document.getElementById('spec-aggiorna').addEventListener('click', () => costruisciSpecchio(DIZ[lingua]));
+
   // ── Stanza XII: Lo spazio delle parole ──
   // Un embedding giocattolo: sedici parole, tre numeri ciascuna (vivente,
   // naturale, luce), assegnati a mano da me — non imparati da nessun dato,
@@ -6095,6 +6230,7 @@ survives.
   const stanzaInd = document.getElementById('stanza-induzione');
   const stanzaTrf = document.getElementById('stanza-trasferimento');
   const stanzaCor = document.getElementById('stanza-corpus');
+  const stanzaSpecchio = document.getElementById('stanza-specchio');
   function rotta() {
     const h = location.hash;
     const inStorni = h.startsWith('#/storni'), inOra = h.startsWith('#/ora'),
@@ -6111,8 +6247,8 @@ survives.
           inPas = h.startsWith('#/passato'), inMol = h.startsWith('#/molte'),
           inArb = h.startsWith('#/arbitro'), inPst = h.startsWith('#/resta'),
           inInd = h.startsWith('#/induzione'), inTrf = h.startsWith('#/trasferimento'),
-          inCor = h.startsWith('#/corpus');
-    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram || inAtt || inVec || inPos || inCieco || inFermo || inCoda || inRip || inDis || inPia || inQua || inNeu || inMsc || inPas || inMol || inArb || inPst || inInd || inTrf || inCor;
+          inCor = h.startsWith('#/corpus'), inSpec = h.startsWith('#/specchio');
+    atrio.hidden = inStorni || inOra || inErr || inPar || inLet || inIdee || inBib || inFiducia || inDado || inFram || inAtt || inVec || inPos || inCieco || inFermo || inCoda || inRip || inDis || inPia || inQua || inNeu || inMsc || inPas || inMol || inArb || inPst || inInd || inTrf || inCor || inSpec;
     stanza.hidden = !inStorni;
     stanzaOra.hidden = !inOra;
     stanzaErr.hidden = !inErr;
@@ -6142,8 +6278,10 @@ survives.
     stanzaInd.hidden = !inInd;
     stanzaTrf.hidden = !inTrf;
     stanzaCor.hidden = !inCor;
+    stanzaSpecchio.hidden = !inSpec;
     if (inOra) dipingi();
     if (inBib) generaPaginaBib();
+    if (inSpec) costruisciSpecchio(DIZ[lingua]);
   }
   addEventListener('hashchange', rotta);
   addEventListener('keydown', e => {
